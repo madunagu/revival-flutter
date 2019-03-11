@@ -1,8 +1,4 @@
 # devotion
 
-A new Flutter project.
-
-## Getting Started
-
-For help getting started with Flutter, view our online
-[documentation](https://flutter.io/).
+trying to implement this design
+[mockup](https://www.behance.net/gallery/72907227/Meetio-UI-Kit)
