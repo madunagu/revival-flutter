@@ -1,5 +1,6 @@
-import 'CurvedRectangleClipper.dart';
-import 'MainNavigationBar.dart';
+import 'package:devotion/CurvedRectangleClipper.dart';
+import 'package:devotion/MainNavigationBar.dart';
+import 'package:devotion/OnBoardingScreen.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 
@@ -11,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: MainScreen(),
+      home: OnBoardingScreen(),
       title: 'Devotion',
       theme: appTheme,
     );
@@ -24,36 +25,58 @@ var appTheme =
 class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView(
-        scrollDirection: Axis.vertical,
-        children: <Widget>[
-          MainNavigationBar(),
-          CurvedListItem(
-            title: 'Practice French, English And Chinese',
-            time: 'TUESDAY 5:30 PM',
-            position: 0,
-            icon: Icons.public,
+    return Stack(
+      children: <Widget>[
+        Scaffold(
+          body: Stack(
+            fit: StackFit.expand,
+            children: <Widget>[
+              Positioned(
+                top: 0,
+                left: 0,
+                height:  MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  physics: ClampingScrollPhysics(),
+                  child: Container(
+                    padding: EdgeInsets.only(top: 130),
+                    color: themeColors[0],
+                    child: Column(
+                      children: <Widget>[
+                        CurvedListItem(
+                          title: 'Practice French, English And Chinese',
+                          time: 'TUESDAY 5:30 PM',
+                          position: 0,
+                          icon: Icons.public,
+                        ),
+                        CurvedListItem(
+                          title: 'Yoga and Meditation for Beginners',
+                          time: 'TODAY 5:30 PM',
+                          icon: Icons.flight_land,
+                          position: 1,
+                        ),
+                        CurvedListItem(
+                          title: 'Practice French, English And Chinese',
+                          time: 'TUESDAY 5:30 PM',
+                          icon: Icons.hotel,
+                          position: 2,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 0,
+                left: 0,
+                width: MediaQuery.of(context).size.width,
+                child: MainNavigationBar(),
+              ),
+            ],
           ),
-          CurvedListItem(
-            title: 'Yoga and Meditation for Beginners',
-            time: 'TODAY 5:30 PM',
-            icon: Icons.flight_land,
-            position: 1,
-          ),
-          CurvedListItem(
-            title: 'Practice French, English And Chinese',
-            time: 'TUESDAY 5:30 PM',
-            icon: Icons.hotel,
-            position: 2,
-          ),
-//          CurvedListItem(
-//            title: 'Adobe XD Live Event in Europe',
-//            time: 'FRIDAY 6:00 PM',
-//            position: 3,
-//          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

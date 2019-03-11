@@ -24,15 +24,11 @@ class MainNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 132,
-      color: themeColors[0],
-//      child: ClipPath(
-//        clipper: CurvedRectangleClipper(),
-      child: Material(
+    return Material(
         elevation: 6,
         borderRadius: BorderRadius.only(bottomLeft: Radius.circular(100)),
         child: Container(
+          height: 130,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(bottomLeft: Radius.circular(100)),
             color: Colors.white,
@@ -44,8 +40,7 @@ class MainNavigationBar extends StatelessWidget {
             physics: ClampingScrollPhysics(),
           ),
         ),
-//        ),
-      ),
+
     );
   }
 }
