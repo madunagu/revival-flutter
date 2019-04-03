@@ -121,7 +121,7 @@ class CurvedListItem extends StatelessWidget {
                             height: 24,
                             width: 24,
                             child: Image.asset(
-                              'assets/images/avatar1.jpg',
+                              'images/avatar1.jpg',
                               fit: BoxFit.cover,
                             ),
                           ),
