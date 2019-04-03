@@ -36,11 +36,12 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   fonts:
-    - family: Oxygen
+    - family: Montserrat
       fonts:
-        - asset: assets/fonts/Oxygen-Regular.ttf
-        - asset: assets/fonts/Oxygen-Bold.ttf
-        - asset: assets/fonts/Oxygen-Light.ttf
+        - asset: assets/fonts/Montserrat-SemiBold.ttf
+        - asset: assets/fonts/Montserrat-Bold.ttf
+        - asset: assets/fonts/Montserrat-MediumItalic.ttf
+        - asset: assets/fonts/Montserrat-Regular.ttf
   assets:
     - assets/images/las_vegas.jpg
     - assets/images/athens.jpg
