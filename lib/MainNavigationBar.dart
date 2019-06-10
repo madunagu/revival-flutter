@@ -60,37 +60,42 @@ class SingleNavigationItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 30),
-      child: Column(
-        children: <Widget>[
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              border: Border.all(
-                  color: Color.fromARGB(255, 224, 224, 224), width: 2),
-              borderRadius: BorderRadius.all(Radius.circular(30)),
-            ),
-            child: Icon(
-              icon,
-              size: 21,
-              color: Color.fromARGB(255, 154, 166, 172),
-            ),
-          ),
-          SizedBox(
-            height: 8,
-          ),
-          Opacity(
-            opacity: .56,
-            child: Text(
-              title,
-              style: TextStyle(
-                color: Color.fromARGB(255, 51, 71, 70),
-                fontSize: 11,
-                fontWeight: FontWeight.w700,
+      child: InkWell(
+        onTap: (){
+          // here add routing code
+        },
+        child: Column(
+          children: <Widget>[
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                border: Border.all(
+                    color: Color.fromARGB(255, 224, 224, 224), width: 2),
+                borderRadius: BorderRadius.all(Radius.circular(30)),
+              ),
+              child: Icon(
+                icon,
+                size: 21,
+                color: Color.fromARGB(255, 154, 166, 172),
               ),
             ),
-          ),
-        ],
+            SizedBox(
+              height: 8,
+            ),
+            Opacity(
+              opacity: .56,
+              child: Text(
+                title,
+                style: TextStyle(
+                  color: Color.fromARGB(255, 51, 71, 70),
+                  fontSize: 11,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -121,7 +126,7 @@ class SingleSelectedNavigationItem extends StatelessWidget {
                   color: Color.fromARGB(255, 212, 127, 166), width: 2),
               borderRadius: BorderRadius.all(Radius.circular(30)),
             ),
-          //  padding: EdgeInsets.all(18),
+            //  padding: EdgeInsets.all(18),
             child: Icon(
               icon,
               size: 21,
