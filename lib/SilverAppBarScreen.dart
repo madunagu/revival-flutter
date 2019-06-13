@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'CurvedCornerWidget.dart';
+import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'main.dart';
 
 class SilverAppBarScreen extends StatelessWidget {

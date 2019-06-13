@@ -1,4 +1,4 @@
-import 'package:devotion/CurvedCornerWidget.dart';
+import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/main.dart';
 import 'package:flutter/material.dart';
 

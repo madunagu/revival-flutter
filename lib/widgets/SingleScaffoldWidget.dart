@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:devotion/DefaultAppBarWidget.dart';
+import 'package:devotion/widgets/DefaultAppBarWidget.dart';
 
 class SingleScaffoldWidget extends StatelessWidget {
   final Widget body;

@@ -14,7 +14,7 @@ class CurvedCornerWidget extends StatelessWidget {
     return Material(
       elevation: 1.0,
       color: color,
-     borderRadius: BorderRadius.only(bottomLeft: Radius.circular(radius)),
+      borderRadius: BorderRadius.only(bottomLeft: Radius.circular(radius)),
       child: ClipRRect(
         borderRadius: BorderRadius.only(bottomLeft: Radius.circular(radius)),
         child: child,

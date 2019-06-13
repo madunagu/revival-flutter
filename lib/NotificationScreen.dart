@@ -1,7 +1,7 @@
-import 'package:devotion/CurvedCornerWidget.dart';
-import 'package:devotion/DefaultAppBarWidget.dart';
+import 'package:devotion/widgets/CurvedCornerWidget.dart';
+import 'package:devotion/widgets/DefaultAppBarWidget.dart';
 import 'package:flutter/material.dart';
-import 'package:devotion/SingleScaffoldWidget.dart';
+import 'package:devotion/widgets/SingleScaffoldWidget.dart';
 
 class NotificationScreen extends StatelessWidget {
   @override

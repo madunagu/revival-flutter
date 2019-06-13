@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:devotion/CurvedCornerWidget.dart';
+import 'package:devotion/widgets/CurvedCornerWidget.dart';
 
 class DefaultAppBarWidget extends StatelessWidget {
   final Color color;
