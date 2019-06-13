@@ -1,5 +1,4 @@
 import 'package:devotion/CurvedCornerWidget.dart';
-import 'package:devotion/ScaffoldDesignWidget.dart';
 import 'package:devotion/main.dart';
 import 'package:flutter/material.dart';
 
@@ -68,7 +67,7 @@ class SingleEventScreen extends StatelessWidget {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(50),
                             child: Image.asset(
-                              'assets/images/avatar1.jpg',
+                              'images/avatar1.jpg',
                               height: 40,
                               width: 40,
                             ),
@@ -208,7 +207,7 @@ class SingleEventScreen extends StatelessWidget {
                                   height: 100,
                                   width: 200,
                                   child: Image.asset(
-                                    'assets/images/avatar1.jpg',
+                                    'images/avatar1.jpg',
                                     width: 200,
                                     height: 100,
                                     fit: BoxFit.cover,

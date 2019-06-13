@@ -28,7 +28,7 @@ class _OnboardingContentsState extends State<OnboardingContents> {
                 height: 360,
                 width: MediaQuery.of(context).size.width,
                 child: Image.asset(
-                  'assets/images/santorini.jpg',
+                  'images/santorini.jpg',
                   fit: BoxFit.cover,
                 ),
               ),
