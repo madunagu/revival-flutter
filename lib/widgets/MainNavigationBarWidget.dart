@@ -1,7 +1,7 @@
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:flutter/material.dart';
 
-class MainNavigationBar extends StatelessWidget {
+class MainNavigationBarWidget extends StatelessWidget {
   final List<Widget> items = [
     SingleSelectedNavigationItem(
       title: 'TRENDING',

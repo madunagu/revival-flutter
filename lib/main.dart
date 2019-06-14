@@ -1,9 +1,10 @@
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/LoginScreen.dart';
-import 'package:devotion/widgets/MainNavigationBar.dart';
+import 'package:devotion/widgets/MainNavigationBarWidget.dart';
 import 'package:devotion/NotificationScreen.dart';
 import 'package:devotion/OnBoardingScreen.dart';
 import 'package:devotion/ProfileScreen.dart';
+import 'package:devotion/FeedsScreen.dart';
 import 'package:devotion/ScaffoldDesignWidget.dart';
 import 'package:devotion/SingleEventScreen.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: SingleEventScreen(),
+      home: FeedsScreen(),
       title: 'Devotion',
       theme: appTheme,
       debugShowCheckedModeBanner: false,
@@ -59,7 +60,7 @@ class MainScreen extends StatelessWidget {
           ),
         ],
       ),
-      customAppBar: MainNavigationBar(),
+      customAppBar: MainNavigationBarWidget(),
     );
   }
 }

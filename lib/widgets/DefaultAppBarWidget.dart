@@ -5,8 +5,10 @@ import 'package:devotion/widgets/CurvedCornerWidget.dart';
 class DefaultAppBarWidget extends StatelessWidget {
   final Color color;
   final String title;
+  final IconData rightIcon;
 
-  DefaultAppBarWidget({Key key, this.color, this.title}) : super(key: key);
+  DefaultAppBarWidget({Key key, this.color, this.title, this.rightIcon})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,16 +16,28 @@ class DefaultAppBarWidget extends StatelessWidget {
       color: color,
       child: Container(
         height: 156,
-        padding: EdgeInsets.only(left: 30, top: 44),
+        padding: EdgeInsets.only(left: 30, top: 44, right: 30),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Container(
-              height: 44,
-              child: Icon(
-                Icons.arrow_back,
-                color: Color.fromARGB(255, 117, 117, 117),
-              ),
+            Row(
+              children: <Widget>[
+                Container(
+                  height: 44,
+                  child: Icon(
+                    Icons.arrow_back,
+                    color: Color.fromARGB(255, 117, 117, 117),
+                  ),
+                ),
+                Spacer(),
+                Container(
+                  height: 44,
+                  child: Icon(
+                    rightIcon,
+                    color: Color.fromARGB(255, 117, 117, 117),
+                  ),
+                ),
+              ],
             ),
             Container(
               padding: EdgeInsets.only(

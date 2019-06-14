@@ -1,5 +1,6 @@
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/widgets/DefaultAppBarWidget.dart';
+import 'package:devotion/widgets/ImageAvatarWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:devotion/widgets/SingleScaffoldWidget.dart';
 
@@ -7,51 +8,51 @@ class NotificationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleScaffoldWidget(
-      body: Column(
-        children: <Widget>[
-          NotificationItem(
-              title:
-                  'Everyday English, French, Spanish: Conversation with Joel',
-              image: Image.asset('assets/images/avatar1.jpg'),
-              timeAgo: '8hrs',
-              isSeen: false),
-          NotificationItem(
-              title:
-                  'Everyday English, French, Spanish: Conversation with Joel',
-              image: Image.asset('assets/images/avatar1.jpg'),
-              timeAgo: '8hrs',
-              isSeen: false),
-          NotificationItem(
-              title:
-                  'Everyday English, French, Spanish: Conversation with Joel',
-              image: Image.asset('assets/images/avatar1.jpg'),
-              timeAgo: '8hrs',
-              isSeen: false),
-          NotificationItem(
-              title:
-                  'Everyday English, French, Spanish: Conversation with Joel',
-              image: Image.asset('assets/images/avatar1.jpg'),
-              timeAgo: '8hrs',
-              isSeen: false),
-          NotificationItem(
-              title:
-                  'Everyday English, French, Spanish: Conversation with Joel',
-              image: Image.asset('assets/images/avatar1.jpg'),
-              timeAgo: '8hrs',
-              isSeen: false),
-          NotificationItem(
-              title:
-                  'Everyday English, French, Spanish: Conversation with Joel',
-              image: Image.asset('assets/images/avatar1.jpg'),
-              timeAgo: '8hrs',
-              isSeen: false),
-        ],
-      ),
       bodyColor: Colors.white,
       titleColor: Colors.white,
       title: DefaultAppBarWidget(
         color: Colors.white,
         title: 'Notifications',
+      ),
+      body: Column(
+        children: <Widget>[
+          NotificationItem(
+              title:
+                  'Everyday English, French, Spanish: Conversation with Joel',
+              image: Image.asset('images/avatar1.jpg'),
+              timeAgo: '8hrs',
+              isSeen: false),
+          NotificationItem(
+              title:
+                  'Everyday English, French, Spanish: Conversation with Joel',
+              image: Image.asset('images/avatar1.jpg'),
+              timeAgo: '8hrs',
+              isSeen: false),
+          NotificationItem(
+              title:
+                  'Everyday English, French, Spanish: Conversation with Joel',
+              image: Image.asset('images/avatar1.jpg'),
+              timeAgo: '8hrs',
+              isSeen: false),
+          NotificationItem(
+              title:
+                  'Everyday English, French, Spanish: Conversation with Joel',
+              image: Image.asset('images/avatar1.jpg'),
+              timeAgo: '8hrs',
+              isSeen: false),
+          NotificationItem(
+              title:
+                  'Everyday English, French, Spanish: Conversation with Joel',
+              image: Image.asset('images/avatar1.jpg'),
+              timeAgo: '8hrs',
+              isSeen: false),
+          NotificationItem(
+              title:
+                  'Everyday English, French, Spanish: Conversation with Joel',
+              image: Image.asset('images/avatar1.jpg'),
+              timeAgo: '8hrs',
+              isSeen: false),
+        ],
       ),
     );
   }
@@ -89,17 +90,7 @@ class NotificationItem extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(50)),
-              child: Container(
-                height: 40,
-                width: 40,
-                child: Image.asset(
-                  'assets/images/avatar1.jpg',
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
+            ImageAvatarWidget(imageURL: 'images/avatar1.jpg'),
             SizedBox(
               width: 24,
             ),
