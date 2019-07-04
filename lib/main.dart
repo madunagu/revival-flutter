@@ -1,3 +1,4 @@
+import 'package:devotion/UserProfile.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/LoginScreen.dart';
 import 'package:devotion/widgets/MainNavigationBarWidget.dart';
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: FeedsScreen(),
+      home: UserProfile(),
       title: 'Devotion',
       theme: appTheme,
       debugShowCheckedModeBanner: false,
