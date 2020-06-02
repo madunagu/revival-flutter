@@ -24,8 +24,8 @@ class ScaffoldDesignWidget extends StatelessWidget {
               scrollDirection: Axis.vertical,
               physics: ClampingScrollPhysics(),
               child: Container(
-                padding: EdgeInsets.only(top: 156),
-                color: bodyColor,
+                padding: EdgeInsets.only(top: 73),
+                //here use navigation - radius as padding
                 child: body,
               ),
             ),

@@ -6,14 +6,16 @@ class DefaultAppBarWidget extends StatelessWidget {
   final Color color;
   final String title;
   final IconData rightIcon;
+  final Color borderColor;
 
-  DefaultAppBarWidget({Key key, this.color, this.title, this.rightIcon})
+  DefaultAppBarWidget({Key key, this.color, this.title, this.rightIcon, this.borderColor = const Color(0x40998fa240)})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return CurvedCornerWidget(
       color: color,
+      borderColor: this.borderColor,
       child: Container(
         height: 156,
         padding: EdgeInsets.only(left: 30, top: 44, right: 30),

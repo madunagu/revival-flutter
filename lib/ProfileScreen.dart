@@ -5,6 +5,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
+        height: 1000,
         child: Stack(
           children: <Widget>[
             Positioned(

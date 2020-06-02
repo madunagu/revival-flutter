@@ -1,10 +1,30 @@
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/widgets/DefaultAppBarWidget.dart';
 import 'package:devotion/widgets/ImageAvatarWidget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:devotion/widgets/SingleScaffoldWidget.dart';
 
 class NotificationScreen extends StatelessWidget {
+  Widget organiseStack({List<NotificationItem> children, double height}) {
+    List<Widget> output = [];
+    for (var i = 0; i < children.length; i++) {
+      output.insert(
+        0,
+        Positioned(
+          top: i * height,
+          child: children[i],
+        ),
+      );
+    }
+    return Container(
+      height: children.length * height + children[0].radius,
+      child: Stack(
+        children: output,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleScaffoldWidget(
@@ -14,46 +34,30 @@ class NotificationScreen extends StatelessWidget {
         color: Colors.white,
         title: 'Notifications',
       ),
-      body: Column(
-        children: <Widget>[
-          NotificationItem(
-              title:
-                  'Everyday English, French, Spanish: Conversation with Joel',
-              image: Image.asset('images/avatar1.jpg'),
-              timeAgo: '8hrs',
-              isSeen: false),
-          NotificationItem(
-              title:
-                  'Everyday English, French, Spanish: Conversation with Joel',
-              image: Image.asset('images/avatar1.jpg'),
-              timeAgo: '8hrs',
-              isSeen: false),
-          NotificationItem(
-              title:
-                  'Everyday English, French, Spanish: Conversation with Joel',
-              image: Image.asset('images/avatar1.jpg'),
-              timeAgo: '8hrs',
-              isSeen: false),
-          NotificationItem(
-              title:
-                  'Everyday English, French, Spanish: Conversation with Joel',
-              image: Image.asset('images/avatar1.jpg'),
-              timeAgo: '8hrs',
-              isSeen: false),
-          NotificationItem(
-              title:
-                  'Everyday English, French, Spanish: Conversation with Joel',
-              image: Image.asset('images/avatar1.jpg'),
-              timeAgo: '8hrs',
-              isSeen: false),
-          NotificationItem(
-              title:
-                  'Everyday English, French, Spanish: Conversation with Joel',
-              image: Image.asset('images/avatar1.jpg'),
-              timeAgo: '8hrs',
-              isSeen: false),
-        ],
-      ),
+      body: this.organiseStack(children: <NotificationItem>[
+        NotificationItem(
+          title: 'Everyday English, French, Spanish: Conversation with Joel',
+          image: Image.asset('images/avatar1.jpg'),
+          timeAgo: '8hrs',
+          isSeen: false,
+        ),
+        NotificationItem(
+          title: 'Everyday English, French, Spanish: Conversation with Joel',
+          image: Image.asset('images/avatar1.jpg'),
+          timeAgo: '8hrs',
+          isSeen: false,
+        ),
+        NotificationItem(
+          title: 'Everyday English, French, Spanish: Conversation with Joel',
+          image: Image.asset('images/avatar1.jpg'),
+          timeAgo: '8hrs',
+        ),
+        NotificationItem(
+          title: 'Everyday English, French, Spanish: Conversation with Joel',
+          image: Image.asset('images/avatar1.jpg'),
+          timeAgo: '8hrs',
+        ),
+      ], height: 100),
     );
   }
 }
@@ -62,29 +66,25 @@ class NotificationItem extends StatelessWidget {
   final String title;
   final Image image;
   final timeAgo;
+  final double radius = 50;
   final bool isSeen;
 
-  NotificationItem({Key key, this.title, this.image, this.timeAgo, this.isSeen})
-      : super(key: key);
+  NotificationItem({
+    Key key,
+    this.title,
+    this.image,
+    this.timeAgo,
+    this.isSeen = true,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return CurvedCornerWidget(
-      color: Colors.white,
+      paddingTop: this.radius,
+      radius: this.radius,
+      color: isSeen ? Colors.white : Color(0xffd47fa6),
+      borderColor: isSeen ? Color(0xffe7e4e9) : Color(0xffc67097),
       child: Container(
-        decoration: BoxDecoration(
-          // borderRadius: BorderRadius.only(
-          //   bottomLeft: Radius.circular(80),
-          // ),
-          border: BorderDirectional(
-            end: BorderSide(
-              color: Color.fromARGB(255, 231, 228, 233),
-            ),
-            bottom: BorderSide(
-              color: Color.fromARGB(255, 231, 228, 233),
-            ),
-          ),
-        ),
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.only(left: 32, top: 30, right: 12, bottom: 13),
         child: Row(
@@ -102,19 +102,20 @@ class NotificationItem extends StatelessWidget {
                   Text(
                     title,
                     style: TextStyle(
-                        // color: Colors.white,
+                        color: isSeen ? Colors.black : Colors.white,
                         fontSize: 14,
-                        //     fontWeight: FontWeight.w700,
+                        fontWeight: isSeen ? FontWeight.w500 : FontWeight.w700,
                         height: 1.42,
                         letterSpacing: -0.14),
                   ),
-                  Opacity(
-                    opacity: 0.5,
-                    child: Text(
-                      timeAgo,
-                      style: TextStyle(
-                          fontSize: 12, letterSpacing: -0.19, height: 1.5),
-                    ),
+                  Text(
+                    timeAgo,
+                    style: TextStyle(
+                        color: isSeen ? Color(0xff998fa2) : Color(0x88ffffff),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: -0.19,
+                        height: 1.5),
                   )
                 ],
               ),
