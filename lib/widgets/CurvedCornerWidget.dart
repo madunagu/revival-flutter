@@ -11,7 +11,7 @@ class CurvedCornerWidget extends StatelessWidget {
   CurvedCornerWidget(
       {Key key,
       this.child,
-      this.color = Colors.white,
+      this.color = const Color(0x00fff),
       this.radius = 80,
       this.paddingTop = 0,
       this.borderColor = const Color(0xff000)})

@@ -24,6 +24,7 @@ class MainNavigationBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CurvedCornerWidget(
+      color: Colors.white,
       child: Container(
         height: 156,
         padding: EdgeInsets.only(top: 57, left: 40),
