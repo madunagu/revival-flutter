@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: SingleEventScreen(),
+      home: MainScreen(),
       title: 'Devotion',
       theme: appTheme,
       debugShowCheckedModeBanner: false,

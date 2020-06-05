@@ -1,7 +1,9 @@
+import 'package:devotion/widgets/ImageAvatarListWidget.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 
 var smallTextSyle = TextStyle(color: Colors.grey, fontSize: 12);
 var largeWhiteTextStyle = TextStyle(
@@ -326,7 +328,9 @@ class SingleEventScreen extends StatelessWidget {
                       )
                     ],
                   ),
-                  SizedBox(height: 30,),
+                  SizedBox(
+                    height: 30,
+                  ),
                   Text(
                     'New to Yoga, or looking to take your mat to practice in new places?',
                     style: TextStyle(
@@ -346,7 +350,9 @@ class SingleEventScreen extends StatelessWidget {
                       letterSpacing: -0.14,
                     ),
                   ),
-                  SizedBox(height: 29,),
+                  SizedBox(
+                    height: 29,
+                  ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -358,12 +364,61 @@ class SingleEventScreen extends StatelessWidget {
                       SizedBox(
                         width: 20,
                       ),
-                      Text(
-                        'Live Chats',
-                        style: largeWhiteTextStyle,
-                      )
+                      Flexible(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Live Chats',
+                              style: largeWhiteTextStyle,
+                            ),
+                            SizedBox(
+                              height: 9,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    height: 30,
+//                                    width: 200,
+                                    child: ImageAvatarListWidget(
+                                      images: [
+                                        'images/avatar1.jpg',
+                                        'images/avatar1.jpg',
+                                        'images/avatar1.jpg',
+                                        'images/avatar1.jpg',
+                                        'images/avatar1.jpg',
+                                      ],
+                                      size: 30,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Text(
+                                    '& 12 others',
+                                    style: TextStyle(
+                                      fontStyle: FontStyle.italic,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color(0xB0ffffff),
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: Colors.white,
+                                  size: 18,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
+                  SizedBox(height: 16,),
                 ],
               ),
             ),
