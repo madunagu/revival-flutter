@@ -4,9 +4,10 @@ class ScaffoldDesignWidget extends StatelessWidget {
   final Widget body;
   final Color bodyColor;
   final Widget customAppBar;
+  final double paddingTop;
 
   ScaffoldDesignWidget(
-      {Key key, this.body, this.bodyColor = Colors.white, this.customAppBar})
+      {Key key, this.body, this.bodyColor = Colors.white, this.customAppBar, this.paddingTop = 73})
       : super(key: key);
 
   @override
@@ -25,7 +26,7 @@ class ScaffoldDesignWidget extends StatelessWidget {
               physics: ClampingScrollPhysics(),
               child: Container(
                 width:MediaQuery.of(context).size.height,
-                padding: EdgeInsets.only(top: 73),
+                padding: EdgeInsets.only(top: this.paddingTop),
                 //here use navigation - radius as padding
                 child: body,
               ),

@@ -1,10 +1,15 @@
+import 'package:devotion/widgets/ScaffoldDesignWidget.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
+    return ScaffoldDesignWidget(
+      customAppBar: Container(
+        height: 0,
+      ),
+      paddingTop: 0,
+      body: Container(
         height: 1000,
         child: Stack(
           children: <Widget>[
@@ -29,6 +34,7 @@ class ProfileScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 28),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Icon(
@@ -47,27 +53,30 @@ class ProfileScreen extends StatelessWidget {
               top: 301,
               left: 0,
               width: MediaQuery.of(context).size.width,
-              height: 500,
+              height: 700,
               child: Container(
                 height: 400,
-                //  width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 38),
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.symmetric(vertical: 38),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(topRight: Radius.circular(80)),
+                  borderRadius:
+                      BorderRadius.only(topRight: Radius.circular(80)),
                   color: Color(0xFFF1F0F2),
                 ),
                 child: Column(
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: .0),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 32),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Container(
-                            width: 160,
+                          Expanded(
+                            flex: 3,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.max,
                               children: <Widget>[
                                 Text(
@@ -91,26 +100,39 @@ class ProfileScreen extends StatelessWidget {
                           ),
                           Container(
                             padding: EdgeInsets.only(
-                                top: 13, left: 24, bottom: 13, right: 20),
+                              top: 13,
+                              left: 24,
+                              bottom: 13,
+                              right: 20,
+                            ),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(30),
-                                  bottomLeft: Radius.circular(30)),
+                                topRight: Radius.circular(15),
+                                bottomLeft: Radius.circular(15),
+                              ),
                               color: Color(0xFF8A56AC),
                             ),
                             child: Text(
                               'FOLLOW',
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 11),
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 11,
+                              ),
                             ),
                           ),
                         ],
                       ),
                     ),
+                    SizedBox(
+                      height: 24,
+                    ),
                     Container(
-                      padding: EdgeInsets.only(left: 24, right: 24),
+                      margin: EdgeInsets.symmetric(horizontal: 16),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 32,
+                      ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(
                           Radius.circular(40),
@@ -120,61 +142,194 @@ class ProfileScreen extends StatelessWidget {
                       child: Column(
                         children: <Widget>[
                           Row(
+                            mainAxisSize: MainAxisSize.max,
                             children: <Widget>[
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.max,
-                                children: <Widget>[
-                                  Icon(Icons.chat),
-                                  Text('Chat'),
-                                ],
+                              Expanded(
+                                flex: 1,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.chat,
+                                      color: Color(0xff9599b3),
+                                    ),
+                                    SizedBox(
+                                      height: 12,
+                                    ),
+                                    Text(
+                                      'Chat',
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        color: Color(0xff78849e),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.max,
-                                children: <Widget>[
-                                  Icon(Icons.chat),
-                                  Text('Chat'),
-                                ],
+                              Expanded(
+                                flex: 1,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.chat,
+                                      color: Color(0xff9599b3),
+                                    ),
+                                    SizedBox(
+                                      height: 12,
+                                    ),
+                                    Text(
+                                      'Chat',
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        color: Color(0xff78849e),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.max,
-                                children: <Widget>[
-                                  Icon(Icons.chat),
-                                  Text('Chat'),
-                                ],
+                              Expanded(
+                                flex: 1,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.chat,
+                                      color: Color(0xff9599b3),
+                                    ),
+                                    SizedBox(
+                                      height: 12,
+                                    ),
+                                    Text(
+                                      'Chat',
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        color: Color(0xff78849e),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
+                          ),
+                          Container(
+                            color: Color(0x23998fa2),
+                            height: 1,
+                            margin: EdgeInsets.symmetric(vertical: 32),
                           ),
                           Row(
+                            mainAxisSize: MainAxisSize.max,
                             children: <Widget>[
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.max,
-                                children: <Widget>[
-                                  Icon(Icons.chat),
-                                  Text('Chat'),
-                                ],
+                              Expanded(
+                                flex: 1,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.chat,
+                                      color: Color(0xff9599b3),
+                                    ),
+                                    SizedBox(
+                                      height: 12,
+                                    ),
+                                    Text(
+                                      'Chat',
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        color: Color(0xff78849e),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.max,
-                                children: <Widget>[
-                                  Icon(Icons.chat),
-                                  Text('Chat'),
-                                ],
+                              Expanded(
+                                flex: 1,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.chat,
+                                      color: Color(0xff9599b3),
+                                    ),
+                                    SizedBox(
+                                      height: 12,
+                                    ),
+                                    Text(
+                                      'Chat',
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        color: Color(0xff78849e),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.max,
-                                children: <Widget>[
-                                  Icon(Icons.chat),
-                                  Text('Chat'),
-                                ],
+                              Expanded(
+                                flex: 1,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.chat,
+                                      color: Color(0xff9599b3),
+                                    ),
+                                    SizedBox(
+                                      height: 12,
+                                    ),
+                                    Text(
+                                      'Chat',
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        color: Color(0xff78849e),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 16),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 32,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(40),
+                        ),
+                        color: Color(0xFFFFFFFF),
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50)),
+                                child: Image.asset(
+                                  'images/avatar1.jpg',
+                                  height: 36,
+                                  width: 36,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(),
+                          Icon(Icons.keyboard_arrow_down),
                         ],
                       ),
                     ),

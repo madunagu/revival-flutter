@@ -23,7 +23,7 @@ class LoginScreen extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                       borderRadius:
-                          BorderRadius.only(bottomLeft: Radius.circular(80)),
+                          BorderRadius.only(bottomLeft: Radius.circular(80),),
                       color: purpleColor),
                 ),
               ),
