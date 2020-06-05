@@ -80,7 +80,7 @@ class NotificationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CurvedCornerWidget(
-      paddingTop: this.radius,
+      padding: EdgeInsets.only(top:this.radius),
       radius: this.radius,
       color: isSeen ? Colors.white : Color(0xffd47fa6),
       borderColor: isSeen ? Color(0xffe7e4e9) : Color(0xffc67097),

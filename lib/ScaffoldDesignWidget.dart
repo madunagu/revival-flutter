@@ -24,6 +24,7 @@ class ScaffoldDesignWidget extends StatelessWidget {
               scrollDirection: Axis.vertical,
               physics: ClampingScrollPhysics(),
               child: Container(
+                width:MediaQuery.of(context).size.height,
                 padding: EdgeInsets.only(top: 73),
                 //here use navigation - radius as padding
                 child: body,

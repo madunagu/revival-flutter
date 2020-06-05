@@ -24,9 +24,13 @@ class ImageAvatarListWidget extends StatelessWidget {
       );
     }
 
-    return Stack(
-      overflow: Overflow.clip,
-      children: imageAvatars,
+    return Container(
+      width: this.size * 3/4 * this.images.length + 10,
+      height: this.size + 10,
+      child: Stack(
+        overflow: Overflow.clip,
+        children: imageAvatars,
+      ),
     );
   }
 }

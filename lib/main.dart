@@ -1,6 +1,7 @@
 import 'package:devotion/MyProfileScreen.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/LoginScreen.dart';
+import 'package:devotion/widgets/ImageAvatarListWidget.dart';
 import 'package:devotion/widgets/MainNavigationBarWidget.dart';
 import 'package:devotion/NotificationScreen.dart';
 import 'package:devotion/OnBoardingScreen.dart';
@@ -35,12 +36,13 @@ var appTheme = ThemeData(
 class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     print('width: ');
     print(MediaQuery.of(context).size.width);
     return ScaffoldDesignWidget(
       bodyColor: themeColors[0],
-      body: Column(
-        children: <Widget>[
+      body: this.organiseStack(
+        [
           CurvedListItem(
             title: 'Practice French, English And Chinese',
             time: 'TUESDAY 5:30 PM',
@@ -59,9 +61,39 @@ class MainScreen extends StatelessWidget {
             icon: Icons.hotel,
             position: 2,
           ),
+          CurvedListItem(
+            title: 'Yoga and Meditation for Beginners',
+            time: 'TODAY 5:30 PM',
+            icon: Icons.flight_land,
+            position: 1,
+          ),
         ],
       ),
       customAppBar: MainNavigationBarWidget(),
+    );
+  }
+
+  Widget organiseStack(List<CurvedListItem> items) {
+    List<Widget> output = [];
+    for (var i = 0; i < items.length; i++) {
+      output.insert(
+        0,
+        Positioned(
+          top: 190.0 * i,
+          child: CurvedCornerWidget(
+            padding: EdgeInsets.only( top: 70),
+            color: themeColors[i % 4],
+            child: items[i],
+          ),
+        ),
+      );
+    }
+
+    return Container(
+      height: 190.0 * items.length + 200,
+      child: Stack(
+        children: output,
+      ),
     );
   }
 }
@@ -86,86 +118,72 @@ class CurvedListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: themeColors[position + 1],
+      width: MediaQuery.of(context).size.width,
+      padding: EdgeInsets.only(left: 32, top: 32),
       child: Stack(
-        children: <Widget>[
-          CurvedCornerWidget(
-            color: themeColors[position],
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.only(left: 32, top: 32, bottom: 40),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  time,
+                  style: TextStyle(
+                    color: Color(0x70ffffff),
+                    fontSize: 11,
+                    letterSpacing: -0.22,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Text(
+                  title,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    letterSpacing: -0.39,
+                    height: 1.25,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Opacity(
-                      child: Text(
-                        time,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 11,
-                            letterSpacing: -0.22,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      opacity: .48,
-                    ),
-                    Container(
-                      width: 309,
-                      child: Text(
-                        title,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            letterSpacing: -0.39,
-                            height: 1.25,
-                            fontWeight: FontWeight.bold),
-                      ),
+                    ImageAvatarListWidget(
+                      images: [
+                        'images/avatar1.jpg',
+                        'images/avatar1.jpg',
+                      ],
+                      size: 24,
                     ),
                     SizedBox(
-                      height: 15,
+                      width: 10,
                     ),
-                    Row(
-                      children: <Widget>[
-                        ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(50)),
-                          child: Container(
-                            height: 24,
-                            width: 24,
-                            child: Image.asset(
-                              'images/avatar1.jpg',
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Opacity(
-                          opacity: .48,
-                          child: Text(
-                            'Join Marie, John and 10 others',
-                            style: TextStyle(
-                              color: Colors.white,
-                              letterSpacing: -0.24,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              fontStyle: FontStyle.italic,
-                            ),
-                          ),
-                        ),
-                      ],
+                    Text(
+                      'Join Marie, John and 10 others',
+                      style: TextStyle(
+                        color: Color(0x70ffffff),
+                        letterSpacing: -0.24,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        fontStyle: FontStyle.italic,
+                      ),
                     ),
-                  ]),
-            ),
-          ),
+                  ],
+                ),
+
+                SizedBox(height: 40,),
+              ]),
           Positioned(
             right: 40,
-            top: 90,
+            bottom: 50,
             child: Icon(
               icon,
               size: 70,
               color: Color.fromARGB(50, 255, 255, 255),
             ),
-          )
+          ),
         ],
       ),
     );
