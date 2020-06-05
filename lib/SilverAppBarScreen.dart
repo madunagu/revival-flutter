@@ -1,3 +1,4 @@
+import 'package:devotion/misc/StyleConstants.dart';
 import 'package:flutter/material.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'main.dart';
@@ -28,7 +29,7 @@ class SilverAppBarScreen extends StatelessWidget {
           ],
           flexibleSpace: FlexibleSpaceBar(
             background: CurvedCornerWidget(
-              color: themeColors[0],
+              color: trendingColors[0],
             ),
             title: Wrap(
               children: <Widget>[

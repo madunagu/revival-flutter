@@ -1,3 +1,4 @@
+import 'package:devotion/CreateEventScreen.dart';
 import 'package:devotion/MyProfileScreen.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/LoginScreen.dart';
@@ -7,8 +8,9 @@ import 'package:devotion/NotificationScreen.dart';
 import 'package:devotion/OnBoardingScreen.dart';
 import 'package:devotion/ProfileScreen.dart';
 import 'package:devotion/FeedsScreen.dart';
-import 'package:devotion/ScaffoldDesignWidget.dart';
 import 'package:devotion/SingleEventScreen.dart';
+import 'package:devotion/widgets/ScaffoldDesignWidget.dart';
+import 'package:devotion/misc/StyleConstants.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -19,7 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: MainScreen(),
+      home: CreateEventScreen(),
       title: 'Devotion',
       theme: appTheme,
       debugShowCheckedModeBanner: false,
@@ -40,7 +42,7 @@ class MainScreen extends StatelessWidget {
     print('width: ');
     print(MediaQuery.of(context).size.width);
     return ScaffoldDesignWidget(
-      bodyColor: themeColors[0],
+      bodyColor: trendingColors[0],
       body: this.organiseStack(
         [
           CurvedListItem(
@@ -82,7 +84,7 @@ class MainScreen extends StatelessWidget {
           top: 190.0 * i,
           child: CurvedCornerWidget(
             padding: EdgeInsets.only( top: 70),
-            color: themeColors[i % 4],
+            color: trendingColors[i % 4],
             child: items[i],
           ),
         ),
@@ -97,13 +99,6 @@ class MainScreen extends StatelessWidget {
     );
   }
 }
-
-List<Color> themeColors = [
-  Color.fromARGB(255, 217, 111, 159),
-  Color.fromARGB(255, 133, 65, 176),
-  Color.fromARGB(255, 21, 4, 40),
-  Color.fromARGB(255, 142, 147, 179),
-];
 
 class CurvedListItem extends StatelessWidget {
   final String title;

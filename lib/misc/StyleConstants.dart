@@ -13,3 +13,10 @@ const smallTextStyle = TextStyle(
   color: Color(0xc8352641),
   letterSpacing: 0,
 );
+
+const List<Color> trendingColors = [
+  Color.fromARGB(255, 217, 111, 159),
+  Color.fromARGB(255, 133, 65, 176),
+  Color.fromARGB(255, 21, 4, 40),
+  Color.fromARGB(255, 142, 147, 179),
+];

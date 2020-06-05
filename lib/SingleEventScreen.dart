@@ -1,9 +1,7 @@
+import 'package:devotion/misc/StyleConstants.dart';
 import 'package:devotion/widgets/ImageAvatarListWidget.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
-import 'package:devotion/main.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 
 var smallTextSyle = TextStyle(color: Colors.grey, fontSize: 12);
 var largeWhiteTextStyle = TextStyle(
@@ -26,7 +24,7 @@ class SingleEventScreen extends StatelessWidget {
         child: Column(
           children: <Widget>[
             CurvedCornerWidget(
-              color: themeColors[0],
+              color: trendingColors[0],
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 32, horizontal: 16),
 //                color: themeColors[0],
@@ -197,7 +195,7 @@ class SingleEventScreen extends StatelessWidget {
             ),
             Container(
               padding: EdgeInsets.only(left: 23, top: 20, right: 40),
-              color: themeColors[2],
+              color: trendingColors[2],
               child: Column(
                 children: [
                   Row(
