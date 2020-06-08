@@ -1,11 +1,11 @@
 import 'package:json_annotation/json_annotation.dart';
 
 
-part 'event.g.dart';
+part 'address.g.dart';
 
 @JsonSerializable()
-class Event {
-      Event();
+class Address {
+      Address();
 
   int id;
   @JsonKey(name: 'user_id') int userId;
@@ -24,6 +24,6 @@ class Event {
   @JsonKey(name: 'created_at') String createdAt;
   @JsonKey(name: 'updated_at') String updatedAt;
 
-  factory Event.fromJson(Map<String,dynamic> json) => _$EventFromJson(json);
-  Map<String, dynamic> toJson() => _$EventToJson(this);
+  factory Address.fromJson(Map<String,dynamic> json) => _$AddressFromJson(json);
+  Map<String, dynamic> toJson() => _$AddressToJson(this);
 }

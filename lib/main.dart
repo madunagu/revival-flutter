@@ -1,5 +1,6 @@
 import 'package:devotion/CreateEventScreen.dart';
 import 'package:devotion/MyProfileScreen.dart';
+import 'package:devotion/PlayerScreen.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/LoginScreen.dart';
 import 'package:devotion/widgets/ImageAvatarListWidget.dart';
@@ -10,6 +11,7 @@ import 'package:devotion/ProfileScreen.dart';
 import 'package:devotion/FeedsScreen.dart';
 import 'package:devotion/SingleEventScreen.dart';
 import 'package:devotion/widgets/ScaffoldDesignWidget.dart';
+import 'package:devotion/widgets/TrendingWidget.dart';
 import 'package:devotion/misc/StyleConstants.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: CreateEventScreen(),
+      home: PlayerScreen(),
       title: 'Devotion',
       theme: appTheme,
       debugShowCheckedModeBanner: false,

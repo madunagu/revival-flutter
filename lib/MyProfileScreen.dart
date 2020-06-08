@@ -1,4 +1,4 @@
-import 'file:///C:/Users/USER/projects/flutter/devotion/lib/widgets/ScaffoldDesignWidget.dart';
+import 'package:devotion/widgets/ScaffoldDesignWidget.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/widgets/MainNavigationBarWidget.dart';
 import 'package:flutter/cupertino.dart';

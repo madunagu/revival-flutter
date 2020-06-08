@@ -1,0 +1,11 @@
+{
+  "id": 1,
+  "name": "Dr. Maria Rolfson MD",
+  "api_token": null,
+  "email": "gwolff@example.com",
+  "email_verified_at": "@datetime",
+  "phone": null,
+  "gender": null,
+  "created_at": "@datetime",
+  "updated_at": "@datetime"
+}
