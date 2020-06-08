@@ -7,8 +7,15 @@ class DefaultAppBarWidget extends StatelessWidget {
   final String title;
   final IconData rightIcon;
   final Color borderColor;
+  final Color titleColor;
 
-  DefaultAppBarWidget({Key key, this.color, this.title, this.rightIcon, this.borderColor = const Color(0x40998fa240)})
+  DefaultAppBarWidget(
+      {Key key,
+      this.color,
+      this.title,
+      this.rightIcon,
+      this.borderColor = const Color(0x40998fa240),
+      this.titleColor = const Color(0xff000000)})
       : super(key: key);
 
   @override
@@ -48,10 +55,12 @@ class DefaultAppBarWidget extends StatelessWidget {
               child: Text(
                 title,
                 style: TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.w700,
-                    height: 1.15,
-                    letterSpacing: -0.42),
+                  fontSize: 26,
+                  fontWeight: FontWeight.w700,
+                  height: 1.15,
+                  color: this.titleColor,
+                  letterSpacing: -0.42,
+                ),
               ),
             ),
           ],
