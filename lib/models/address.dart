@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 
-part 'address.g.dart';
+part 'Address.g.dart';
 
 @JsonSerializable()
 class Address {
@@ -10,7 +10,7 @@ class Address {
   int id;
   @JsonKey(name: 'user_id') int userId;
   String address1;
-  dynamic address2;
+  String address2;
   String country;
   String state;
   String city;
@@ -20,9 +20,9 @@ class Address {
   double longitude;
   double latitude;
   int parseable;
-  @JsonKey(name: 'deleted_at') dynamic deletedAt;
-  @JsonKey(name: 'created_at') String createdAt;
-  @JsonKey(name: 'updated_at') String updatedAt;
+  @JsonKey(name: 'deleted_at') DateTime deletedAt;
+  @JsonKey(name: 'created_at') DateTime createdAt;
+  @JsonKey(name: 'updated_at') DateTime updatedAt;
 
   factory Address.fromJson(Map<String,dynamic> json) => _$AddressFromJson(json);
   Map<String, dynamic> toJson() => _$AddressToJson(this);

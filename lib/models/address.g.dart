@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'address.dart';
+part of 'Address.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
@@ -11,7 +11,7 @@ Address _$AddressFromJson(Map<String, dynamic> json) {
     ..id = json['id'] as int
     ..userId = json['user_id'] as int
     ..address1 = json['address1'] as String
-    ..address2 = json['address2']
+    ..address2 = json['address2'] as String
     ..country = json['country'] as String
     ..state = json['state'] as String
     ..city = json['city'] as String
@@ -21,9 +21,15 @@ Address _$AddressFromJson(Map<String, dynamic> json) {
     ..longitude = (json['longitude'] as num)?.toDouble()
     ..latitude = (json['latitude'] as num)?.toDouble()
     ..parseable = json['parseable'] as int
-    ..deletedAt = json['deleted_at']
-    ..createdAt = json['created_at'] as String
-    ..updatedAt = json['updated_at'] as String;
+    ..deletedAt = json['deleted_at'] == null
+        ? null
+        : DateTime.parse(json['deleted_at'] as String)
+    ..createdAt = json['created_at'] == null
+        ? null
+        : DateTime.parse(json['created_at'] as String)
+    ..updatedAt = json['updated_at'] == null
+        ? null
+        : DateTime.parse(json['updated_at'] as String);
 }
 
 Map<String, dynamic> _$AddressToJson(Address instance) => <String, dynamic>{
@@ -40,7 +46,7 @@ Map<String, dynamic> _$AddressToJson(Address instance) => <String, dynamic>{
       'longitude': instance.longitude,
       'latitude': instance.latitude,
       'parseable': instance.parseable,
-      'deleted_at': instance.deletedAt,
-      'created_at': instance.createdAt,
-      'updated_at': instance.updatedAt,
+      'deleted_at': instance.deletedAt?.toIso8601String(),
+      'created_at': instance.createdAt?.toIso8601String(),
+      'updated_at': instance.updatedAt?.toIso8601String(),
     };

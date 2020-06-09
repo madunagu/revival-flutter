@@ -1,0 +1,11 @@
+{
+  "id": 3,
+  "logo_url": "https://lorempixel.com/50/50/?96464",
+  "profile_image_url": "https://lorempixel.com/500,500/480/?71581",
+  "background_image_url": "https://lorempixel.com/500,500/480/?50999",
+  "color_choice": "YellowGreen",
+  "user_id": 1,
+  "deleted_at": "@datetime",
+  "created_at": "@datetime",
+  "updated_at": "@datetime"
+}

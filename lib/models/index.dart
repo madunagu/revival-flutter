@@ -1,2 +1,9 @@
-export 'address.dart';
-export 'user.dart';
+export 'Address.dart';
+export 'AudioMessage.dart';
+export 'Church.dart';
+export 'Event.dart';
+export 'Heirachy.dart';
+export 'HeirachyGroup.dart';
+export 'ProfileMedia.dart';
+export 'Society.dart';
+export 'User.dart';

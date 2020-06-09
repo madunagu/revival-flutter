@@ -1,0 +1,13 @@
+{
+    "id": 3,
+    "heirachy_group_id": 1,
+    "rank": 3,
+    "position_name": "Jose Jaskolski",
+    "position_slang": "Waylon Labadie I",
+    "person_name": "Mr. Blaze Rath",
+    "user_id": 1,
+    "created_at": "@datetime",
+    "updated_at":"@datetime",
+    "deleted_at": "@datetime",
+    "user": "$User"
+}

@@ -1,0 +1,19 @@
+{
+    "id": 3,
+    "name": "Lyric Bashirian Jr.",
+    "alternate_name": "Issac Torp",
+    "parent_id": "0",
+    "user_id": 11,
+    "leader_id": 1,
+    "heirachy_group_id": 1,
+    "address_id": 1,
+    "profile_media_id": 1,
+    "slogan": "Est quo sunt libero laborum voluptatem aut error.",
+    "description": "Ut iusto ab et. Saepe aut eos quas consequatur debitis eaque eligendi. Quam nisi enim veritatis impedit pariatur iste. Est reprehenderit sapiente eum est veniam voluptatem natus consectetur.",
+    "verified": 0,
+    "deleted_at": "@datetime",
+    "created_at": "@datetime",
+    "updated_at": "@datetime",
+    "address": "$Address",
+    "profile_media": "$ProfileMedia"
+}
