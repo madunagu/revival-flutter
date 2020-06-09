@@ -4,7 +4,6 @@ class CurvedRectangleClipper extends CustomClipper<Path> {
   final double offset = 100;
   @override
   Path getClip(Size size) {
-    // TODO: implement getClip
     Path path = Path();
     path.lineTo(0, size.height - offset);
     var firstEndpoint = Offset(offset, size.height);
@@ -26,7 +25,6 @@ class CurvedRectangleClipper extends CustomClipper<Path> {
 
   @override
   bool shouldReclip(CustomClipper oldClipper) {
-    // TODO: implement shouldReclip
     return true;
   }
 }

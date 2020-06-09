@@ -42,7 +42,7 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     print('width: ');
-    print(MediaQuery.of(context).size.width);
+    print(width.toString());
     return ScaffoldDesignWidget(
       bodyColor: trendingColors[0],
       body: this.organiseStack(

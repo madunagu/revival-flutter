@@ -46,7 +46,6 @@ class BorderPainter extends CustomPainter {
   BorderPainter({this.borderColor, this.radius, this.width});
   @override
   void paint(Canvas canvas, Size size) {
-    // TODO: implement paint
     var paint = Paint();
 
     paint.color = this.borderColor;
@@ -71,7 +70,6 @@ class BorderPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
-    // TODO: implement shouldRepaint
     return false;
   }
 }

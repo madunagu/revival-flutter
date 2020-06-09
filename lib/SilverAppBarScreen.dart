@@ -1,7 +1,6 @@
 import 'package:devotion/misc/StyleConstants.dart';
 import 'package:flutter/material.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
-import 'main.dart';
 
 class SilverAppBarScreen extends StatelessWidget {
   @override
