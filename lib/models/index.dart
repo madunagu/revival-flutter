@@ -4,6 +4,7 @@ export 'Church.dart';
 export 'Event.dart';
 export 'Heirachy.dart';
 export 'HeirachyGroup.dart';
+export 'LoginData.dart';
 export 'ProfileMedia.dart';
 export 'Society.dart';
 export 'User.dart';

@@ -1,11 +1,17 @@
 import 'package:devotion/CreateEventScreen.dart';
 import 'package:devotion/MyProfileScreen.dart';
 import 'package:devotion/PlayerScreen.dart';
+import 'package:devotion/blocs/authentication.bloc.dart';
+import 'package:devotion/events/AuthenticationEvent.dart';
+import 'package:devotion/repositories/UserRepository.dart';
+import 'package:devotion/states/AuthenticationState.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/LoginScreen.dart';
 import 'package:devotion/widgets/ImageAvatarListWidget.dart';
+import 'package:devotion/widgets/LoadingIndicator.dart';
 import 'package:devotion/widgets/MainNavigationBarWidget.dart';
 import 'package:devotion/NotificationScreen.dart';
+import 'package:devotion/SplashScreen.dart';
 import 'package:devotion/OnBoardingScreen.dart';
 import 'package:devotion/ProfileScreen.dart';
 import 'package:devotion/FeedsScreen.dart';
@@ -14,16 +20,46 @@ import 'package:devotion/widgets/ScaffoldDesignWidget.dart';
 import 'package:devotion/widgets/TrendingWidget.dart';
 import 'package:devotion/misc/StyleConstants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
-  runApp(MyApp());
+  BlocSupervisor.delegate = SimpleBlocDelegate();
+  final userRepository = UserRepository();
+  runApp(
+    BlocProvider<AuthenticationBloc>(
+      create: (context) {
+        return AuthenticationBloc(userRepository: userRepository)
+          ..add(AuthenticationStarted());
+      },
+      child: MyApp(userRepository: userRepository),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
+  final UserRepository userRepository;
+
+  MyApp({Key key, @required this.userRepository}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: PlayerScreen(),
+      home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+        builder: (context, state) {
+          if (state is AuthenticationInitial) {
+            return SplashScreen();
+          }
+          if (state is AuthenticationSuccess) {
+            return MainScreen();
+          }
+          if (state is AuthenticationFailure) {
+            return LoginScreen(userRepository: userRepository);
+          }
+          if (state is AuthenticationInProgress) {
+            return LoadingIndicator();
+          }
+        },
+      ),
       title: 'Devotion',
       theme: appTheme,
       debugShowCheckedModeBanner: false,
@@ -36,6 +72,26 @@ var appTheme = ThemeData(
   primaryColor: Color(0xff8a56ac),
   accentColor: Color(0xffd47fa6),
 );
+
+class SimpleBlocDelegate extends BlocDelegate {
+  @override
+  void onEvent(Bloc bloc, Object event) {
+    print(event);
+    super.onEvent(bloc, event);
+  }
+
+  @override
+  void onTransition(Bloc bloc, Transition transition) {
+    print(transition);
+    super.onTransition(bloc, transition);
+  }
+
+  @override
+  void onError(Bloc bloc, Object error, StackTrace stackTrace) {
+    print(error);
+    super.onError(bloc, error, stackTrace);
+  }
+}
 
 class MainScreen extends StatelessWidget {
   @override
@@ -85,7 +141,7 @@ class MainScreen extends StatelessWidget {
         Positioned(
           top: 190.0 * i,
           child: CurvedCornerWidget(
-            padding: EdgeInsets.only( top: 70),
+            padding: EdgeInsets.only(top: 70),
             color: trendingColors[i % 4],
             child: items[i],
           ),
@@ -169,8 +225,9 @@ class CurvedListItem extends StatelessWidget {
                     ),
                   ],
                 ),
-
-                SizedBox(height: 40,),
+                SizedBox(
+                  height: 40,
+                ),
               ]),
           Positioned(
             right: 40,

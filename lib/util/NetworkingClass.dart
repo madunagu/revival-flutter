@@ -1,13 +1,16 @@
 import 'dart:convert';
 import 'dart:async';
 import 'package:http/http.dart' as http;
-
+import 'package:meta/meta.dart';
 
 class NetworkingClass {
-  final String _rootURL = '127.0.0.1:8000';
-  String token = '';
+  String _rootURL = 'http://172.20.10.5:8000/api';
+  //final Uri uri =    Uri(scheme: 'http', host: "localhost", path: "/api", port: 8000);
+  final String token;
 
-  NetworkingClass(this.token);
+  NetworkingClass({@required this.token}) {
+    //this._rootURL = uri.toString();
+  }
 
   Map<String, String> headers() {
     if (token != '') {
