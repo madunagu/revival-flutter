@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 
 class NetworkingClass {
-  String _rootURL = 'http://172.20.10.5:8000/api';
+  String _rootURL = 'http://10.0.2.2:8000/api';
   //final Uri uri =    Uri(scheme: 'http', host: "localhost", path: "/api", port: 8000);
   final String token;
 

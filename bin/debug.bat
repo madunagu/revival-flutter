@@ -1,0 +1,1 @@
+flutter emulators --launch Pixel_XL_API_R

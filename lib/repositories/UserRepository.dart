@@ -3,10 +3,13 @@ import 'dart:convert';
 import 'package:devotion/models/LoginData.dart';
 import 'package:devotion/util/NetworkingClass.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 import 'dart:async';
 
 class UserRepository {
+  final FlutterSecureStorage storage = FlutterSecureStorage();
+
   Future<String> authenticate({
     @required String username,
     @required String password,
@@ -14,40 +17,32 @@ class UserRepository {
     var server = NetworkingClass(token: '');
     var res =
         await server.post('/login', {'email': username, 'password': password});
-    LoginData response = LoginData.fromJson(jsonDecode(res));
+    LoginData response = LoginData.fromJson(res);
     if (response.success == true) {
-      await persistToken(response.token);
+      //this is being done in the authentication bloc
+      //await persistToken(response.token);
       return response.token;
     }
     return null;
   }
 
-  Future<SharedPreferences> getSharedPreferences(){
-  return  SharedPreferences.getInstance();
-  }
-
   Future<void> deleteToken() async {
-    final SharedPreferences prefs = await getSharedPreferences();
-    await prefs.remove('token');
+    await storage.delete(key: 'token');
     return;
   }
 
   Future<void> persistToken(String token) async {
     /// write to keystore/keychain
-
-    final SharedPreferences prefs = await getSharedPreferences();
-    await prefs.setString("token", token);
+    await storage.write(key: 'token', value: token);
     return;
   }
 
   Future<bool> hasToken() async {
-    final SharedPreferences prefs = await getSharedPreferences();
-    bool _hasToken = prefs.containsKey('token');
+    bool _hasToken = await storage.read(key:'token') != null;
     return _hasToken;
   }
 
   Future<String> getToken() async {
-    final SharedPreferences prefs = await getSharedPreferences();
-    return prefs.getString('token');
+    return await storage.read(key:'token');
   }
 }

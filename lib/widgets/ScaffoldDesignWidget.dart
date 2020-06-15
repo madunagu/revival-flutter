@@ -7,7 +7,11 @@ class ScaffoldDesignWidget extends StatelessWidget {
   final double paddingTop;
 
   ScaffoldDesignWidget(
-      {Key key, this.body, this.bodyColor = Colors.white, this.customAppBar, this.paddingTop = 73})
+      {Key key,
+      this.body,
+      this.bodyColor = Colors.white,
+      this.customAppBar,
+      this.paddingTop = 73})
       : super(key: key);
 
   @override
@@ -19,13 +23,13 @@ class ScaffoldDesignWidget extends StatelessWidget {
           Positioned(
             top: 0,
             left: 0,
-           height: MediaQuery.of(context).size.height,
+            height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
               physics: ClampingScrollPhysics(),
               child: Container(
-                width:MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.height,
                 padding: EdgeInsets.only(top: this.paddingTop),
                 //here use navigation - radius as padding
                 child: body,
@@ -36,7 +40,7 @@ class ScaffoldDesignWidget extends StatelessWidget {
             top: 0,
             left: 0,
             width: MediaQuery.of(context).size.width,
-            child: customAppBar,
+            child: (customAppBar != null) ? customAppBar : Container(),
           ),
           Positioned(
             bottom: 56,

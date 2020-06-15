@@ -170,75 +170,83 @@ class CurvedListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.only(left: 32, top: 32),
-      child: Stack(
-        children: [
-          Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  time,
-                  style: TextStyle(
-                    color: Color(0x70ffffff),
-                    fontSize: 11,
-                    letterSpacing: -0.22,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                Text(
-                  title,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    letterSpacing: -0.39,
-                    height: 1.25,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    ImageAvatarListWidget(
-                      images: [
-                        'images/avatar1.jpg',
-                        'images/avatar1.jpg',
-                      ],
-                      size: 24,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SingleEventScreen()),
+        );
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.only(left: 32, top: 32),
+        child: Stack(
+          children: [
+            Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    time,
+                    style: TextStyle(
+                      color: Color(0x70ffffff),
+                      fontSize: 11,
+                      letterSpacing: -0.22,
+                      fontWeight: FontWeight.w600,
                     ),
-                    SizedBox(
-                      width: 10,
+                  ),
+                  Text(
+                    title,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      letterSpacing: -0.39,
+                      height: 1.25,
+                      fontWeight: FontWeight.bold,
                     ),
-                    Text(
-                      'Join Marie, John and 10 others',
-                      style: TextStyle(
-                        color: Color(0x70ffffff),
-                        letterSpacing: -0.24,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.italic,
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      ImageAvatarListWidget(
+                        images: [
+                          'images/avatar1.jpg',
+                          'images/avatar1.jpg',
+                        ],
+                        size: 24,
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 40,
-                ),
-              ]),
-          Positioned(
-            right: 40,
-            bottom: 50,
-            child: Icon(
-              icon,
-              size: 70,
-              color: Color.fromARGB(50, 255, 255, 255),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        'Join Marie, John and 10 others',
+                        style: TextStyle(
+                          color: Color(0x70ffffff),
+                          letterSpacing: -0.24,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 40,
+                  ),
+                ]),
+            Positioned(
+              right: 40,
+              bottom: 50,
+              child: Icon(
+                icon,
+                size: 70,
+                color: Color.fromARGB(50, 255, 255, 255),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
