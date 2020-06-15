@@ -19,8 +19,11 @@ import 'package:devotion/SingleEventScreen.dart';
 import 'package:devotion/widgets/ScaffoldDesignWidget.dart';
 import 'package:devotion/widgets/TrendingWidget.dart';
 import 'package:devotion/misc/StyleConstants.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:animations/animations.dart';
 
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
@@ -93,7 +96,28 @@ class SimpleBlocDelegate extends BlocDelegate {
   }
 }
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
+  @override
+  _MainScreenState createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen>
+    with SingleTickerProviderStateMixin {
+  TabController _tabController;
+  @override
+  void initState() {
+    this._tabController =
+        TabController(vsync: this, length: navigationItems.length);
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -101,35 +125,104 @@ class MainScreen extends StatelessWidget {
     print(width.toString());
     return ScaffoldDesignWidget(
       bodyColor: trendingColors[0],
-      body: this.organiseStack(
-        [
-          CurvedListItem(
-            title: 'Practice French, English And Chinese',
-            time: 'TUESDAY 5:30 PM',
-            position: 0,
-            icon: Icons.public,
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: TabBarView(controller: _tabController, children: [
+          SingleChildScrollView(child: MyProfileScreen()),
+          SingleChildScrollView(
+            child: this.organiseStack(
+              [
+                CurvedListItem(
+                  title: 'Practice French, English And Chinese',
+                  time: 'TUESDAY 5:30 PM',
+                  position: 0,
+                  icon: Icons.public,
+                ),
+                CurvedListItem(
+                  title: 'Yoga and Meditation for Beginners',
+                  time: 'TODAY 5:30 PM',
+                  icon: Icons.flight_land,
+                  position: 1,
+                ),
+                CurvedListItem(
+                  title: 'Practice French, English And Chinese',
+                  time: 'TUESDAY 5:30 PM',
+                  icon: Icons.hotel,
+                  position: 2,
+                ),
+                CurvedListItem(
+                  title: 'Yoga and Meditation for Beginners',
+                  time: 'TODAY 5:30 PM',
+                  icon: Icons.flight_land,
+                  position: 1,
+                ),
+              ],
+            ),
           ),
-          CurvedListItem(
-            title: 'Yoga and Meditation for Beginners',
-            time: 'TODAY 5:30 PM',
-            icon: Icons.flight_land,
-            position: 1,
+          SingleChildScrollView(
+            child: this.organiseStack(
+              [
+                CurvedListItem(
+                  title: 'Practice French, English And Chinese',
+                  time: 'TUESDAY 5:30 PM',
+                  position: 0,
+                  icon: Icons.public,
+                ),
+                CurvedListItem(
+                  title: 'Yoga and Meditation for Beginners',
+                  time: 'TODAY 5:30 PM',
+                  icon: Icons.flight_land,
+                  position: 1,
+                ),
+                CurvedListItem(
+                  title: 'Practice French, English And Chinese',
+                  time: 'TUESDAY 5:30 PM',
+                  icon: Icons.hotel,
+                  position: 2,
+                ),
+                CurvedListItem(
+                  title: 'Yoga and Meditation for Beginners',
+                  time: 'TODAY 5:30 PM',
+                  icon: Icons.flight_land,
+                  position: 1,
+                ),
+              ],
+            ),
           ),
-          CurvedListItem(
-            title: 'Practice French, English And Chinese',
-            time: 'TUESDAY 5:30 PM',
-            icon: Icons.hotel,
-            position: 2,
+          this.organiseStack(
+            [
+              CurvedListItem(
+                title: 'Practice French, English And Chinese',
+                time: 'TUESDAY 5:30 PM',
+                position: 0,
+                icon: Icons.public,
+              ),
+              CurvedListItem(
+                title: 'Yoga and Meditation for Beginners',
+                time: 'TODAY 5:30 PM',
+                icon: Icons.flight_land,
+                position: 1,
+              ),
+              CurvedListItem(
+                title: 'Practice French, English And Chinese',
+                time: 'TUESDAY 5:30 PM',
+                icon: Icons.hotel,
+                position: 2,
+              ),
+              CurvedListItem(
+                title: 'Yoga and Meditation for Beginners',
+                time: 'TODAY 5:30 PM',
+                icon: Icons.flight_land,
+                position: 1,
+              ),
+            ],
           ),
-          CurvedListItem(
-            title: 'Yoga and Meditation for Beginners',
-            time: 'TODAY 5:30 PM',
-            icon: Icons.flight_land,
-            position: 1,
-          ),
-        ],
+        ]),
       ),
-      customAppBar: MainNavigationBarWidget(),
+      customAppBar: MainNavigationBarWidget(
+        tabController: _tabController,
+      ),
     );
   }
 

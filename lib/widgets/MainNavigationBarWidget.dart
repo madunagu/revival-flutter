@@ -1,35 +1,55 @@
+import 'package:devotion/misc/BorderTabIndicator.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:flutter/material.dart';
 
-class MainNavigationBarWidget extends StatelessWidget {
-  final List<Widget> items = [
-    SingleNavigationItem(
-        title: 'TRENDING', icon: Icons.trending_up, isSelected: true),
-    SingleNavigationItem(
-      title: 'HEALTH',
-      icon: Icons.favorite_border,
-    ),
-    SingleNavigationItem(
-      title: 'MUSIC',
-      icon: Icons.headset,
-    ),
-    SingleNavigationItem(
-      title: 'READING',
-      icon: Icons.chrome_reader_mode,
-    ),
-  ];
+final List<Widget> navigationItems = [
+  ProfileNavigationItem(),
+  SingleNavigationItem(
+      title: 'TRENDING', icon: Icons.trending_up, isSelected: true),
+  SingleNavigationItem(
+    title: 'HEALTH',
+    icon: Icons.favorite_border,
+  ),
+  SingleNavigationItem(
+    title: 'MUSIC',
+    icon: Icons.headset,
+  ),
+  // SingleNavigationItem(
+  //   title: 'READING',
+  //   icon: Icons.chrome_reader_mode,
+  // ),
+];
 
+class MainNavigationBarWidget extends StatefulWidget {
+  final TabController tabController;
+  MainNavigationBarWidget({@required this.tabController});
+  @override
+  _MainNavigationBarWidgetState createState() =>
+      _MainNavigationBarWidgetState();
+}
+
+class _MainNavigationBarWidgetState extends State<MainNavigationBarWidget> {
   @override
   Widget build(BuildContext context) {
     return CurvedCornerWidget(
       color: Colors.white,
       child: Container(
         height: 156,
-        padding: EdgeInsets.only(top: 57, left: 40),
-        child: ListView(
-          children: items,
-          scrollDirection: Axis.horizontal,
-          physics: ClampingScrollPhysics(),
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.only(top: 47, left: 40),
+        alignment: Alignment.topCenter,
+        child: TabBar(
+          isScrollable: true,
+          labelPadding: EdgeInsets.all(10),
+          indicator: BorderTabIndicator(indicatorHeight: 48),
+          controller: widget.tabController,
+          onTap: (index) {
+            widget.tabController.animateTo(
+              index,
+              duration: const Duration(milliseconds: 300),
+            );
+          },
+          tabs: navigationItems,
         ),
       ),
     );
@@ -71,6 +91,7 @@ class SingleNavigationItem extends StatelessWidget {
         },
         child: Column(
           children: <Widget>[
+            SizedBox(height: 8,),
             Container(
               width: this.size,
               height: this.size,
@@ -125,12 +146,12 @@ class ProfileNavigationItem extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Container(
-              width: 56,
+              width: 48,
               height: 66,
               child: Stack(
                 children: [
                   Positioned(
-                    top: 15,
+                    top: 8,
                     child: ClipRRect(
                       borderRadius: BorderRadius.all(
                         Radius.circular(50),
