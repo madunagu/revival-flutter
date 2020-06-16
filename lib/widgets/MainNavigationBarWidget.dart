@@ -14,14 +14,15 @@ final List<Widget> navigationItems = [
     title: 'MUSIC',
     icon: Icons.headset,
   ),
-  // SingleNavigationItem(
-  //   title: 'READING',
-  //   icon: Icons.chrome_reader_mode,
-  // ),
+  SingleNavigationItem(
+    title: 'READING',
+    icon: Icons.chrome_reader_mode,
+  ),
 ];
 
 class MainNavigationBarWidget extends StatefulWidget {
   final TabController tabController;
+  final navItemSize = 48;
   MainNavigationBarWidget({@required this.tabController});
   @override
   _MainNavigationBarWidgetState createState() =>
@@ -41,6 +42,15 @@ class _MainNavigationBarWidgetState extends State<MainNavigationBarWidget> {
         child: TabBar(
           isScrollable: true,
           labelPadding: EdgeInsets.all(10),
+          labelColor: Color(0xff374750),
+          labelStyle: TextStyle(
+            color: Color.fromARGB(143, 51, 71, 70),
+            fontSize: ((widget.navItemSize - 48) / 8 + 11),
+            fontWeight: FontWeight.w700,
+            fontFamily: 'Montserrat',
+            letterSpacing: 0.34,
+          ),
+          unselectedLabelColor: Color.fromARGB(143, 51, 71, 70),
           indicator: BorderTabIndicator(indicatorHeight: 48),
           controller: widget.tabController,
           onTap: (index) {
@@ -85,50 +95,44 @@ class SingleNavigationItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 30),
-      child: InkWell(
-        onTap: () {
-          // here add routing code
-        },
-        child: Column(
-          children: <Widget>[
-            SizedBox(height: 8,),
-            Container(
-              width: this.size,
-              height: this.size,
-              decoration: BoxDecoration(
-                border: Border.all(
-                    color: (isSelected
-                        ? Color.fromARGB(255, 212, 127, 166)
-                        : Color.fromARGB(255, 224, 224, 224)),
-                    width: isSelected ? 2 : 1),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(50),
-                ),
-              ),
-              child: Icon(
-                icon,
-                size: this.size / 2,
-                color: (isSelected
-                    ? Color.fromARGB(255, 53, 38, 65)
-                    : Color.fromARGB(255, 154, 166, 172)),
+      child: Column(
+        children: <Widget>[
+          SizedBox(
+            height: 8,
+          ),
+          Container(
+            width: this.size,
+            height: this.size,
+            decoration: BoxDecoration(
+              border: Border.all(
+                  color: Color.fromARGB(255, 224, 224, 224), width: 1),
+              borderRadius: BorderRadius.all(
+                Radius.circular(50),
               ),
             ),
-            SizedBox(
-              height: this.size / 6,
+            child: Icon(
+              icon,
+              size: this.size / 2,
+              // color: (isSelected
+              //     ? Color.fromARGB(255, 53, 38, 65)
+              //     : Color.fromARGB(255, 154, 166, 172)),
             ),
-            Text(
-              title,
-              style: TextStyle(
-                color: isSelected
-                    ? Color(0xff374750)
-                    : Color.fromARGB(143, 51, 71, 70),
-                fontSize: ((this.size - 48) / 8 + 11),
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0.34,
-              ),
-            ),
-          ],
-        ),
+          ),
+          SizedBox(
+            height: this.size / 6,
+          ),
+          Text(
+            title,
+            // style: TextStyle(
+            //   color: isSelected
+            //       ? Color(0xff374750)
+            //       : Color.fromARGB(143, 51, 71, 70),
+            //   fontSize: ((this.size - 48) / 8 + 11),
+            //   fontWeight: FontWeight.w700,
+            //   letterSpacing: 0.34,
+            // ),
+          ),
+        ],
       ),
     );
   }
@@ -187,17 +191,8 @@ class ProfileNavigationItem extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(
-              height: 8,
-            ),
             Text(
               'YOU',
-              style: TextStyle(
-                color: Color.fromARGB(143, 51, 71, 70),
-                fontSize: 11,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0.34,
-              ),
             ),
           ],
         ),

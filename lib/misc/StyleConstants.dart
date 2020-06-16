@@ -20,3 +20,4 @@ const List<Color> trendingColors = [
   Color.fromARGB(255, 21, 4, 40),
   Color.fromARGB(255, 142, 147, 179),
 ];
+

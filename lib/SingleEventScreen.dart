@@ -1,4 +1,3 @@
-import 'package:devotion/misc/CurvedRectangleClipper.dart';
 import 'package:devotion/misc/StyleConstants.dart';
 import 'package:devotion/widgets/ImageAvatarListWidget.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';

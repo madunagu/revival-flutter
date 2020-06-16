@@ -11,8 +11,12 @@ Event _$EventFromJson(Map<String, dynamic> json) {
     ..id = json['id'] as int
     ..name = json['name'] as String
     ..churchId = json['church_id'] as int
-    ..startingAt = json['starting_at'] as String
-    ..endingAt = json['ending_at'] as String
+    ..startingAt = json['starting_at'] == null
+        ? null
+        : DateTime.parse(json['starting_at'] as String)
+    ..endingAt = json['ending_at'] == null
+        ? null
+        : DateTime.parse(json['ending_at'] as String)
     ..addressId = json['address_id'] as int
     ..heirachyGroupId = json['heirachy_group_id'] as int
     ..profileMediaId = json['profile_media_id'] as int
@@ -35,8 +39,8 @@ Map<String, dynamic> _$EventToJson(Event instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'church_id': instance.churchId,
-      'starting_at': instance.startingAt,
-      'ending_at': instance.endingAt,
+      'starting_at': instance.startingAt?.toIso8601String(),
+      'ending_at': instance.endingAt?.toIso8601String(),
       'address_id': instance.addressId,
       'heirachy_group_id': instance.heirachyGroupId,
       'profile_media_id': instance.profileMediaId,

@@ -1,11 +1,10 @@
-import 'dart:convert';
+import 'dart:async';
 
 import 'package:devotion/models/LoginData.dart';
 import 'package:devotion/util/NetworkingClass.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import 'dart:async';
 
 class UserRepository {
   final FlutterSecureStorage storage = FlutterSecureStorage();
@@ -14,7 +13,7 @@ class UserRepository {
     @required String username,
     @required String password,
   }) async {
-    var server = NetworkingClass(token: '');
+    var server = NetworkingClass();
     var res =
         await server.post('/login', {'email': username, 'password': password});
     LoginData response = LoginData.fromJson(res);

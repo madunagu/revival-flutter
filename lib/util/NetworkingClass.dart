@@ -1,15 +1,23 @@
 import 'dart:convert';
 import 'dart:async';
+import 'package:devotion/repositories/UserRepository.dart';
 import 'package:http/http.dart' as http;
-import 'package:meta/meta.dart';
+import 'dart:developer' as developer;
+
 
 class NetworkingClass {
   String _rootURL = 'http://10.0.2.2:8000/api';
-  //final Uri uri =    Uri(scheme: 'http', host: "localhost", path: "/api", port: 8000);
-  final String token;
+  String token;
+  bool isTokenGotten = false;
 
-  NetworkingClass({@required this.token}) {
-    //this._rootURL = uri.toString();
+  NetworkingClass() {
+    getToken();
+  }
+
+  Future<dynamic> getToken() async {
+    var userRepo = UserRepository();
+    this.token = await userRepo.getToken();
+    this.isTokenGotten = true;
   }
 
   Map<String, String> headers() {
@@ -21,8 +29,11 @@ class NetworkingClass {
   }
 
   Future<dynamic> get(String url) async {
+    if (!isTokenGotten) await getToken();
     http.Response response =
         await http.get(_rootURL + url, headers: this.headers());
+          developer.log(response.body.toString(), name: 'network.category');
+
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       return data;
@@ -32,6 +43,7 @@ class NetworkingClass {
   }
 
   Future<dynamic> post(String url, dynamic data) async {
+    if (!isTokenGotten) await getToken();
     http.Response response =
         await http.post(_rootURL + url, body: data, headers: this.headers());
     if (response.statusCode == 200) {
@@ -43,6 +55,7 @@ class NetworkingClass {
   }
 
   Future<dynamic> put(String url, dynamic data) async {
+    if (!isTokenGotten) await getToken();
     http.Response response =
         await http.put(_rootURL + url, body: data, headers: this.headers());
     if (response.statusCode == 200) {
@@ -54,6 +67,7 @@ class NetworkingClass {
   }
 
   Future<dynamic> delete(String url) async {
+    if (!isTokenGotten) await getToken();
     http.Response response =
         await http.delete(_rootURL + url, headers: this.headers());
     if (response.statusCode == 200) {
