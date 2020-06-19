@@ -5,18 +5,21 @@ class ScaffoldDesignWidget extends StatelessWidget {
   final Color bodyColor;
   final Widget customAppBar;
   final double paddingTop;
+  final scaffoldKey;
 
   ScaffoldDesignWidget(
       {Key key,
       this.body,
       this.bodyColor = Colors.white,
       this.customAppBar,
+      this.scaffoldKey,
       this.paddingTop = 73})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
@@ -35,7 +38,6 @@ class ScaffoldDesignWidget extends StatelessWidget {
                 child: body,
               ),
             ),
-            
           ),
           Positioned(
             top: 0,
@@ -68,4 +70,5 @@ class ScaffoldDesignWidget extends StatelessWidget {
       ),
     );
   }
+
 }

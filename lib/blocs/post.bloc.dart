@@ -59,7 +59,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   Future<List<Event>> _fetchPosts(int startIndex, int limit) async {
     NetworkingClass networker = NetworkingClass();
     final response =
-        await networker.get('/events?_start=$startIndex&_limit=$limit');
+        await networker.get('/events');//?_start=$startIndex&_limit=$limit');
     final Paginated paginatedData = Paginated.fromJson(response);
     return paginatedData.data;
   }

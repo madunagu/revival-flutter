@@ -7,11 +7,11 @@
   "state": "Hawaii",
   "city": "Port Lemuelmouth",
   "postal_code": "69855-1551",
-  "default_address": 0,
+  "default_address": true,
   "name": "Trey Feil I",
   "longitude": 65.785381,
   "latitude": -10.752052,
-  "parseable": 1,
+  "parseable": true,
   "deleted_at": "@datetime",
   "created_at": "@datetime",
   "updated_at": "@datetime"

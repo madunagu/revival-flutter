@@ -15,11 +15,11 @@ class Address {
   String state;
   String city;
   @JsonKey(name: 'postal_code') String postalCode;
-  @JsonKey(name: 'default_address') int defaultAddress;
+  @JsonKey(name: 'default_address') bool defaultAddress;
   String name;
   double longitude;
   double latitude;
-  int parseable;
+  bool parseable;
   @JsonKey(name: 'deleted_at') DateTime deletedAt;
   @JsonKey(name: 'created_at') DateTime createdAt;
   @JsonKey(name: 'updated_at') DateTime updatedAt;

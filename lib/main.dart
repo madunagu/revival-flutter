@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
             return SplashScreen();
           }
           if (state is AuthenticationSuccess) {
-            return MainScreen();
+            return CreateEventScreen();
           }
           if (state is AuthenticationFailure) {
             return LoginScreen(userRepository: userRepository);

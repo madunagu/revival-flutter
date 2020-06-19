@@ -46,10 +46,7 @@ class _StackedCurvedListState extends State<StackedCurvedList> {
   PostBloc _postBloc;
 
   Widget organiseItems(List<dynamic> itemsData) {
-    List<CurvedListItem> items = [];
-    for (var i = 0; i < itemsData.length; i++) {
-      items.add(CurvedListItem.fromEvent(itemsData[i]));
-    }
+    List<CurvedListItem> items = itemsData.map((item) => CurvedListItem.fromEvent(item)).toList();
     return this.organiseStack(items);
   }
 

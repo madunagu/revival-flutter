@@ -1,3 +1,5 @@
+import 'package:devotion/sheets/AdressSheet.dart';
+import 'package:devotion/widgets/BottomSheetWidget.dart';
 import 'package:devotion/widgets/DefaultAppBarWidget.dart';
 import 'package:devotion/widgets/ScaffoldDesignWidget.dart';
 import 'package:flutter/cupertino.dart';
@@ -89,72 +91,11 @@ class CreateEventScreen extends StatelessWidget {
             SizedBox(
               height: 40,
             ),
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(
-                  Icons.location_on,
-                  color: Color(0xff757575),
-                  size: 36,
-                ),
-                SizedBox(
-                  width: 16,
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Location',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
-                                letterSpacing: -0.14),
-                          ),
-                          Icon(
-                            Icons.arrow_forward_ios,
-                            color: Color(0xffffffff),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 6,
-                      ),
-                      Text(
-                        'Montreal, QC',
-                        style: TextStyle(
-                          letterSpacing: -0.19,
-                          color: Color(0xff8c8195),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 17,
-                      ),
-                      ClipRRect(
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(60),
-                          bottomLeft: Radius.circular(60),
-                        ),
-                        child: Image.asset(
-                          'images/avatar1.jpg',
-                          width: double.infinity,
-                          height: 116,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
+            CreateModelRowWidget(
+              icon: Icons.location_on,
+              title: 'Location',
+              description: 'Select a location',
+              body: SizedBox(),
             ),
             SizedBox(
               height: 40,
@@ -236,6 +177,101 @@ class CreateEventScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class CreateModelRowWidget extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String description;
+  final Widget body;
+  const CreateModelRowWidget(
+      {Key key, this.icon, this.title, this.description, this.body})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        showBottomSheet(
+          context: context,
+          builder: (context) {
+            return BottomSheetWidget(
+              child: AddressSheet(),
+            );
+          },
+        );
+      },
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(
+            icon,
+            color: Color(0xff757575),
+            size: 36,
+          ),
+          SizedBox(
+            width: 16,
+          ),
+          Expanded(
+            flex: 1,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: -0.14),
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      color: Color(0xffffffff),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 6,
+                ),
+                Text(
+                  this.description,
+                  style: TextStyle(
+                    letterSpacing: -0.19,
+                    color: Color(0xff8c8195),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                (this.body == null)
+                    ? Container()
+                    : Container(
+                        padding: EdgeInsets.only(top: 17),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(60),
+                            bottomLeft: Radius.circular(60),
+                          ),
+                          child: Image.asset(
+                            'images/avatar1.jpg',
+                            width: double.infinity,
+                            height: 116,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }

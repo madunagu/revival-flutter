@@ -16,11 +16,11 @@ Address _$AddressFromJson(Map<String, dynamic> json) {
     ..state = json['state'] as String
     ..city = json['city'] as String
     ..postalCode = json['postal_code'] as String
-    ..defaultAddress = json['default_address'] as int
+    ..defaultAddress = json['default_address'] as bool
     ..name = json['name'] as String
     ..longitude = (json['longitude'] as num)?.toDouble()
     ..latitude = (json['latitude'] as num)?.toDouble()
-    ..parseable = json['parseable'] as int
+    ..parseable = json['parseable'] as bool
     ..deletedAt = json['deleted_at'] == null
         ? null
         : DateTime.parse(json['deleted_at'] as String)

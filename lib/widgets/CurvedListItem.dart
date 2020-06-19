@@ -31,6 +31,8 @@ class CurvedListItem extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.only(left: 32, top: 32),
         child: Stack(
+          
+          overflow: Overflow.clip,
           children: [
             Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
