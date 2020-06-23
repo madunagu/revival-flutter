@@ -6,7 +6,7 @@ abstract class FormEvent extends Equatable {
 }
 
 class CreateButtonPressed extends FormEvent {
-  final dynamic object;
+  final Map<String,dynamic> object;
   final String url;
 
   const CreateButtonPressed({
@@ -20,3 +20,4 @@ class CreateButtonPressed extends FormEvent {
   @override
   String toString() => 'Create Button Pressed Event';
 }
+

@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer' as developer;
 
-
 import 'package:devotion/events/PostEvent.dart';
 import 'package:devotion/models/Event.dart';
 import 'package:devotion/models/Paginated.dart';
@@ -10,8 +9,6 @@ import 'package:devotion/states/PostState.dart';
 import 'package:devotion/util/NetworkingClass.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
-
-
 
 class PostBloc extends Bloc<PostEvent, PostState> {
   @override
@@ -58,9 +55,15 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
   Future<List<Event>> _fetchPosts(int startIndex, int limit) async {
     NetworkingClass networker = NetworkingClass();
-    final response =
-        await networker.get('/events');//?_start=$startIndex&_limit=$limit');
-    final Paginated paginatedData = Paginated.fromJson(response);
-    return paginatedData.data;
+    final res =
+        await networker.get('/events'); //?_start=$startIndex&_limit=$limit');
+    if (res.containsKey(ResponseType.data)) {
+      final Paginated paginatedData =
+          Paginated.fromJson(res[ResponseType.data]);
+
+      return paginatedData.data;
+    } else {
+      //TODO: handle error here
+    }
   }
 }

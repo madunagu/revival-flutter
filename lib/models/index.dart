@@ -1,4 +1,3 @@
-export 'Address.dart';
 export 'AudioMessage.dart';
 export 'Church.dart';
 export 'Heirachy.dart';

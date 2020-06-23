@@ -1,12 +1,17 @@
+import 'package:devotion/blocs/form.bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BottomSheetWidget extends StatelessWidget {
   final Widget child;
   BottomSheetWidget({this.child});
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: child,
+    return BlocProvider(
+      create: (BuildContext context) {return FormBloc();},
+      child: Container(
+        child: child,
+      ),
     );
   }
 }

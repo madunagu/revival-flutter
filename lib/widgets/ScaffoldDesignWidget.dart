@@ -1,3 +1,4 @@
+import 'package:devotion/CreateEventScreen.dart';
 import 'package:flutter/material.dart';
 
 class ScaffoldDesignWidget extends StatelessWidget {
@@ -51,6 +52,14 @@ class ScaffoldDesignWidget extends StatelessWidget {
             width: 56,
             height: 56,
             child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CreateEventScreen(),
+                  ),
+                );
+              },
               child: Container(
                 decoration: BoxDecoration(
                     boxShadow: [
@@ -70,5 +79,4 @@ class ScaffoldDesignWidget extends StatelessWidget {
       ),
     );
   }
-
 }

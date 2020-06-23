@@ -5,7 +5,6 @@ import 'package:devotion/util/NetworkingClass.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-
 class UserRepository {
   final FlutterSecureStorage storage = FlutterSecureStorage();
 
@@ -13,14 +12,15 @@ class UserRepository {
     @required String username,
     @required String password,
   }) async {
-    var server = NetworkingClass();
-    var res =
+    NetworkingClass server = NetworkingClass();
+    Map<ResponseType, dynamic> res =
         await server.post('/login', {'email': username, 'password': password});
-    LoginData response = LoginData.fromJson(res);
-    if (response.success == true) {
+
+    if (res.containsKey(ResponseType.data)) {
+      LoginData data = LoginData.fromJson(res[ResponseType.data]);
       //this is being done in the authentication bloc
       //await persistToken(response.token);
-      return response.token;
+      return data.token;
     }
     return null;
   }
@@ -37,11 +37,11 @@ class UserRepository {
   }
 
   Future<bool> hasToken() async {
-    bool _hasToken = await storage.read(key:'token') != null;
+    bool _hasToken = await storage.read(key: 'token') != null;
     return _hasToken;
   }
 
   Future<String> getToken() async {
-    return await storage.read(key:'token');
+    return await storage.read(key: 'token');
   }
 }
