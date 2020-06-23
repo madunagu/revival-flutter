@@ -51,7 +51,10 @@ class _MainNavigationBarWidgetState extends State<MainNavigationBarWidget> {
             letterSpacing: 0.34,
           ),
           unselectedLabelColor: Color.fromARGB(143, 51, 71, 70),
-          indicator: BorderTabIndicator(indicatorHeight: 48),
+          indicator: BorderTabIndicator(
+              indicatorHeight: 48,
+              colors: [Colors.red, Colors.yellow, Colors.green],
+              tabController: widget.tabController),
           controller: widget.tabController,
           onTap: (index) {
             widget.tabController.animateTo(
