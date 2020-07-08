@@ -23,7 +23,6 @@ class _AddressSheetState extends State<AddressSheet> {
   final NetworkingClass myNetwork = NetworkingClass();
   final _formKey = GlobalKey<FormState>();
   String countryValue = 'Nigeria';
-  bool isLoading = false;
 
   TextEditingController line1Controller = TextEditingController();
   TextEditingController line2Controller = TextEditingController();
@@ -38,193 +37,208 @@ class _AddressSheetState extends State<AddressSheet> {
           return Container(
             color: Colors.white,
             padding: EdgeInsets.symmetric(horizontal: 32),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 44,
-                  ),
-                  Text(
-                    'Create Address',
-                    style:
-                        TextStyle(fontSize: 32, fontWeight: FontWeight.w700),
-                  ),
-                  SizedBox(
-                    height: 21,
-                  ),
-                  TextFormField(
-                    validator: (value) {
-                      if (state is FormInvalidated) {
-                        if (state.errors.containsKey('address1')) {
-                          return 'form is invalidated';
-                          // return state.errors['address1'].toString();
-                        }
-                      }
-                      log(state.toString());
-                      return 'form in not invalidated';
-                    },
-                    controller: line1Controller,
-                    decoration: InputDecoration(
-                        contentPadding: widget.inputPadding,
-                        border: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            style: BorderStyle.solid,
-                            color: Colors.red,
-                          ),
-                        ),
-                        hintText: 'Address line 1'),
-                  ),
-                  SizedBox(
-                    height: 21,
-                  ),
-                  TextFormField(
-                    controller: line2Controller,
-                    decoration: InputDecoration(
-                        contentPadding: widget.inputPadding,
-                        border: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            style: BorderStyle.solid,
-                            color: Colors.red,
-                          ),
-                        ),
-                        hintText: 'Address line 2'),
-                  ),
-                  SizedBox(
-                    height: 21,
-                  ),
-                  Text(
-                    'Country',
-                    style: TextStyle(
-                      letterSpacing: -0.22,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 11,
+            child: BlocListener<FormBloc, FormSheetState>(
+              listener: (context, state) {
+                print(state);
+                Navigator.pop(context, state);
+              },
+              condition: (state, state2) {
+                if (state is FormSuccess) {
+                  return true;
+                }
+                return false;
+              },
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 44,
                     ),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    child: DropdownButton<String>(
-                      value: countryValue,
-                      icon: Icon(Icons.arrow_downward),
-                      iconSize: 18,
-                      elevation: 16,
-                      style: TextStyle(color: Colors.black),
-                      underline: Container(
-                        height: 1,
-                        color: Colors.grey,
+                    Text(
+                      'Create Address',
+                      style:
+                          TextStyle(fontSize: 32, fontWeight: FontWeight.w700),
+                    ),
+                    SizedBox(
+                      height: 21,
+                    ),
+                    TextFormField(
+                      controller: line1Controller,
+                      decoration: InputDecoration(
+                          errorText: validationMessage(state, 'address1'),
+                          contentPadding: widget.inputPadding,
+                          border: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              style: BorderStyle.solid,
+                              color: Colors.red,
+                            ),
+                          ),
+                          hintText: 'Address line 1'),
+                    ),
+                    SizedBox(
+                      height: 21,
+                    ),
+                    TextFormField(
+                      controller: line2Controller,
+                      decoration: InputDecoration(
+                          errorText: validationMessage(state, 'address2'),
+                          contentPadding: widget.inputPadding,
+                          border: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              style: BorderStyle.solid,
+                              color: Colors.red,
+                            ),
+                          ),
+                          hintText: 'Address line 2'),
+                    ),
+                    SizedBox(
+                      height: 21,
+                    ),
+                    Text(
+                      'Country',
+                      style: TextStyle(
+                        letterSpacing: -0.22,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 11,
                       ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          countryValue = newValue;
-                        });
-                      },
-                      items: <String>['Nigeria', 'Ghana', 'Kenya', 'Uganda']
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
                     ),
-                  ),
-                  SizedBox(
-                    height: 18,
-                  ),
-                  Text(
-                    'State',
-                    style: TextStyle(
-                      letterSpacing: -0.22,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 11,
-                    ),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    child: DropdownButton<String>(
-                      value: countryValue,
-                      icon: Icon(Icons.arrow_downward),
-                      iconSize: 18,
-                      elevation: 16,
-                      style: TextStyle(color: Colors.black),
-                      underline: Container(
-                        height: 1,
-                        color: Colors.grey,
-                      ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          countryValue = newValue;
-                        });
-                      },
-                      items: <String>['Nigeria', 'Ghana', 'Kenya', 'Uganda']
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 21,
-                  ),
-                  TextFormField(
-                    controller: cityController,
-                    decoration: InputDecoration(
-                        contentPadding: widget.inputPadding,
-                        border: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            style: BorderStyle.solid,
-                            color: Colors.red,
-                          ),
+                    Container(
+                      width: double.infinity,
+                      child: DropdownButton<String>(
+                        value: countryValue,
+                        icon: Icon(Icons.arrow_downward),
+                        iconSize: 18,
+                        elevation: 16,
+                        style: TextStyle(color: Colors.black),
+                        underline: Container(
+                          height: 1,
+                          color: Colors.grey,
                         ),
-                        hintText: 'City'),
-                  ),
-                  SizedBox(
-                    height: 21,
-                  ),
-                  Text(
-                    'Country',
-                    style: TextStyle(
-                      letterSpacing: -0.22,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 11,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            countryValue = newValue;
+                          });
+                        },
+                        items: <String>['Nigeria', 'Ghana', 'Kenya', 'Uganda']
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
                     ),
-                  ),
-                  Switch(
+                    SizedBox(
+                      height: 18,
+                    ),
+                    Text(
+                      'State',
+                      style: TextStyle(
+                        letterSpacing: -0.22,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 11,
+                      ),
+                    ),
+                    Container(
+                      width: double.infinity,
+                      child: DropdownButton<String>(
+                        value: countryValue,
+                        icon: Icon(Icons.arrow_downward),
+                        iconSize: 18,
+                        elevation: 16,
+                        style: TextStyle(color: Colors.black),
+                        underline: Container(
+                          height: 1,
+                          color: Colors.grey,
+                        ),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            countryValue = newValue;
+                          });
+                        },
+                        items: <String>['Nigeria', 'Ghana', 'Kenya', 'Uganda']
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 21,
+                    ),
+                    TextFormField(
+                      controller: cityController,
+                      decoration: InputDecoration(
+                          contentPadding: widget.inputPadding,
+                          border: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              style: BorderStyle.solid,
+                              color: Colors.red,
+                            ),
+                          ),
+                          hintText: 'City'),
+                    ),
+                    SizedBox(
+                      height: 21,
+                    ),
+                    Text(
+                      'Country',
+                      style: TextStyle(
+                        letterSpacing: -0.22,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 11,
+                      ),
+                    ),
+                    Switch(
                       value: false,
                       onChanged: (value) {
                         this.myAddress.defaultAddress = value;
-                      }),
-                  GestureDetector(
-                    onTap: state is FormInProgress ? null : submitButtonPressed,
-                    child: Container(
-                      height: 52,
-                      width: double.infinity,
-                      padding: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(82),
-                        color: state is FormInProgress
-                            ? Colors.grey
-                            : Color(0xff8a56ac),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'CONTINUE',
-                          style: TextStyle(
-                            color: Colors.white,
+                      },
+                    ),
+                    GestureDetector(
+                      onTap:
+                          state is FormInProgress ? null : submitButtonPressed,
+                      child: Container(
+                        height: 52,
+                        width: double.infinity,
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(82),
+                          color: state is FormInProgress
+                              ? Colors.grey
+                              : Color(0xff8a56ac),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'CONTINUE',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );
         },
       ),
     );
+  }
+
+  String validationMessage(FormSheetState state, String inputName) {
+    if (state is FormInvalidated) {
+      if (state.errors.containsKey(inputName)) {
+        return state.errors[inputName][0];
+      }
+    }
+    return null;
   }
 
   @override
@@ -238,6 +252,18 @@ class _AddressSheetState extends State<AddressSheet> {
     line1Controller.dispose();
     line2Controller.dispose();
     cityController.dispose();
+  }
+
+  String myValidator(FormSheetState state, String inputName) {
+    if (state is FormInvalidated) {
+      if (state.errors.containsKey('address1')) {
+        log(state.toString());
+        return 'form is invalidated';
+        // return state.errors['address1'].toString();
+
+      }
+    }
+    return 'not';
   }
 
   void submitButtonPressed() {

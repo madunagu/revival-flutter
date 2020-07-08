@@ -34,7 +34,7 @@ class NetworkingClass {
       return {
         'Authorization': 'Bearer ' + token,
         'Accept': 'application/json',
-        // 'content-type': 'application/json'
+        'content-type': 'application/json'
       };
     } else {
       return {'Accept': 'application/json', 'content-type': 'application/json'};

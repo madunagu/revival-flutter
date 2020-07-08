@@ -46,7 +46,8 @@ class _StackedCurvedListState extends State<StackedCurvedList> {
   PostBloc _postBloc;
 
   Widget organiseItems(List<dynamic> itemsData) {
-    List<CurvedListItem> items = itemsData.map((item) => CurvedListItem.fromEvent(item)).toList();
+    List<CurvedListItem> items =
+        itemsData.map((item) => CurvedListItem.fromEvent(item)).toList();
     return this.organiseStack(items);
   }
 
@@ -57,10 +58,13 @@ class _StackedCurvedListState extends State<StackedCurvedList> {
         0,
         Positioned(
           top: 190.0 * i,
-          child: CurvedCornerWidget(
-            padding: EdgeInsets.only(top: 70),
-            color: trendingColors[i % 4],
-            child: items[i],
+          child: Hero(
+            tag: 'mainTitle' ,
+            child: CurvedCornerWidget(
+              padding: EdgeInsets.only(top: 70),
+              color: trendingColors[i % 4],
+              child: items[i],
+            ),
           ),
         ),
       );

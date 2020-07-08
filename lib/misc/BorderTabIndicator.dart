@@ -47,8 +47,13 @@ class _BorderPainter extends BoxPainter {
             18) &
         Size(horizontalInset, indicatorHeight);
     final paint = Paint();
-    paint.color = Color.fromARGB(255, 212, 127, 166);
+    // paint.color = Color.fromARGB(255, 212, 127, 166);
     paint.color = colors[tabController.index % colors.length];
+    // hide the moving indicator
+    if (tabController.indexIsChanging) {
+      paint.color = Color(0x00ffffff);
+    }
+
     paint.style = PaintingStyle.stroke;
     paint.strokeWidth = 2;
     canvas.drawRRect(

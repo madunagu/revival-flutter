@@ -1,3 +1,4 @@
+import 'package:devotion/models/Address.dart';
 import 'package:devotion/sheets/AdressSheet.dart';
 import 'package:devotion/widgets/BottomSheetWidget.dart';
 import 'package:devotion/widgets/DefaultAppBarWidget.dart';
@@ -193,16 +194,25 @@ class CreateModelRowWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        showBottomSheet(
-          context: context,
-          builder: (context) {
-            return BottomSheetWidget(
+    return InkWell(
+      onTap: () async {
+        Address address = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BottomSheetWidget(
               child: AddressSheet(),
-            );
-          },
+            ),
+          ),
         );
+
+//         showBottomSheet(
+//          context: context,
+//          builder: (context) {
+//            return BottomSheetWidget(
+//              child: AddressSheet(),
+//            );
+//          },
+//        );
       },
       child: Row(
         mainAxisSize: MainAxisSize.max,

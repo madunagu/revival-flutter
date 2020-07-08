@@ -33,7 +33,7 @@ class SingleEventScreen extends StatelessWidget {
                 children: <Widget>[
                   InkWell(
                     onTap: () {
-                        Navigator.of(context).pop();
+                      Navigator.of(context).pop();
                     },
                     child: Icon(
                       Icons.arrow_back,
@@ -52,15 +52,18 @@ class SingleEventScreen extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0, left: 56, right: 24),
-                child: Text(
-                  'Yoga and Meditation for Beginners',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: -0.39,
+              Hero(
+                tag: 'mainTitle',
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 8.0, left: 56, right: 24),
+                  child: Text(
+                    'Yoga and Meditation for Beginners',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: -0.39,
+                    ),
                   ),
                 ),
               ),
@@ -73,7 +76,7 @@ class SingleEventScreen extends StatelessWidget {
           Container(
             color: trendingColors[2],
             child: CurvedCornerWidget(
-              padding: EdgeInsets.only(top:120),
+              padding: EdgeInsets.only(top: 120),
               color: Colors.white,
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 40, vertical: 22),
