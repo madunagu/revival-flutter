@@ -1,4 +1,5 @@
 import 'package:devotion/models/Address.dart';
+import 'package:devotion/models/Event.dart';
 import 'package:devotion/sheets/AdressSheet.dart';
 import 'package:devotion/widgets/BottomSheetWidget.dart';
 import 'package:devotion/widgets/DefaultAppBarWidget.dart';
@@ -6,7 +7,30 @@ import 'package:devotion/widgets/ScaffoldDesignWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class CreateEventScreen extends StatelessWidget {
+class CreateEventScreen extends StatefulWidget {
+  @override
+  _CreateEventScreenState createState() => _CreateEventScreenState();
+}
+
+class _CreateEventScreenState extends State<CreateEventScreen> {
+  Event myEvent = Event();
+  void _showLocationAndReturn(BuildContext context) async {
+    Address eventAddress = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BottomSheetWidget(
+          child:AddressSheet(),
+        ),
+      ),
+    );
+
+    setState(() {
+      if(eventAddress == null) return ;
+      myEvent.addressId = eventAddress.id;
+      myEvent.address = eventAddress;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScaffoldDesignWidget(
@@ -55,7 +79,7 @@ class CreateEventScreen extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                   fontSize: 16,
                 ),
-                hintText: 'Group Name',
+                hintText: 'Event Name',
                 border: UnderlineInputBorder(
                   borderSide: BorderSide(
                     color: Color(0xff352641),
@@ -94,9 +118,14 @@ class CreateEventScreen extends StatelessWidget {
             ),
             CreateModelRowWidget(
               icon: Icons.location_on,
-              title: 'Location',
-              description: 'Select a location',
+              title: myEvent.address != null
+                  ? myEvent.address.address1
+                  : 'Location',
+              description: myEvent.address != null
+                  ? myEvent.address.address2
+                  : 'Select a location',
               body: SizedBox(),
+              tapped: _showLocationAndReturn,
             ),
             SizedBox(
               height: 40,
@@ -188,31 +217,21 @@ class CreateModelRowWidget extends StatelessWidget {
   final String title;
   final String description;
   final Widget body;
+  final Function tapped;
   const CreateModelRowWidget(
-      {Key key, this.icon, this.title, this.description, this.body})
+      {Key key,
+      this.icon,
+      this.title,
+      this.description,
+      this.body,
+      this.tapped})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        Address address = await Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => BottomSheetWidget(
-              child: AddressSheet(),
-            ),
-          ),
-        );
-
-//         showBottomSheet(
-//          context: context,
-//          builder: (context) {
-//            return BottomSheetWidget(
-//              child: AddressSheet(),
-//            );
-//          },
-//        );
+        tapped(context);
       },
       child: Row(
         mainAxisSize: MainAxisSize.max,

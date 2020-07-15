@@ -57,6 +57,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     NetworkingClass networker = NetworkingClass();
     final res =
         await networker.get('/events'); //?_start=$startIndex&_limit=$limit');
+        
     if (res.containsKey(ResponseType.data)) {
       final Paginated paginatedData =
           Paginated.fromJson(res[ResponseType.data]);

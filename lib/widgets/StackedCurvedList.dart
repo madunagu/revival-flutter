@@ -45,13 +45,8 @@ class _StackedCurvedListState extends State<StackedCurvedList> {
   final _scrollThreshold = 200.0;
   PostBloc _postBloc;
 
-  Widget organiseItems(List<dynamic> itemsData) {
-    List<CurvedListItem> items =
-        itemsData.map((item) => CurvedListItem.fromEvent(item)).toList();
-    return this.organiseStack(items);
-  }
 
-  Widget organiseStack(List<CurvedListItem> items) {
+  Widget organiseStack(List<dynamic> items) {
     List<Widget> output = [];
     for (var i = 0; i < items.length; i++) {
       output.insert(
@@ -59,11 +54,14 @@ class _StackedCurvedListState extends State<StackedCurvedList> {
         Positioned(
           top: 190.0 * i,
           child: Hero(
-            tag: 'mainTitle' ,
+            tag: 'mainTitle' + i.toString(),
             child: CurvedCornerWidget(
               padding: EdgeInsets.only(top: 70),
               color: trendingColors[i % 4],
-              child: items[i],
+              child: CurvedListItem(
+                title: items[i].name,
+                time: items[i].startingAt.toString(),
+              ),
             ),
           ),
         ),
@@ -122,7 +120,7 @@ class _StackedCurvedListState extends State<StackedCurvedList> {
               child: Text('no posts'),
             );
           }
-          return this.organiseItems(state.posts);
+          return this.organiseStack(state.posts);
         }
       },
     );
