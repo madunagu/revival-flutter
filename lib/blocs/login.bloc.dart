@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:devotion/blocs/authentication.bloc.dart';
 import 'package:devotion/events/AuthenticationEvent.dart';
@@ -34,6 +35,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         authenticationBloc.add(AuthenticationLoggedIn(token: token));
         yield LoginInitial();
       } catch (error) {
+        log(error.toString());
         yield LoginFailure(error: error.toString());
       }
     }
