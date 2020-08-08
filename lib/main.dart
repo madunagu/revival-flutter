@@ -27,7 +27,7 @@ import 'package:devotion/misc/StyleConstants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:animations/animations.dart';
+// import 'package:animations/animations.dart';
 
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
@@ -131,10 +131,16 @@ class _MainScreenState extends State<MainScreen>
         child: TabBarView(controller: _tabController, children: [
           SingleChildScrollView(child: MyProfileScreen()),
           BlocProvider(
-              create: (BuildContext context) => PostBloc()..add(PostFetched()),
+              create: (BuildContext context) => PostBloc(
+                    authenticationBloc:
+                        BlocProvider.of<AuthenticationBloc>(context),
+                  )..add(PostFetched()),
               child: StackedCurvedList(colors: trendingColors)),
           BlocProvider(
-              create: (BuildContext context) => PostBloc()..add(PostFetched()),
+              create: (BuildContext context) => PostBloc(
+                    authenticationBloc:
+                        BlocProvider.of<AuthenticationBloc>(context),
+                  )..add(PostFetched()),
               child: StackedCurvedList(colors: trendingColors)),
           StackedCurvedList(colors: trendingColors),
           StackedCurvedList(colors: trendingColors),

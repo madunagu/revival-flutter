@@ -1,9 +1,11 @@
+import 'package:devotion/SingleEventScreen.dart';
 import 'package:devotion/blocs/post.bloc.dart';
 import 'package:devotion/events/PostEvent.dart';
 import 'package:devotion/misc/StyleConstants.dart';
 import 'package:devotion/states/PostState.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/widgets/CurvedListItem.dart';
+import 'package:devotion/widgets/CurvedVideoItemWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -45,22 +47,28 @@ class _StackedCurvedListState extends State<StackedCurvedList> {
   final _scrollThreshold = 200.0;
   PostBloc _postBloc;
 
-
-  Widget organiseStack(List<dynamic> items) {
+  Widget organiseStack(List<dynamic> items, BuildContext context) {
     List<Widget> output = [];
     for (var i = 0; i < items.length; i++) {
       output.insert(
         0,
         Positioned(
-          top: 190.0 * i,
+          top: 195.0 * i,
           child: Hero(
             tag: 'mainTitle' + i.toString(),
             child: CurvedCornerWidget(
               padding: EdgeInsets.only(top: 70),
-              color: trendingColors[i % 4],
+              color: trendingColors[i % 3],
               child: CurvedListItem(
                 title: items[i].name,
                 time: items[i].startingAt.toString(),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SingleEventScreen(items[i])),
+                  );
+                },
               ),
             ),
           ),
@@ -68,6 +76,24 @@ class _StackedCurvedListState extends State<StackedCurvedList> {
       );
     }
 
+    //   Positioned(
+    //     top: 195.0 * i,
+    //     child: Hero(
+    //       tag: 'mainTitle' + i.toString(),
+    //       child: CurvedVideoItemWidget(
+    //         title: items[i].name,
+    //         time: items[i].startingAt.toString(),
+    //         onTap: () {
+    //           Navigator.push(
+    //             context,
+    //             MaterialPageRoute(
+    //                 builder: (context) => SingleEventScreen(items[i])),
+    //           );
+    //         },
+    //       ),
+    //     ),
+    //   ),
+    // );
     return SingleChildScrollView(
       controller: _scrollController,
       child: Container(
@@ -120,7 +146,7 @@ class _StackedCurvedListState extends State<StackedCurvedList> {
               child: Text('no posts'),
             );
           }
-          return this.organiseStack(state.posts);
+          return this.organiseStack(state.posts, context);
         }
       },
     );

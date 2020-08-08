@@ -32,7 +32,10 @@ Event _$EventFromJson(Map<String, dynamic> json) {
         : DateTime.parse(json['updated_at'] as String)
     ..church = json['church'] == null
         ? null
-        : Church.fromJson(json['church'] as Map<String, dynamic>);
+        : Church.fromJson(json['church'] as Map<String, dynamic>)
+    ..address = json['address'] == null
+        ? null
+        : Address.fromJson(json['address'] as Map<String, dynamic>);
 }
 
 Map<String, dynamic> _$EventToJson(Event instance) => <String, dynamic>{
@@ -49,4 +52,5 @@ Map<String, dynamic> _$EventToJson(Event instance) => <String, dynamic>{
       'created_at': instance.createdAt?.toIso8601String(),
       'updated_at': instance.updatedAt?.toIso8601String(),
       'church': instance.church,
+      'address': instance.address,
     };

@@ -14,8 +14,15 @@ enum ResponseType {
   unrecognized
 }
 
+enum ResponseKey {
+  type,
+  data,
+  error,
+}
+
 class NetworkingClass {
   String _rootURL = 'https://devotion.wakabout.com.ng/api';
+  // String _rootURL = 'http://10.0.2.2:8000/api';
   String token;
   bool isTokenGotten = false;
 
@@ -41,22 +48,37 @@ class NetworkingClass {
     }
   }
 
-  Map<ResponseType, dynamic> prepareResponse(http.Response httpResponse) {
+  Map<ResponseKey, dynamic> prepareResponse(http.Response httpResponse) {
     log(httpResponse.body.toString());
     if (httpResponse.statusCode == 200 || httpResponse.statusCode == 201) {
-      return {ResponseType.data: jsonDecode(httpResponse.body)};
+      return {
+        ResponseKey.type: ResponseType.data,
+        ResponseKey.data: jsonDecode(httpResponse.body)
+      };
     } else if (httpResponse.statusCode == 422) {
-      return {ResponseType.invalidated: jsonDecode(httpResponse.body)};
+      return {
+        ResponseKey.type: ResponseType.invalidated,
+        ResponseKey.error: jsonDecode(httpResponse.body)
+      };
     } else if (httpResponse.statusCode == 401) {
-      return {ResponseType.invalidated: jsonDecode(httpResponse.body)};
+      return {
+        ResponseKey.type: ResponseType.unrecognized,
+        ResponseKey.error: jsonDecode(httpResponse.body)
+      };
     } else if (httpResponse.statusCode == 404) {
-      return {ResponseType.notFound: jsonDecode(httpResponse.body)};
+      return {
+        ResponseKey.type: ResponseType.notFound,
+        ResponseKey.error: jsonDecode(httpResponse.body)
+      };
     }
 
-    return {ResponseType.unrecognized: jsonDecode(httpResponse.body)};
+    return {
+      ResponseKey.type: ResponseType.unrecognized,
+      ResponseKey.data: jsonDecode(httpResponse.body)
+    };
   }
 
-  Future<Map<ResponseType, dynamic>> get(String url) async {
+  Future<Map<ResponseKey, dynamic>> get(String url) async {
     if (!isTokenGotten) await getToken();
     http.Response response =
         await http.get(_rootURL + url, headers: this.headers());

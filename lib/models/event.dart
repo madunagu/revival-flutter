@@ -1,4 +1,4 @@
-import 'package:devotion/models/Address.dart';
+import 'Address.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'Church.dart';

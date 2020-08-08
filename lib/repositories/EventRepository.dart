@@ -13,11 +13,11 @@ class UserRepository {
     @required String password,
   }) async {
     NetworkingClass server = NetworkingClass();
-    Map<ResponseType, dynamic> res =
+    final Map<ResponseKey, dynamic> res =
         await server.post('/login', {'email': username, 'password': password});
 
-    if (res.containsKey(ResponseType.data)) {
-      LoginData data = LoginData.fromJson(res[ResponseType.data]);
+    if (res[ResponseKey.type] == ResponseType.data) {
+      LoginData data = LoginData.fromJson(res[ResponseKey.data]);
       //this is being done in the authentication bloc
       //await persistToken(response.token);
       return data.token;
