@@ -1,3 +1,4 @@
+import 'Address.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'Church.dart';
@@ -21,6 +22,7 @@ class Event extends Equatable{
   @JsonKey(name: 'created_at') DateTime createdAt;
   @JsonKey(name: 'updated_at') DateTime updatedAt;
   Church church;
+  Address address;
 
   factory Event.fromJson(Map<String,dynamic> json) => _$EventFromJson(json);
   Map<String, dynamic> toJson() => _$EventToJson(this);

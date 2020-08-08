@@ -18,29 +18,10 @@ class UserRepository {
 
     if (res[ResponseKey.type] == ResponseType.data) {
       LoginData data = LoginData.fromJson(res[ResponseKey.data]);
+      //this is being done in the authentication bloc
+      //await persistToken(response.token);
       return data.token;
-    } else {
-      throw (res[ResponseKey.error]);
     }
-  }
-
-  Future<void> deleteToken() async {
-    await storage.delete(key: 'token');
-    return;
-  }
-
-  Future<void> persistToken(String token) async {
-    /// write to keystore/keychain
-    await storage.write(key: 'token', value: token);
-    return;
-  }
-
-  Future<bool> hasToken() async {
-    bool _hasToken = await storage.read(key: 'token') != null;
-    return _hasToken;
-  }
-
-  Future<String> getToken() async {
-    return await storage.read(key: 'token');
+    return null;
   }
 }

@@ -40,14 +40,17 @@ class _AddressSheetState extends State<AddressSheet> {
             child: BlocListener<FormBloc, FormSheetState>(
               listener: (context, state) {
                 print(state);
-                Navigator.pop(context, state);
-              },
-              condition: (state, state2) {
                 if (state is FormSuccess) {
-                  return true;
+                  log(state.toString());
+                  Navigator.of(context).pop(Address.fromJson(state.object['data']));
                 }
-                return false;
               },
+              // condition: (state, state2) {
+              //   if (state is FormSuccess) {
+              //     return true;
+              //   } n
+              //   return false;
+              // },
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -252,18 +255,6 @@ class _AddressSheetState extends State<AddressSheet> {
     line1Controller.dispose();
     line2Controller.dispose();
     cityController.dispose();
-  }
-
-  String myValidator(FormSheetState state, String inputName) {
-    if (state is FormInvalidated) {
-      if (state.errors.containsKey('address1')) {
-        log(state.toString());
-        return 'form is invalidated';
-        // return state.errors['address1'].toString();
-
-      }
-    }
-    return 'not';
   }
 
   void submitButtonPressed() {

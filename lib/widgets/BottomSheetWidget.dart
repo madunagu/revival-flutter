@@ -8,13 +8,14 @@ class BottomSheetWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: BlocProvider(
-      create: (BuildContext context) {
-        return FormBloc();
-      },
-      child: Container(
-        child: child,
+      body: BlocProvider(
+        create: (BuildContext context) {
+          return FormBloc();
+        },
+        child: Container(
+          child: child,
+        ),
       ),
-    ));
+    );
   }
 }

@@ -20,15 +20,15 @@ class FormBloc extends Bloc<FormEvent, FormSheetState> {
       log('posting data object to $event.url');
       log(event.object.toString());
       try {
-        final response = await myNetwork.post(
+        final Map<ResponseKey, dynamic> response = await myNetwork.post(
           event.url,
           event.object,
         );
-        if (response.containsKey(ResponseType.data)) {
-          yield FormSuccess(object: response[ResponseType.data]);
+        if (response[ResponseKey.type] == ResponseType.data) {
+          yield FormSuccess(object: response[ResponseKey.data]);
         }
-        if (response.containsKey(ResponseType.invalidated)) {
-          yield FormInvalidated(errors: response[ResponseType.invalidated]);
+        if (response[ResponseKey.type] == ResponseType.invalidated) {
+          yield FormInvalidated(errors: response[ResponseKey.error]);
         }
         log('successfully uploaded');
       } catch (error) {

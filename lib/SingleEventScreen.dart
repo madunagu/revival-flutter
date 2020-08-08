@@ -4,6 +4,8 @@ import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/widgets/ScaffoldDesignWidget.dart';
 import 'package:flutter/material.dart';
 
+import 'models/Event.dart';
+
 var smallTextSyle = TextStyle(color: Colors.grey, fontSize: 12);
 var largeWhiteTextStyle = TextStyle(
     color: Colors.white,
@@ -16,7 +18,15 @@ var smallWhiteTextStyle = TextStyle(
     fontWeight: FontWeight.w500,
     letterSpacing: -0.19);
 
-class SingleEventScreen extends StatelessWidget {
+class SingleEventScreen extends StatefulWidget {
+  @required
+  Event event;
+  SingleEventScreen(this.event);
+  @override
+  _SingleEventScreenState createState() => _SingleEventScreenState();
+}
+
+class _SingleEventScreenState extends State<SingleEventScreen> {
   @override
   Widget build(BuildContext context) {
     return ScaffoldDesignWidget(
@@ -53,9 +63,9 @@ class SingleEventScreen extends StatelessWidget {
                 height: 10,
               ),
               Hero(
-                tag: 'mainTitle',
+                tag: 'mainTitle' + widget.event.id.toString(),
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 8.0, left: 56, right: 24),
+                  padding: const EdgeInsets.only(top: 8.0, left: 56, right: 4),
                   child: Text(
                     'Yoga and Meditation for Beginners',
                     style: TextStyle(
@@ -79,7 +89,7 @@ class SingleEventScreen extends StatelessWidget {
               padding: EdgeInsets.only(top: 120),
               color: Colors.white,
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 22),
+                padding: EdgeInsets.symmetric(horizontal: 35, vertical: 22),
                 child: Column(
                   children: <Widget>[
                     Row(
@@ -122,77 +132,7 @@ class SingleEventScreen extends StatelessWidget {
                     SizedBox(
                       height: 25,
                     ),
-                    Container(
-                      padding: EdgeInsets.only(
-                          left: 20, top: 16, right: 14, bottom: 16),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-//                          border: Border.all(color: Colors.grey),
-                        color: Color(0xff352641),
-                      ),
-                      child: Row(
-                        children: <Widget>[
-                          InkWell(
-                            child: Icon(
-                              Icons.open_in_browser,
-                              color: Color(0xff998fa2),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 16,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                'Are you going?',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700,
-                                  letterSpacing: -0.14,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 3,
-                              ),
-                              Text(
-                                'Edit',
-                                style: smallTextSyle,
-                              )
-                            ],
-                          ),
-                          Spacer(),
-                          Container(
-                            width: 40,
-                            height: 40,
-                            margin: EdgeInsets.symmetric(horizontal: 6),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: Color(0xff594f62),
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: Icon(
-                              Icons.cancel,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 6),
-                            width: 40,
-                            height: 40,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: Color(0xff594f62),
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: Icon(
-                              Icons.check,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    AreYouGoing(isGoing: false),
                   ],
                 ),
               ),
@@ -425,6 +365,87 @@ class SingleEventScreen extends StatelessWidget {
                   height: 16,
                 ),
               ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class AreYouGoing extends StatelessWidget {
+  final bool isGoing;
+  const AreYouGoing({Key key, this.isGoing}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.only(left: 20, top: 14, right: 14, bottom: 14),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(50),
+        border: isGoing ? Border.all(color: Color(0xffE7E4E9)): null,
+        color: isGoing ? Colors.white : Color(0xff352641),
+      ),
+      child: Row(
+        children: <Widget>[
+          InkWell(
+            child: Icon(
+              Icons.open_in_browser,
+              color: isGoing ? Color(0xff757575) : Color(0xff998fa2),
+            ),
+          ),
+          SizedBox(
+            width: 16,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                isGoing ? 'You are going' : 'Are you going?',
+                style: TextStyle(
+                  color: isGoing ? Colors.black : Colors.white,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: -0.14,
+                ),
+              ),
+              SizedBox(
+                height: 3,
+              ),
+              Text(
+                'Edit',
+                style: smallTextSyle,
+              )
+            ],
+          ),
+          Spacer(),
+          isGoing
+              ? Container()
+              : Container(
+                  width: 40,
+                  height: 40,
+                  margin: EdgeInsets.symmetric(horizontal: 6),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Color(0xff594f62),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: Icon(
+                    Icons.cancel,
+                    color: Colors.white,
+                  ),
+                ),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 6),
+            width: 40,
+            height: 40,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: isGoing ? Color(0xff58B2BE) : Color(0xff594f62),
+              borderRadius: BorderRadius.circular(50),
+            ),
+            child: Icon(
+              Icons.check,
+              color: Colors.white,
             ),
           ),
         ],

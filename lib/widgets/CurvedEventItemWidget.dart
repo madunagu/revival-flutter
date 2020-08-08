@@ -4,17 +4,17 @@ import 'package:devotion/widgets/ImageAvatarListWidget.dart';
 import 'package:devotion/widgets/ImageAvatarWidget.dart';
 import 'package:flutter/material.dart';
 
-class CurvedListItem extends StatelessWidget {
+class CurvedEventItem extends StatelessWidget {
   final String title;
   final String time;
   final String people;
   final IconData icon;
   final Function onTap;
 
-  CurvedListItem({this.title, this.time, this.icon, this.people, this.onTap});
+  CurvedEventItem({this.title, this.time, this.icon, this.people, this.onTap});
 
-  factory CurvedListItem.fromEvent(Event serverEvent) {
-    return CurvedListItem(
+  factory CurvedEventItem.fromEvent(Event serverEvent) {
+    return CurvedEventItem(
       title: serverEvent.name,
       time: serverEvent.startingAt.toString(),
     );
