@@ -1,4 +1,5 @@
 import 'package:devotion/misc/StyleConstants.dart';
+import 'package:devotion/util/NetworkingClass.dart';
 import 'package:devotion/widgets/ImageAvatarListWidget.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/widgets/ScaffoldDesignWidget.dart';
@@ -20,13 +21,29 @@ var smallWhiteTextStyle = TextStyle(
 
 class SingleEventScreen extends StatefulWidget {
   @required
-  Event event;
-  SingleEventScreen(this.event);
+  final int eventId;
+  SingleEventScreen(this.eventId);
   @override
   _SingleEventScreenState createState() => _SingleEventScreenState();
 }
 
 class _SingleEventScreenState extends State<SingleEventScreen> {
+  Event event = Event();
+
+  @override
+  void initState() async {
+    // TODO: implement initState
+    NetworkingClass server = NetworkingClass();
+    Map<ResponseKey, dynamic> eventData =
+        await server.get('event/' + widget.eventId.toString());
+    if (eventData[ResponseKey.type] == ResponseType.data) {
+      this.event = Event.fromJson(eventData[ResponseKey.data]);
+    } else {
+      //TODO: add logic for failed event get
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScaffoldDesignWidget(
@@ -63,7 +80,7 @@ class _SingleEventScreenState extends State<SingleEventScreen> {
                 height: 10,
               ),
               Hero(
-                tag: 'mainTitle' + widget.event.id.toString(),
+                tag: 'mainTitle' + event.id.toString(),
                 child: Padding(
                   padding: const EdgeInsets.only(top: 8.0, left: 56, right: 4),
                   child: Text(
@@ -383,7 +400,7 @@ class AreYouGoing extends StatelessWidget {
       padding: EdgeInsets.only(left: 20, top: 14, right: 14, bottom: 14),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
-        border: isGoing ? Border.all(color: Color(0xffE7E4E9)): null,
+        border: isGoing ? Border.all(color: Color(0xffE7E4E9)) : null,
         color: isGoing ? Colors.white : Color(0xff352641),
       ),
       child: Row(

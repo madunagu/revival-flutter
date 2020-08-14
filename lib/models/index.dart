@@ -1,5 +1,6 @@
 export 'AudioMessage.dart';
 export 'Church.dart';
+export 'Feed.dart';
 export 'Heirachy.dart';
 export 'HeirachyGroup.dart';
 export 'LoginData.dart';

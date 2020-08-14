@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:developer' as developer;
 
 import 'package:devotion/events/AuthenticationEvent.dart';
+import 'package:devotion/models/index.dart';
 import 'package:meta/meta.dart';
 import 'package:devotion/blocs/authentication.bloc.dart';
 import 'package:devotion/events/PostEvent.dart';
@@ -20,7 +21,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   }) : assert(authenticationBloc != null);
   @override
   PostState get initialState => PostInitial();
-
+//TODO: work on navigation in infinite list
   @override
   Stream<PostState> mapEventToState(PostEvent event) async* {
     final currentState = state;
@@ -60,15 +61,19 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   bool _hasReachedMax(PostState state) =>
       state is PostSuccess && state.hasReachedMax;
 
-  Future<List<Event>> _fetchPosts(int startIndex, int limit) async {
+  Future<List<Feed>> _fetchPosts(int startIndex, int limit) async {
     NetworkingClass networker = NetworkingClass();
     final Map<ResponseKey, dynamic> res =
-        await networker.get('/events'); //?_start=$startIndex&_limit=$limit');
+        await networker.get('/feed'); //?_start=$startIndex&_limit=$limit');
 
     if (res[ResponseKey.type] == ResponseType.data) {
-      final Paginated paginatedData = Paginated.fromJson(res[ResponseKey.data]);
-
-      return paginatedData.data;
+      // final Paginated paginatedData = Paginated.fromJson(res[ResponseKey.data]);
+      final List<Feed> feed = [];
+      res[ResponseKey.data].forEach((element) {
+        feed.add(Feed.fromJson(element));
+      });
+      // return paginatedData.data;
+      return feed;
     } else {
       //TODO: handle error here
       if (res[ResponseKey.type] == ResponseType.unauthorized ||

@@ -1,4 +1,5 @@
 import 'package:devotion/models/Event.dart';
+import 'package:devotion/models/Feed.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class PostState extends Equatable {
@@ -13,7 +14,7 @@ class PostInitial extends PostState {}
 class PostFailure extends PostState {}
 
 class PostSuccess extends PostState {
-  final List<Event> posts;
+  final List<Feed> posts;
   final bool hasReachedMax;
 
   const PostSuccess({

@@ -4,7 +4,9 @@ import 'package:devotion/events/PostEvent.dart';
 import 'package:devotion/misc/StyleConstants.dart';
 import 'package:devotion/states/PostState.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
+import 'package:devotion/widgets/CurvedEventItemWidget.dart';
 import 'package:devotion/widgets/CurvedListItem.dart';
+import 'package:devotion/widgets/CurvedMusicItemWidget.dart';
 import 'package:devotion/widgets/CurvedVideoItemWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,9 +34,12 @@ List<CurvedListItem> items = [
   ),
 ];
 
+enum itemType { event, video, audio, post }
+
 class StackedCurvedList extends StatefulWidget {
   final List<Color> colors;
-  StackedCurvedList({Key key, this.colors}) : super(key: key);
+  final tag;
+  StackedCurvedList({Key key, this.colors, this.tag = 0}) : super(key: key);
 
   @override
   _StackedCurvedListState createState() => _StackedCurvedListState();
@@ -56,21 +61,7 @@ class _StackedCurvedListState extends State<StackedCurvedList> {
           top: 195.0 * i,
           child: Hero(
             tag: 'mainTitle' + i.toString(),
-            child: CurvedCornerWidget(
-              padding: EdgeInsets.only(top: 70),
-              color: trendingColors[i % 3],
-              child: CurvedListItem(
-                title: items[i].name,
-                time: items[i].startingAt.toString(),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => SingleEventScreen(items[i])),
-                  );
-                },
-              ),
-            ),
+            child: this.switchFeedType(items[i], trendingColors[i % 3]),
           ),
         ),
       );
@@ -103,6 +94,36 @@ class _StackedCurvedListState extends State<StackedCurvedList> {
         ),
       ),
     );
+  }
+
+  Widget switchFeedType(item, color) {
+    switch (item.type) {
+      case itemType.audio:
+         return CurvedMusicItemWidget(
+          title: item.name,
+          time: item.startingAt.toString(),
+        );
+        break;
+      case itemType.video:
+        return CurvedVideoItemWidget(
+          title: item.name,
+          time: item.startingAt.toString(),
+        );
+        break;
+      case itemType.event:
+        return CurvedEventItem(
+          title: item.name,
+          time: item.startingAt.toString(),
+          color: color,
+        );
+        break;
+      default:
+        return CurvedEventItem(
+          title: item.name,
+          time: item.startingAt.toString(),
+          color: color,
+        );
+    }
   }
 
   @override
