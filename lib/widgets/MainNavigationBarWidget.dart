@@ -108,7 +108,9 @@ class SingleNavigationItem extends StatelessWidget {
             height: this.size,
             decoration: BoxDecoration(
               border: Border.all(
-                  color: Color.fromARGB(255, 224, 224, 224), width: 1),
+                color: Color.fromARGB(255, 224, 224, 224),
+                width: 1,
+              ),
               borderRadius: BorderRadius.all(
                 Radius.circular(50),
               ),

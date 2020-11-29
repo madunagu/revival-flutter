@@ -21,8 +21,8 @@ enum ResponseKey {
 }
 
 class NetworkingClass {
-  String _rootURL = 'https://devotion.wakabout.com.ng/api';
-  // String _rootURL = 'http://10.0.2.2:8000/api';
+  // String _rootURL = 'https://devotion.wakabout.com.ng/api';
+  String _rootURL = 'http://10.0.2.2:8000/api';
   String token;
   bool isTokenGotten = false;
 

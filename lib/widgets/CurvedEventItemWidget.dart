@@ -6,7 +6,7 @@ import 'package:devotion/widgets/ImageAvatarListWidget.dart';
 import 'package:devotion/widgets/ImageAvatarWidget.dart';
 import 'package:flutter/material.dart';
 
-class CurvedEventItem extends StatelessWidget {
+class CurvedEventItemWidget extends StatelessWidget {
   final String title;
   final String time;
   final String people;
@@ -14,7 +14,7 @@ class CurvedEventItem extends StatelessWidget {
   final Function onTap;
   final int eventId;
   final Color color;
-  CurvedEventItem({
+  CurvedEventItemWidget({
     this.title,
     this.time,
     this.icon,
@@ -24,8 +24,8 @@ class CurvedEventItem extends StatelessWidget {
     this.color,
   });
 
-  factory CurvedEventItem.fromEvent(Event serverEvent) {
-    return CurvedEventItem(
+  factory CurvedEventItemWidget.fromEvent(Event serverEvent) {
+    return CurvedEventItemWidget(
       title: serverEvent.name,
       time: serverEvent.startingAt.toString(),
     );

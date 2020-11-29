@@ -141,7 +141,7 @@ class _MainScreenState extends State<MainScreen>
                     authenticationBloc:
                         BlocProvider.of<AuthenticationBloc>(context),
                   )..add(PostFetched()),
-              child: StackedCurvedList(colors: trendingColors)),
+              child: StackedCurvedList(colors: healthColors )),
           StackedCurvedList(colors: trendingColors),
           StackedCurvedList(colors: trendingColors),
         ]),

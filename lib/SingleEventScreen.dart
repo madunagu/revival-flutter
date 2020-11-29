@@ -31,21 +31,34 @@ class _SingleEventScreenState extends State<SingleEventScreen> {
   Event event = Event();
 
   @override
-  void initState() async {
-    // TODO: implement initState
+  void initState() {
+    super.initState();
+  }
+
+  Future<Event> getEvent() async{
     NetworkingClass server = NetworkingClass();
     Map<ResponseKey, dynamic> eventData =
         await server.get('event/' + widget.eventId.toString());
     if (eventData[ResponseKey.type] == ResponseType.data) {
-      this.event = Event.fromJson(eventData[ResponseKey.data]);
+      return Event.fromJson(eventData[ResponseKey.data]);
     } else {
       //TODO: add logic for failed event get
     }
-    super.initState();
   }
-
+Future<String> callAsyncFetch() => Future.delayed(Duration(seconds: 2), () => "hi");
   @override
   Widget build(BuildContext context) {
+       return FutureBuilder<String>(
+      future: callAsyncFetch(),
+      builder: (context, AsyncSnapshot<String> snapshot) {
+        if (snapshot.hasData) {
+          return Text(snapshot.data);
+        } else {
+          return CircularProgressIndicator();
+        }
+      }
+    );
+    
     return ScaffoldDesignWidget(
       paddingTop: 55,
       customAppBar: CurvedCornerWidget(
@@ -98,293 +111,295 @@ class _SingleEventScreenState extends State<SingleEventScreen> {
           ),
         ),
       ),
-      body: Column(
-        children: <Widget>[
-          Container(
-            color: trendingColors[2],
-            child: CurvedCornerWidget(
-              padding: EdgeInsets.only(top: 120),
-              color: Colors.white,
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 35, vertical: 22),
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        SizedBox(width: 15),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(50),
-                          child: Image.asset(
-                            'images/avatar1.jpg',
-                            height: 32,
-                            width: 32,
+      body: Container(
+        child: Column(
+          children: <Widget>[
+            Container(
+              color: trendingColors[2],
+              child: CurvedCornerWidget(
+                padding: EdgeInsets.only(top: 120),
+                color: Colors.white,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 35, vertical: 22),
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          SizedBox(width: 15),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(50),
+                            child: Image.asset(
+                              'images/avatar1.jpg',
+                              height: 32,
+                              width: 32,
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 16,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              'Easy and Gentle Yoga',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                letterSpacing: -0.14,
+                          SizedBox(
+                            width: 16,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                'Easy and Gentle Yoga',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: -0.14,
+                                ),
                               ),
-                            ),
-                            Text(
-                              'Montreal, QC Private Group',
-                              style: TextStyle(
-                                color: Color(0x7A403249),
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                letterSpacing: -0.19,
+                              Text(
+                                'Montreal, QC Private Group',
+                                style: TextStyle(
+                                  color: Color(0x7A403249),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: -0.19,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 25,
-                    ),
-                    AreYouGoing(isGoing: false),
-                  ],
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 25,
+                      ),
+                      AreYouGoing(isGoing: false),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          Container(
-            padding: EdgeInsets.only(left: 23, top: 20, right: 40),
-            color: trendingColors[2],
-            child: Column(
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Icon(
-                      Icons.access_time,
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          'TODAY',
-                          style: largeWhiteTextStyle,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          '5:30 - 8:30',
-                          style: smallWhiteTextStyle,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          'EVERY WEEK ON MONDAY',
-                          style: smallWhiteTextStyle,
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 29,
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Icon(
-                      Icons.access_time,
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Flexible(
-                      child: Column(
+            Container(
+              padding: EdgeInsets.only(left: 23, top: 20, right: 40),
+              color: trendingColors[2],
+              child: Column(
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Icon(
+                        Icons.access_time,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            'The Bay Department store',
+                            'TODAY',
                             style: largeWhiteTextStyle,
                           ),
                           SizedBox(
                             height: 5,
                           ),
                           Text(
-                            '585 Saint Catherine Street West, Montreal Quebec Canada',
+                            '5:30 - 8:30',
                             style: smallWhiteTextStyle,
                           ),
                           SizedBox(
-                            height: 18,
+                            height: 5,
                           ),
-                          ClipRRect(
-                            borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(40),
-                                bottomLeft: Radius.circular(40)),
-                            child: Container(
-                              height: 116,
-                              width: double.infinity,
-                              child: Image.asset(
-                                'images/avatar1.jpg',
-                                fit: BoxFit.cover,
+                          Text(
+                            'EVERY WEEK ON MONDAY',
+                            style: smallWhiteTextStyle,
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 29,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Icon(
+                        Icons.access_time,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Flexible(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              'The Bay Department store',
+                              style: largeWhiteTextStyle,
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              '585 Saint Catherine Street West, Montreal Quebec Canada',
+                              style: smallWhiteTextStyle,
+                            ),
+                            SizedBox(
+                              height: 18,
+                            ),
+                            ClipRRect(
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(40),
+                                  bottomLeft: Radius.circular(40)),
+                              child: Container(
+                                height: 116,
+                                width: double.infinity,
+                                child: Image.asset(
+                                  'images/avatar1.jpg',
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 29,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Icon(
+                        Icons.credit_card,
+                        color: Color(0xff757575),
+                        size: 20,
                       ),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 29,
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Icon(
-                      Icons.credit_card,
-                      color: Color(0xff757575),
-                      size: 20,
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Flexible(
-                      child: Text(
-                        '\$ 21.00',
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Flexible(
+                        child: Text(
+                          '\$ 21.00',
+                          style: largeWhiteTextStyle,
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 29,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Icon(
+                        Icons.person_outline,
+                        color: Color(0xff757575),
+                        size: 20,
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Text(
+                        'Hosted By Joe',
                         style: largeWhiteTextStyle,
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Text(
+                    'New to Yoga, or looking to take your mat to practice in new places?',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xff998fa2),
+                      letterSpacing: -0.14,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 18,
+                  ),
+                  Text(
+                    'Get to know your local community and neighbours better by joining our Yoga family.',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xff998fa2),
+                      letterSpacing: -0.14,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 29,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Icon(
+                        Icons.chat_bubble_outline,
+                        color: Color(0xff757575),
+                        size: 20,
                       ),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 29,
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Icon(
-                      Icons.person_outline,
-                      color: Color(0xff757575),
-                      size: 20,
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Text(
-                      'Hosted By Joe',
-                      style: largeWhiteTextStyle,
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                Text(
-                  'New to Yoga, or looking to take your mat to practice in new places?',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xff998fa2),
-                    letterSpacing: -0.14,
-                  ),
-                ),
-                SizedBox(
-                  height: 18,
-                ),
-                Text(
-                  'Get to know your local community and neighbours better by joining our Yoga family.',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xff998fa2),
-                    letterSpacing: -0.14,
-                  ),
-                ),
-                SizedBox(
-                  height: 29,
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Icon(
-                      Icons.chat_bubble_outline,
-                      color: Color(0xff757575),
-                      size: 20,
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Flexible(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Live Chats',
-                            style: largeWhiteTextStyle,
-                          ),
-                          SizedBox(
-                            height: 9,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Container(
-                                  height: 30,
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Flexible(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Live Chats',
+                              style: largeWhiteTextStyle,
+                            ),
+                            SizedBox(
+                              height: 9,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    height: 30,
 //                                    width: 200,
-                                  child: ImageAvatarListWidget(
-                                    images: [
-                                      'images/avatar1.jpg',
-                                      'images/avatar1.jpg',
-                                      'images/avatar1.jpg',
-                                      'images/avatar1.jpg',
-                                      'images/avatar1.jpg',
-                                    ],
-                                    size: 30,
+                                    child: ImageAvatarListWidget(
+                                      images: [
+                                        'images/avatar1.jpg',
+                                        'images/avatar1.jpg',
+                                        'images/avatar1.jpg',
+                                        'images/avatar1.jpg',
+                                        'images/avatar1.jpg',
+                                      ],
+                                      size: 30,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Text(
-                                  '& 12 others',
-                                  style: TextStyle(
-                                    fontStyle: FontStyle.italic,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(0xB0ffffff),
-                                    fontSize: 12,
+                                Expanded(
+                                  flex: 1,
+                                  child: Text(
+                                    '& 12 others',
+                                    style: TextStyle(
+                                      fontStyle: FontStyle.italic,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color(0xB0ffffff),
+                                      fontSize: 12,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Icon(
-                                Icons.arrow_forward_ios,
-                                color: Colors.white,
-                                size: 18,
-                              ),
-                            ],
-                          ),
-                        ],
+                                Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: Colors.white,
+                                  size: 18,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 16,
-                ),
-              ],
+                    ],
+                  ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

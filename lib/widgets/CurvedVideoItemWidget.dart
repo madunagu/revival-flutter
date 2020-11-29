@@ -1,3 +1,4 @@
+import 'package:devotion/VideoPlayerScreen.dart';
 import 'package:devotion/models/Event.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/widgets/ImageAvatarWidget.dart';
@@ -9,9 +10,10 @@ class CurvedVideoItemWidget extends StatelessWidget {
   final String people;
   final IconData icon;
   final Function onTap;
+  final int videoId;
 
   CurvedVideoItemWidget(
-      {this.title, this.time, this.icon, this.people, this.onTap});
+      {this.title, this.time, this.icon, this.people, this.onTap,this.videoId});
 
   factory CurvedVideoItemWidget.fromEvent(Event serverEvent) {
     return CurvedVideoItemWidget(
@@ -23,7 +25,13 @@ class CurvedVideoItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => VideoPlayerScreen(this.videoId)),
+        );
+      },
       child: Container(
         decoration: BoxDecoration(
           image: DecorationImage(

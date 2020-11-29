@@ -21,3 +21,17 @@ const List<Color> trendingColors = [
   Color.fromARGB(255, 142, 147, 179),
 ];
 
+const List<Color> healthColors = [
+  Color(0xffB4C55B),
+  Color(0xff52912E),
+  Color(0xff417623),
+  Color(0xff253E12),
+];
+
+const List<Color> musicColors = [
+  Color(0xff4EBDEF),
+  Color(0xff4666E5),
+  Color(0xff132641),
+];
+
+

@@ -3,7 +3,9 @@ import 'package:devotion/widgets/ScaffoldDesignWidget.dart';
 import 'package:flutter/material.dart';
 
 class PlayerScreen extends StatelessWidget {
-  const PlayerScreen({Key key}) : super(key: key);
+  final int audioId;
+
+  const PlayerScreen(this.audioId,{Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

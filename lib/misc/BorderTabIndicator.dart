@@ -43,15 +43,18 @@ class _BorderPainter extends BoxPainter {
     assert(configuration.size != null);
     final horizontalInset = indicatorHeight;
     final rect = Offset(
-            offset.dx + (configuration.size.width / 2) - indicatorHeight / 2,
-            18) &
+          offset.dx + (configuration.size.width / 2) - indicatorHeight / 2,
+          18,
+        ) &
         Size(horizontalInset, indicatorHeight);
     final paint = Paint();
     // paint.color = Color.fromARGB(255, 212, 127, 166);
-    paint.color = colors[tabController.index % colors.length];
+    // paint.color = colors[tabController.index % colors.length];
+
+    paint.color = Color(0xffffffff);
     // hide the moving indicator
-    if (tabController.indexIsChanging) {
-      paint.color = Color(0x00ffffff);
+    if (!tabController.indexIsChanging) {
+      paint.color = colors[tabController.index % colors.length];
     }
 
     paint.style = PaintingStyle.stroke;

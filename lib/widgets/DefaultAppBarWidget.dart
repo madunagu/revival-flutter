@@ -31,11 +31,16 @@ class DefaultAppBarWidget extends StatelessWidget {
           children: <Widget>[
             Row(
               children: <Widget>[
-                Container(
-                  height: 44,
-                  child: Icon(
-                    Icons.arrow_back,
-                    color: Color.fromARGB(255, 117, 117, 117),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    height: 44,
+                    child: Icon(
+                      Icons.arrow_back,
+                      color: Color.fromARGB(255, 117, 117, 117),
+                    ),
                   ),
                 ),
                 Spacer(),

@@ -21,7 +21,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   }) : assert(authenticationBloc != null);
   @override
   PostState get initialState => PostInitial();
-//TODO: work on navigation in infinite list
+  //TODO: work on navigation in infinite list
   @override
   Stream<PostState> mapEventToState(PostEvent event) async* {
     final currentState = state;
