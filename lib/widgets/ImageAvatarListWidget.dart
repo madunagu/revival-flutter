@@ -17,7 +17,7 @@ class ImageAvatarListWidget extends StatelessWidget {
           child: ImageAvatarWidget(
             imageURL: this.images[i],
             size: this.size,
-            isBordered: true,
+            borderWidth: 1,
           ),
           left: this.size * 3/4 * i ,
         ),

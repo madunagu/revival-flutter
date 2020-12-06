@@ -2,8 +2,8 @@ import 'package:devotion/models/Address.dart';
 import 'package:devotion/models/Event.dart';
 import 'package:devotion/sheets/AdressSheet.dart';
 import 'package:devotion/widgets/BottomSheetWidget.dart';
-import 'package:devotion/widgets/DefaultAppBarWidget.dart';
-import 'package:devotion/widgets/ScaffoldDesignWidget.dart';
+import 'package:devotion/widgets/AppBarWidget.dart';
+import 'package:devotion/widgets/AppScaffoldWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -19,13 +19,13 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => BottomSheetWidget(
-          child:AddressSheet(),
+          child: AddressSheet(),
         ),
       ),
     );
 
     setState(() {
-      if(eventAddress == null) return ;
+      if (eventAddress == null) return;
       myEvent.addressId = eventAddress.id;
       myEvent.address = eventAddress;
     });
@@ -33,8 +33,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ScaffoldDesignWidget(
-      customAppBar: DefaultAppBarWidget(
+    return AppScaffoldWidget(
+      appBar: AppBarWidget(
         title: 'Create Event',
         color: Colors.white,
       ),

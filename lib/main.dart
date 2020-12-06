@@ -1,4 +1,6 @@
+import 'package:devotion/ChatScreen.dart';
 import 'package:devotion/CreateEventScreen.dart';
+import 'package:devotion/MessagesScreen.dart';
 import 'package:devotion/MyProfileScreen.dart';
 import 'package:devotion/PlayerScreen.dart';
 import 'package:devotion/blocs/authentication.bloc.dart';
@@ -19,7 +21,7 @@ import 'package:devotion/OnBoardingScreen.dart';
 import 'package:devotion/ProfileScreen.dart';
 import 'package:devotion/FeedsScreen.dart';
 import 'package:devotion/SingleEventScreen.dart';
-import 'package:devotion/widgets/ScaffoldDesignWidget.dart';
+import 'package:devotion/widgets/AppScaffoldWidget.dart';
 import 'package:devotion/widgets/StackedCurvedList.dart';
 import 'package:devotion/widgets/TrendingWidget.dart';
 import 'package:devotion/misc/StyleConstants.dart';
@@ -60,7 +62,8 @@ class MyApp extends StatelessWidget {
             return MainScreen();
           }
           if (state is AuthenticationFailure) {
-            return LoginScreen(userRepository: userRepository);
+            return ChatScreen();
+            // return LoginScreen(userRepository: userRepository);
           }
           if (state is AuthenticationInProgress) {
             return LoadingIndicator();
@@ -123,7 +126,7 @@ class _MainScreenState extends State<MainScreen>
 
   @override
   Widget build(BuildContext context) {
-    return ScaffoldDesignWidget(
+    return AppScaffoldWidget(
       bodyColor: trendingColors[0],
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -131,22 +134,22 @@ class _MainScreenState extends State<MainScreen>
         child: TabBarView(controller: _tabController, children: [
           SingleChildScrollView(child: MyProfileScreen()),
           BlocProvider(
-              create: (BuildContext context) => PostBloc(
-                    authenticationBloc:
-                        BlocProvider.of<AuthenticationBloc>(context),
-                  )..add(PostFetched()),
-              child: StackedCurvedList(colors: trendingColors)),
+            create: (BuildContext context) => PostBloc(
+              authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
+            )..add(PostFetched()),
+            child: StackedCurvedList(colors: trendingColors),
+          ),
           BlocProvider(
-              create: (BuildContext context) => PostBloc(
-                    authenticationBloc:
-                        BlocProvider.of<AuthenticationBloc>(context),
-                  )..add(PostFetched()),
-              child: StackedCurvedList(colors: healthColors )),
+            create: (BuildContext context) => PostBloc(
+              authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
+            )..add(PostFetched()),
+            child: StackedCurvedList(colors: healthColors),
+          ),
           StackedCurvedList(colors: trendingColors),
           StackedCurvedList(colors: trendingColors),
         ]),
       ),
-      customAppBar: MainNavigationBarWidget(
+      appBar: MainNavigationBarWidget(
         tabController: _tabController,
       ),
     );

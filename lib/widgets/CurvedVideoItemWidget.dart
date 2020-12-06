@@ -29,7 +29,7 @@ class CurvedVideoItemWidget extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => VideoPlayerScreen(this.videoId)),
+              builder: (context) => VideoPlayerScreen(this.videoId),),
         );
       },
       child: Container(

@@ -62,7 +62,7 @@ class _StackedCurvedListState extends State<StackedCurvedList> {
           top: 195.0 * i,
           child: Hero(
             tag: 'mainTitle' + i.toString(),
-            child: this.switchFeedType(items[i], trendingColors[i % 3]),
+            child: this.switchFeedType(items[i], widget.colors[i % 3]),
           ),
         ),
       );

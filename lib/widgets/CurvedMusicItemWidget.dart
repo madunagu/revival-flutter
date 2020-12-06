@@ -32,17 +32,18 @@ class CurvedMusicItemWidget extends StatelessWidget {
   }
   @override
   Widget build(BuildContext context) {
-    return CurvedCornerWidget(
-      padding: EdgeInsets.only(top: 70),
-      color: this.color,
-      child: GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => PlayerScreen(this.audioId)),
-          );
-        },
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PlayerScreen(this.audioId),
+          ),
+        );
+      },
+      child: CurvedCornerWidget(
+        padding: EdgeInsets.only(top: 70),
+        color: this.color,
         child: Container(
           height: 200,
           width: MediaQuery.of(context).size.width,

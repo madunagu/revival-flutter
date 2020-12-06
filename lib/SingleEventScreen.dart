@@ -2,7 +2,7 @@ import 'package:devotion/misc/StyleConstants.dart';
 import 'package:devotion/util/NetworkingClass.dart';
 import 'package:devotion/widgets/ImageAvatarListWidget.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
-import 'package:devotion/widgets/ScaffoldDesignWidget.dart';
+import 'package:devotion/widgets/AppScaffoldWidget.dart';
 import 'package:flutter/material.dart';
 
 import 'models/Event.dart';
@@ -35,7 +35,7 @@ class _SingleEventScreenState extends State<SingleEventScreen> {
     super.initState();
   }
 
-  Future<Event> getEvent() async{
+  Future<Event> getEvent() async {
     NetworkingClass server = NetworkingClass();
     Map<ResponseKey, dynamic> eventData =
         await server.get('event/' + widget.eventId.toString());
@@ -45,23 +45,25 @@ class _SingleEventScreenState extends State<SingleEventScreen> {
       //TODO: add logic for failed event get
     }
   }
-Future<String> callAsyncFetch() => Future.delayed(Duration(seconds: 2), () => "hi");
+
+  Future<String> callAsyncFetch() =>
+      Future.delayed(Duration(seconds: 2), () => "hi");
   @override
   Widget build(BuildContext context) {
-       return FutureBuilder<String>(
-      future: callAsyncFetch(),
-      builder: (context, AsyncSnapshot<String> snapshot) {
-        if (snapshot.hasData) {
-          return Text(snapshot.data);
-        } else {
-          return CircularProgressIndicator();
-        }
-      }
-    );
-    
-    return ScaffoldDesignWidget(
+    //    return FutureBuilder<String>(
+    //   future: callAsyncFetch(),
+    //   builder: (context, AsyncSnapshot<String> snapshot) {
+    //     if (snapshot.hasData) {
+    //       return Text(snapshot.data);
+    //     } else {
+
+    //          return CircularProgressIndicator();
+    //     }
+    //   }
+    // );
+    return AppScaffoldWidget(
       paddingTop: 55,
-      customAppBar: CurvedCornerWidget(
+      appBar: CurvedCornerWidget(
         color: trendingColors[0],
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 32, horizontal: 16),

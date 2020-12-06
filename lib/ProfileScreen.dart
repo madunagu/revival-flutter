@@ -1,11 +1,11 @@
-import 'package:devotion/widgets/ScaffoldDesignWidget.dart';
+import 'package:devotion/widgets/AppScaffoldWidget.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ScaffoldDesignWidget(
-      customAppBar: Container(
+    return AppScaffoldWidget(
+      appBar: Container(
         height: 0,
       ),
       paddingTop: 0,
@@ -317,7 +317,6 @@ class ProfileScreen extends StatelessWidget {
                           Row(
                             children: [
                               Container(
-
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(50)),
                                 child: Image.asset(

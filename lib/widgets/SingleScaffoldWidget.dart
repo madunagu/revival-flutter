@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import 'package:devotion/widgets/DefaultAppBarWidget.dart';
+import 'package:devotion/widgets/AppBarWidget.dart';
 
 class SingleScaffoldWidget extends StatelessWidget {
   final Widget body;
   final Color titleColor;
   final Color bodyColor;
-  final DefaultAppBarWidget title;
+  final AppBarWidget title;
 
   SingleScaffoldWidget(
       {Key key, this.body, this.titleColor, this.bodyColor, this.title})
@@ -34,10 +34,11 @@ class SingleScaffoldWidget extends StatelessWidget {
             ),
           ),
           Positioned(
-              left: 0,
-              top: 0,
-              width: MediaQuery.of(context).size.width,
-              child: title),
+            left: 0,
+            top: 0,
+            width: MediaQuery.of(context).size.width,
+            child: title,
+          ),
         ],
       ),
     );

@@ -1,9 +1,9 @@
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
-import 'package:devotion/widgets/DefaultAppBarWidget.dart';
+import 'package:devotion/widgets/AppBarWidget.dart';
 import 'package:devotion/widgets/ImageAvatarWidget.dart';
+import 'package:devotion/widgets/AppScaffoldWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:devotion/widgets/SingleScaffoldWidget.dart';
 
 class NotificationScreen extends StatelessWidget {
   Widget organiseStack({List<NotificationItem> children, double height}) {
@@ -27,10 +27,9 @@ class NotificationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleScaffoldWidget(
+    return AppScaffoldWidget(
       bodyColor: Colors.white,
-      titleColor: Colors.white,
-      title: DefaultAppBarWidget(
+      appBar: AppBarWidget(
         color: Colors.white,
         title: 'Notifications',
       ),
@@ -80,7 +79,7 @@ class NotificationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CurvedCornerWidget(
-      padding: EdgeInsets.only(top:this.radius),
+      padding: EdgeInsets.only(top: this.radius),
       radius: this.radius,
       color: isSeen ? Colors.white : Color(0xffd47fa6),
       borderColor: isSeen ? Color(0xffe7e4e9) : Color(0xffc67097),

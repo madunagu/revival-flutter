@@ -1,14 +1,14 @@
-import 'package:devotion/widgets/DefaultAppBarWidget.dart';
+import 'package:devotion/widgets/AppBarWidget.dart';
 import 'package:devotion/widgets/ImageAvatarWidget.dart';
-import 'package:devotion/widgets/SingleScaffoldWidget.dart';
+import 'package:devotion/widgets/AppScaffoldWidget.dart';
 import 'package:devotion/misc/StyleConstants.dart';
 import 'package:flutter/material.dart';
 
 class FeedsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SingleScaffoldWidget(
-      title: DefaultAppBarWidget(
+    return AppScaffoldWidget(
+      appBar: AppBarWidget(
         color: Colors.white,
         title: 'Feeds',
         rightIcon: Icons.filter,
@@ -141,7 +141,10 @@ class FeedItem extends StatelessWidget {
                   bottom: 40,
                   child: Container(
                     padding: EdgeInsets.all(8),
-                    child: Text('this is a caption for the image', style: TextStyle(color: Colors.white),),
+                    child: Text(
+                      'this is a caption for the image',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
               ],

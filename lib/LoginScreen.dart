@@ -153,7 +153,7 @@ class _LoginFormState extends State<LoginForm> {
                                 color: Colors.red,
                               ),
                             ),
-                            hintText: 'Email'),
+                            hintText: 'Email',),
                       ),
                       TextField(
                         controller: _passwordController,

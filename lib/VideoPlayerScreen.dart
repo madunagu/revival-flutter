@@ -1,5 +1,5 @@
-import 'package:devotion/widgets/DefaultAppBarWidget.dart';
-import 'package:devotion/widgets/ScaffoldDesignWidget.dart';
+import 'package:devotion/widgets/AppBarWidget.dart';
+import 'package:devotion/widgets/AppScaffoldWidget.dart';
 import 'package:flutter/material.dart';
 
 class VideoPlayerScreen extends StatefulWidget {
@@ -12,13 +12,12 @@ class VideoPlayerScreen extends StatefulWidget {
 class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   @override
   Widget build(BuildContext context) {
-    return ScaffoldDesignWidget(
-      customAppBar: DefaultAppBarWidget(
+    return AppScaffoldWidget(
+      appBar: AppBarWidget(
         color: Color(0xffffffff),
         title: 'Yoga Poses',
         borderColor: Color(0x00ffffff),
         titleColor: Color(0xff000000),
-        
       ),
       body: Container(
         child: Column(
