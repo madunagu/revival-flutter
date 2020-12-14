@@ -6,11 +6,22 @@ import 'package:flutter/material.dart';
 class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return AppScaffoldWidget(
       appBar: AppBarWidget(
         title: 'Live Chat',
       ),
-      // floatingButton: ,
+      fixedWidget: Positioned(
+        bottom: 0,
+        child: Container(
+          height: 97,
+          width: size.width,
+          color: Color(0xff9599B3),
+          child: Row(
+            children: [],
+          ),
+        ),
+      ),
       paddingTop: 183,
       body: Container(
         child: Column(
@@ -51,7 +62,6 @@ class ChatScreen extends StatelessWidget {
               name: 'Ryan',
               image: 'images/avatar1.jpg',
             ),
-            
           ],
         ),
       ),

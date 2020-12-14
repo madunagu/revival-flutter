@@ -1,7 +1,5 @@
-import 'package:devotion/OnBoardingScreen.dart';
 import 'package:devotion/widgets/AppBarWidget.dart';
 import 'package:devotion/widgets/AppScaffoldWidget.dart';
-import 'package:devotion/widgets/DottedTabBarWidget.dart';
 import 'package:flutter/material.dart';
 
 class PlayerScreen extends StatelessWidget {
@@ -33,9 +31,6 @@ class PlayerScreen extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    DottedTabBarWidget(
-                      count: 4,
-                    ),
                     SizedBox(
                       height: 125,
                     ),

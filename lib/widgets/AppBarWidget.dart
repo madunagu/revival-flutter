@@ -1,3 +1,4 @@
+import 'package:devotion/widgets/ImageAvatarWidget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
@@ -5,15 +6,19 @@ import 'package:devotion/widgets/CurvedCornerWidget.dart';
 class AppBarWidget extends StatefulWidget {
   final Color color;
   final String title;
+  final String subTitle;
   final IconData rightIcon;
   final Color borderColor;
   final Color titleColor;
+  final String imageURL;
 
   AppBarWidget({
     Key key,
     this.color = const Color(0xffffffff),
     this.title,
+    this.subTitle,
     this.rightIcon,
+    this.imageURL,
     this.borderColor = const Color(0xffE7E4E9),
     this.titleColor = const Color(0xff000000),
   }) : super(key: key);
@@ -43,8 +48,8 @@ class _AppBarWidgetState extends State<AppBarWidget>
       color: widget.color,
       borderColor: this.widget.borderColor,
       child: Container(
-        height: 156,
-        padding: EdgeInsets.only(left: 30, top: 44, right: 30),
+        // height: 156,
+        padding: EdgeInsets.only(left: 24, top: 44, right: 30, bottom: 32),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -73,53 +78,67 @@ class _AppBarWidgetState extends State<AppBarWidget>
               ],
             ),
             Container(
-              padding: EdgeInsets.only(
-                left: 66,
-              ),
-              child: Column(
+              padding: EdgeInsets.only(left: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    widget.title,
-                    style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.w700,
-                      height: 1.15,
-                      color: this.widget.titleColor,
-                      letterSpacing: -0.42,
-                    ),
+                 ( widget.imageURL!=null)?ImageAvatarWidget(
+                    imageURL: 'images/avatar1.jpg',
+                    size: 50,
+                    borderColor: Color(0xff8A56AC),
+                    borderWidth: 2,
+                  ):Container(width: 16),
+                  SizedBox(
+                    width: 16,
                   ),
-                  //  Container(
-                  //   padding: EdgeInsets.only(top: 8),
-                  //   child: Text(
-                  //     'Find people and do your thing',
-                  //     style: TextStyle(
-                  //       fontSize: 12,
-                  //       fontStyle: FontStyle.italic,
-                  //       color: Color(0x7a403249),
-                  //       fontWeight: FontWeight.w500,
-                  //     ),
-                  //   ),
-                  // ),
-                  // Container(
-                  //   height: 48,
-                  //   child: TabBar(
-                  //     labelPadding: EdgeInsets.all(10),
-                  //     controller: _tabController,
-                  //     tabs: [
-                  //       ButtonWidget(
-                  //         text: 'TODAY',
-                  //         active: true,
-                  //       ),
-                  //       ButtonWidget(
-                  //         text: 'WEEK',
-                  //       ),
-                  //       ButtonWidget(
-                  //         text: 'MONTH',
-                  //       ),
-                  //     ],
-                  //   ),
-                  // )
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.title,
+                        style: TextStyle(
+                          fontSize: 26,
+                          fontWeight: FontWeight.w700,
+                          height: 1.15,
+                          color: this.widget.titleColor,
+                          letterSpacing: -0.42,
+                        ),
+                      ),
+                      (widget.subTitle != null)
+                          ? Container(
+                              padding: EdgeInsets.only(top: 8),
+                              child: Text(
+                                'Find people and do your thing',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0x7a403249),
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            )
+                          : Container(),
+                      // Container(
+                      //   height: 48,
+                      //   child: TabBar(
+                      //     // labelPadding: EdgeInsets.all(10),
+                      //     controller: _tabController,
+                      //     tabs: [
+                      //       ButtonWidget(
+                      //         text: 'TODAY',
+                      //         active: true,
+                      //       ),
+                      //       ButtonWidget(
+                      //         text: 'WEEK',
+                      //       ),
+                      //       ButtonWidget(
+                      //         text: 'MONTH',
+                      //       ),
+                      //     ],
+                      //   ),
+                      // )
+                    ],
+                  ),
                 ],
               ),
             ),

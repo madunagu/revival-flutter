@@ -1,8 +1,12 @@
+import 'package:devotion/ActivitiesScreen.dart';
 import 'package:devotion/ChatScreen.dart';
 import 'package:devotion/CreateEventScreen.dart';
+import 'package:devotion/FlightsScreen.dart';
 import 'package:devotion/MessagesScreen.dart';
 import 'package:devotion/MyProfileScreen.dart';
 import 'package:devotion/PlayerScreen.dart';
+import 'package:devotion/Profile2.dart';
+import 'package:devotion/VideoPlayerScreen.dart';
 import 'package:devotion/blocs/authentication.bloc.dart';
 import 'package:devotion/blocs/post.bloc.dart';
 import 'package:devotion/events/AuthenticationEvent.dart';
@@ -62,8 +66,8 @@ class MyApp extends StatelessWidget {
             return MainScreen();
           }
           if (state is AuthenticationFailure) {
-            return ChatScreen();
-            // return LoginScreen(userRepository: userRepository);
+            // return PlayerScreen(1);
+            return LoginScreen(userRepository: userRepository);
           }
           if (state is AuthenticationInProgress) {
             return LoadingIndicator();

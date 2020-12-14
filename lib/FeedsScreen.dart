@@ -75,8 +75,9 @@ class FeedItem extends StatelessWidget {
                   left: 0,
                   child: ClipRRect(
                     borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(60),
-                        bottomRight: Radius.circular(60)),
+                      topRight: Radius.circular(60),
+                      bottomRight: Radius.circular(60),
+                    ),
                     child: Container(
                       height: 210,
                       width: (MediaQuery.of(context).size.width - 24),
@@ -90,17 +91,22 @@ class FeedItem extends StatelessWidget {
                 Positioned(
                   bottom: 0,
                   left: 0,
-                  width: MediaQuery.of(context).size.width,
+                  width: MediaQuery.of(context).size.width - 24,
                   height: 105,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.transparent,
-                          Colors.black.withOpacity(0.5),
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      bottomRight: Radius.circular(60),
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.transparent,
+                            Colors.black.withOpacity(0.5),
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                        ),
                       ),
                     ),
                   ),
@@ -116,18 +122,18 @@ class FeedItem extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        InteractionButtonWidget(),
+                        InteractionButtonWidget(icon: Icons.favorite,count: 255),
                         SizedBox(
                           width: 22,
                         ),
-                        InteractionButtonWidget(),
+                        InteractionButtonWidget(icon: Icons.favorite,count: 255),
                       ],
                     ),
                   ),
                 ),
                 Positioned(
-                  bottom: 210 / 2 - 50 / 2,
-                  left: (MediaQuery.of(context).size.width / 2) - 50 / 2,
+                  bottom: 210 / 2, //- 50 / 2,
+                  left: (MediaQuery.of(context).size.width / 2) - 12 - 50 / 2,
                   width: 50,
                   height: 50,
                   child: Icon(
@@ -138,12 +144,21 @@ class FeedItem extends StatelessWidget {
                 ),
                 Positioned(
                   left: 0,
-                  bottom: 40,
+                  bottom: 50,
                   child: Container(
-                    padding: EdgeInsets.all(8),
-                    child: Text(
-                      'this is a caption for the image',
-                      style: TextStyle(color: Colors.white),
+                    padding: EdgeInsets.only(left: 32, right: 56),
+                    child: RichText(
+                      maxLines: 2,
+                      text: TextSpan(
+                        text:
+                            'This is a caption for the image whateer the title',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -157,6 +172,11 @@ class FeedItem extends StatelessWidget {
 }
 
 class InteractionButtonWidget extends StatelessWidget {
+  final IconData icon;
+  final int count;
+  final bool active;
+  final Function onTap;
+  InteractionButtonWidget({this.icon, this.count, this.onTap, this.active=false});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -165,14 +185,17 @@ class InteractionButtonWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Text(
-            '256',
+            count.toString(),
             style: TextStyle(
-                color: Colors.white, fontWeight: FontWeight.w700, fontSize: 12),
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+              fontSize: 12,
+            ),
           ),
           SizedBox(
             width: 6,
           ),
-          Icon(Icons.favorite, color: Colors.white, size: 17),
+          Icon(icon, color: active ? Colors.red : Colors.white, size: 17),
         ],
       ),
     );
