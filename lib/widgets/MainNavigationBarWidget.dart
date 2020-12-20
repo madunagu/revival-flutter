@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 final List<Widget> navigationItems = [
   ProfileNavigationItem(),
   SingleNavigationItem(
-      title: 'TRENDING', icon: Icons.trending_up, isSelected: true),
+    title: 'TRENDING',
+    icon: Icons.trending_up,
+    isSelected: true,
+  ),
   SingleNavigationItem(
     title: 'HEALTH',
     icon: Icons.favorite_border,

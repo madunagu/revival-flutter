@@ -4,9 +4,8 @@ import 'package:devotion/CreateEventScreen.dart';
 import 'package:devotion/FlightsScreen.dart';
 import 'package:devotion/MessagesScreen.dart';
 import 'package:devotion/MyProfileScreen.dart';
+import 'package:devotion/MusicPlayerScreen.dart';
 import 'package:devotion/PlayerScreen.dart';
-import 'package:devotion/Profile2.dart';
-import 'package:devotion/VideoPlayerScreen.dart';
 import 'package:devotion/blocs/authentication.bloc.dart';
 import 'package:devotion/blocs/post.bloc.dart';
 import 'package:devotion/events/AuthenticationEvent.dart';
@@ -23,7 +22,7 @@ import 'package:devotion/NotificationScreen.dart';
 import 'package:devotion/SplashScreen.dart';
 import 'package:devotion/OnBoardingScreen.dart';
 import 'package:devotion/ProfileScreen.dart';
-import 'package:devotion/FeedsScreen.dart';
+import 'package:devotion/VideosScreen.dart';
 import 'package:devotion/SingleEventScreen.dart';
 import 'package:devotion/widgets/AppScaffoldWidget.dart';
 import 'package:devotion/widgets/StackedCurvedList.dart';
@@ -40,10 +39,8 @@ void main() {
   final userRepository = UserRepository();
   runApp(
     BlocProvider<AuthenticationBloc>(
-      create: (context) {
-        return AuthenticationBloc(userRepository: userRepository)
-          ..add(AuthenticationStarted());
-      },
+      create: (context) => AuthenticationBloc(userRepository: userRepository)
+        ..add(AuthenticationStarted()),
       child: MyApp(userRepository: userRepository),
     ),
   );
@@ -63,7 +60,9 @@ class MyApp extends StatelessWidget {
             return SplashScreen();
           }
           if (state is AuthenticationSuccess) {
-            return MainScreen();
+            // return MainScreen();
+            
+             return PlayerScreen(1);
           }
           if (state is AuthenticationFailure) {
             // return PlayerScreen(1);
@@ -130,22 +129,25 @@ class _MainScreenState extends State<MainScreen>
 
   @override
   Widget build(BuildContext context) {
+    AuthenticationBloc authenticationBloc =
+        BlocProvider.of<AuthenticationBloc>(context);
     return AppScaffoldWidget(
-      bodyColor: trendingColors[0],
+      bodyColor: Color(0xffF1F0F2),
+      paddingTop: 0,
       body: Container(
-        height: MediaQuery.of(context).size.height,
+        height: MediaQuery.of(context).size.height ,
         width: MediaQuery.of(context).size.width,
         child: TabBarView(controller: _tabController, children: [
           SingleChildScrollView(child: MyProfileScreen()),
           BlocProvider(
             create: (BuildContext context) => PostBloc(
-              authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
+              authenticationBloc: authenticationBloc,
             )..add(PostFetched()),
             child: StackedCurvedList(colors: trendingColors),
           ),
           BlocProvider(
             create: (BuildContext context) => PostBloc(
-              authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
+              authenticationBloc: authenticationBloc,
             )..add(PostFetched()),
             child: StackedCurvedList(colors: healthColors),
           ),
@@ -153,6 +155,15 @@ class _MainScreenState extends State<MainScreen>
           StackedCurvedList(colors: trendingColors),
         ]),
       ),
+      showFloatingButton: true,
+      floatingButtonTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CreateEventScreen(),
+          ),
+        );
+      },
       appBar: MainNavigationBarWidget(
         tabController: _tabController,
       ),

@@ -1,4 +1,5 @@
 import 'package:devotion/CreateEventScreen.dart';
+import 'package:devotion/widgets/AppButtonWidget.dart';
 import 'package:devotion/widgets/ImageAvatarWidget.dart';
 import 'package:flutter/material.dart';
 
@@ -7,9 +8,12 @@ class AppScaffoldWidget extends StatelessWidget {
   final Color bodyColor;
   final Widget appBar;
   final double paddingTop;
-  final Widget floatingButton;
+  final IconData floatingButtonIcon;
   final bool showFloatingButton;
+  final Function floatingButtonTap;
   final Widget fixedWidget;
+  final Widget error;
+
   final scaffoldKey;
 
   AppScaffoldWidget({
@@ -18,10 +22,12 @@ class AppScaffoldWidget extends StatelessWidget {
     this.bodyColor = Colors.white,
     this.appBar,
     this.scaffoldKey,
-    this.floatingButton,
+    this.floatingButtonIcon = Icons.add,
     this.showFloatingButton,
     this.paddingTop = 73,
+    this.floatingButtonTap,
     this.fixedWidget,
+    this.error,
   }) : super(key: key);
 
   @override
@@ -120,7 +126,7 @@ class AppScaffoldWidget extends StatelessWidget {
               scrollDirection: Axis.vertical,
               physics: ClampingScrollPhysics(),
               child: Container(
-                width: size.height,
+                width: size.width,
                 color: bodyColor,
                 padding: EdgeInsets.only(top: this.paddingTop),
                 //here use navigation - radius as padding
@@ -141,14 +147,16 @@ class AppScaffoldWidget extends StatelessWidget {
             height: 56,
             child: this.showFloatingButton == true
                 ? InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CreateEventScreen(),
-                        ),
-                      );
-                    },
+                    onTap: floatingButtonTap
+                    // () {
+                    //   Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //       builder: (context) => CreateEventScreen(),
+                    //     ),
+                    //   );
+                    // }
+                    ,
                     child: Container(
                       decoration: BoxDecoration(
                         boxShadow: [
@@ -161,12 +169,24 @@ class AppScaffoldWidget extends StatelessWidget {
                         color: Colors.white,
                       ),
                       padding: EdgeInsets.all(10),
-                      child: Icon(Icons.add),
+                      child: Icon(floatingButtonIcon),
                     ),
                   )
                 : Container(),
           ),
           (fixedWidget != null) ? fixedWidget : Container(),
+          Positioned(
+            top: 0,
+            width: size.width,
+            height: size.height,
+            child:(error!=null)? Container(
+              width: size.width,
+              height: size.height,
+              alignment: Alignment.center,
+              color: Color(0xa4998FA2),
+              child: error,
+            ): Container(),
+          )
         ],
       ),
     );

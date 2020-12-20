@@ -2,9 +2,10 @@ import 'package:devotion/widgets/AppBarWidget.dart';
 import 'package:devotion/widgets/ImageAvatarWidget.dart';
 import 'package:devotion/widgets/AppScaffoldWidget.dart';
 import 'package:devotion/misc/StyleConstants.dart';
+import 'package:devotion/widgets/InteractionButtonWidget.dart';
 import 'package:flutter/material.dart';
 
-class FeedsScreen extends StatelessWidget {
+class VideosScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppScaffoldWidget(
@@ -18,14 +19,20 @@ class FeedsScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              FeedItem(),
-              FeedItem(),
-              FeedItem(),
-              FeedItem(),
-              FeedItem(),
-              FeedItem(),
-              FeedItem(),
-              FeedItem(),
+              VideoItem(),
+              VideoItem(),
+              VideoItem(),
+              VideoItem(),
+              VideoItem(),
+              VideoItem(),
+              VideoItem(),
+              VideoItem(),
+              VideoItem(),
+              VideoItem(),
+              VideoItem(),
+              VideoItem(),
+              VideoItem(),
+              VideoItem(),
             ],
           ),
         ),
@@ -34,7 +41,7 @@ class FeedsScreen extends StatelessWidget {
   }
 }
 
-class FeedItem extends StatelessWidget {
+class VideoItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -171,33 +178,4 @@ class FeedItem extends StatelessWidget {
   }
 }
 
-class InteractionButtonWidget extends StatelessWidget {
-  final IconData icon;
-  final int count;
-  final bool active;
-  final Function onTap;
-  InteractionButtonWidget({this.icon, this.count, this.onTap, this.active=false});
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Text(
-            count.toString(),
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w700,
-              fontSize: 12,
-            ),
-          ),
-          SizedBox(
-            width: 6,
-          ),
-          Icon(icon, color: active ? Colors.red : Colors.white, size: 17),
-        ],
-      ),
-    );
-  }
-}
+

@@ -1,127 +1,83 @@
-import 'package:devotion/OnBoardingScreen.dart';
-import 'package:devotion/widgets/AppBarWidget.dart';
+import 'dart:developer';
+
 import 'package:devotion/widgets/AppScaffoldWidget.dart';
+import 'package:devotion/widgets/BottomSheetLine.dart';
+import 'package:devotion/widgets/CommentItemWidget.dart';
+import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/widgets/DottedTabBarWidget.dart';
+import 'package:devotion/widgets/ImageAvatarWidget.dart';
+import 'package:devotion/widgets/InteractionButtonWidget.dart';
+import 'package:devotion/widgets/MessageItemWidget.dart';
+import 'package:devotion/widgets/SmallItemWidget.dart';
 import 'package:flutter/material.dart';
 
-class PlayerScreen extends StatelessWidget {
-  final int audioId;
+class PlayerScreen extends StatefulWidget {
+  final int id;
+  final bool isVideo;
+  PlayerScreen(this.id,{this.isVideo=true});
+  @override
+  _PlayerScreenState createState() => _PlayerScreenState();
+}
 
-  const PlayerScreen(this.audioId, {Key key}) : super(key: key);
+class _PlayerScreenState extends State<PlayerScreen> {
+  double screenHeight = 340;
+  double playedRatio = 0.4;
+
+  toggleSheet(DragEndDetails e) {
+    log(e.velocity.pixelsPerSecond.dy.toString());
+    if (e.velocity.pixelsPerSecond.dy > 330) {
+      setState(() {
+        screenHeight = 340;
+      });
+    } else {
+      setState(() {
+        screenHeight = 130;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
     return AppScaffoldWidget(
-      showFloatingButton: false,
-      appBar: AppBarWidget(
-        color: Color(0xff352641),
-        title: 'Summer Playlist',
-        borderColor: Color(0x00ffffff),
-        titleColor: Color(0xffffffff),
-      ),
+      paddingTop: 0,
       body: Container(
-        color: Color(0xff241332),
-        height: size.height - 73,
         width: size.width,
+        height: size.height,
         child: Stack(
           children: [
-            Container(
-              height: size.height - 200,
+            Image.asset(
+              'images/photo.png',
               width: size.width,
-              child: SingleChildScrollView(
-                child: Column(
+              height: 430,
+              fit: BoxFit.cover,
+            ),
+            Positioned(
+              top: 56,
+              child: Container(
+                width: size.width,
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.max,
                   children: [
-                    DottedTabBarWidget(
-                      count: 4,
+                    Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
                     ),
-                    SizedBox(
-                      height: 125,
-                    ),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image.asset(
-                        'images/avatar1.jpg',
-                        width: 260,
-                        height: 260,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 25,
-                    ),
-                    Text(
-                      'Salad Days',
-                      style: TextStyle(color: Colors.white, fontSize: 18),
-                    ),
-                    SizedBox(
-                      height: 6,
-                    ),
-                    Text(
-                      'Danielle Gibson',
-                      style: TextStyle(
-                        color: Color(0xafffffff),
-                        fontWeight: FontWeight.w500,
-                        letterSpacing: -0.18,
-                        fontSize: 12,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 52,
-                    ),
-                    Container(
-                        padding: EdgeInsets.symmetric(horizontal: 40),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  '04:52',
-                                  style: TextStyle(
-                                    color: Color(0xff998fa2),
-                                    letterSpacing: 1,
-                                    fontSize: 11,
-                                  ),
-                                ),
-                                Text(
-                                  '04:52',
-                                  style: TextStyle(
-                                    color: Color(0xff998fa2),
-                                    letterSpacing: 1,
-                                    fontSize: 11,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Slider(
-                              value: 0.4,
-                              onChanged: null,
-                              activeColor: Color(0xffd47fa6),
-                              inactiveColor: Color(0x20d47fa6),
-                            ),
-                          ],
-                        )),
-                    SizedBox(
-                      height: 37,
+                    Icon(
+                      Icons.filter,
+                      color: Colors.white,
                     ),
                   ],
                 ),
               ),
             ),
             Positioned(
-              // top: size.height - 200,
-              bottom: 0,
+              top: 142,
               child: Container(
                 width: size.width,
                 padding: EdgeInsets.symmetric(horizontal: 50, vertical: 30),
-                decoration: BoxDecoration(
-                  color: Color(0x1a455b63),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(70),
-                    topRight: Radius.circular(70),
-                  ),
-                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -149,9 +105,280 @@ class PlayerScreen extends StatelessWidget {
                 ),
               ),
             ),
+            Positioned(
+              //use transparent pink and white
+              top: 300,
+              child: Container(
+                width: size.width,
+                child: Slider(
+                  value: playedRatio,
+                  onChanged: (val) {
+                    setState(() {
+                      playedRatio = val;
+                    });
+                  },
+                  inactiveColor: Color(0x50d47fa6),
+                  activeColor: Color(0xdfffffff),
+                ),
+              ),
+            ),
+            Positioned(
+              top: screenHeight,
+              height: size.height - screenHeight,
+              // width: size.width,
+              child: Container(
+                padding: EdgeInsets.only(top: 12),
+                width: size.width,
+                // height: size.height - screenHeight,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(40),
+                ),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onVerticalDragEnd: toggleSheet,
+                      child: Container(
+                        width: size.width,
+                        color: Colors.transparent,
+                        height: 66,
+                        child: Column(
+                          children: [
+                            SizedBox(height: 12),
+                            BottomSheetLine(),
+                            SizedBox(height: 20),
+                            DottedTabBarWidget(count: 5, active: 1),
+                            SizedBox(height: 20),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: size.height - screenHeight - 78,
+                      child: SingleChildScrollView(
+                        child: CommentsSectionWidget(),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
+  }
+}
+
+class VideoDetailsWidget extends StatelessWidget {
+  const VideoDetailsWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Alexio Morales',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            // color: Colors.white,
+          ),
+        ),
+        SizedBox(height: 3),
+        Text(
+          '128k views',
+        ),
+        Container(
+          padding: EdgeInsets.symmetric(vertical: 30),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              VideoInteraction(active: true),
+              VideoInteraction(
+                icon: Icons.chat_bubble_outline,
+              ),
+              VideoInteraction(),
+            ],
+          ),
+        ),
+        Text(
+          'A brief description of the video',
+        ),
+        ImageAvatarWidget(
+          imageURL: 'images/avatar2.jpg',
+          size: 48,
+          borderColor: Colors.transparent,
+        ),
+        Text(
+          'Channel Nae',
+        )
+      ],
+    );
+  }
+}
+
+class CommentsSectionWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text('Comments'),
+        CommentItemWidget(
+          message:
+              'Check out this meetup with an extrely long oent in order to hek how the iew is going to be displayed without inter ferene of the elastiity',
+          image: Image.asset('images/avatar1.jpg'),
+          timeAgo: 'Aug 19',
+          name: 'Stephen Moreau',
+        ),
+        CommentItemWidget(
+          message: 'Welcome to Kizomba meetup',
+          image: Image.asset('images/avatar1.jpg'),
+          timeAgo: 'Jun 21',
+          name: 'Andy Lane',
+        ),
+        CommentItemWidget(
+          message: 'Feb 13',
+          image: Image.asset('images/avatar1.jpg'),
+          timeAgo: '8hrs',
+          name: 'Anson Buck',
+        ),
+        CommentItemWidget(
+          message: 'Bonjour',
+          image: Image.asset('images/avatar1.jpg'),
+          timeAgo: 'Sep 18, 2017',
+          name: 'Dinar Meyer',
+        ),
+      ],
+    );
+  }
+}
+
+class VideoInteraction extends StatelessWidget {
+  final String counter;
+  final IconData icon;
+  final bool active;
+  const VideoInteraction({
+    Key key,
+    this.counter = '123k Likes',
+    this.icon = Icons.favorite_border,
+    this.active = false,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Icon(
+          icon,
+          size: 40,
+          color: active ? Color(0xffd47fa6) : Colors.black,
+        ),
+        SizedBox(
+          height: 6,
+        ),
+        Text(
+          counter,
+        ),
+      ],
+    );
+  }
+}
+
+class MusicListWidget extends StatelessWidget {
+  const MusicListWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SmallItemWidget(
+          image: 'images/avatar1.jpg',
+          title: 'I surrender',
+          subTitle: 'Hillsong United',
+          amount: '4:30',
+        ),
+        SmallItemWidget(
+          isActive: true,
+          image: 'images/avatar1.jpg',
+          title: 'I surrender',
+          subTitle: 'Hillsong United',
+          amount: '4:30',
+        ),
+        SmallItemWidget(
+          image: 'images/avatar1.jpg',
+          title: 'I surrender',
+          subTitle: 'Hillsong United',
+          amount: '4:30',
+        ),
+        SmallItemWidget(
+          image: 'images/avatar1.jpg',
+          title: 'I surrender',
+          subTitle: 'Hillsong United',
+          amount: '4:30',
+        ),
+        SmallItemWidget(
+          image: 'images/avatar1.jpg',
+          title: 'I surrender',
+          subTitle: 'Hillsong United',
+          amount: '4:30',
+        ),
+        SmallItemWidget(
+          image: 'images/avatar1.jpg',
+          title: 'I surrender',
+          subTitle: 'Hillsong United',
+          amount: '4:30',
+        ),
+        SmallItemWidget(
+          image: 'images/avatar1.jpg',
+          title: 'I surrender',
+          subTitle: 'Hillsong United',
+          amount: '4:30',
+        ),
+        SmallItemWidget(
+          image: 'images/avatar1.jpg',
+          title: 'I surrender',
+          subTitle: 'Hillsong United',
+          amount: '4:30',
+        ),
+        SmallItemWidget(
+          image: 'images/avatar1.jpg',
+          title: 'I surrender',
+          subTitle: 'Hillsong United',
+          amount: '4:30',
+        ),
+        SmallItemWidget(
+          image: 'images/avatar1.jpg',
+          title: 'I surrender',
+          subTitle: 'Hillsong United',
+          amount: '4:30',
+        ),
+        SmallItemWidget(
+          image: 'images/avatar1.jpg',
+          title: 'I surrender',
+          subTitle: 'Hillsong United',
+          amount: '4:30',
+        ),
+        SmallItemWidget(
+          image: 'images/avatar1.jpg',
+          title: 'I surrender',
+          subTitle: 'Hillsong United',
+          amount: '4:30',
+        ),
+      ],
+    );
+  }
+}
+
+class LyricsWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }

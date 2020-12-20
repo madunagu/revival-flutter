@@ -1,7 +1,8 @@
-import 'package:devotion/VideoPlayerScreen.dart';
+import 'package:devotion/PlayerScreen.dart';
 import 'package:devotion/models/Event.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/widgets/ImageAvatarWidget.dart';
+import 'package:devotion/widgets/InteractionButtonWidget.dart';
 import 'package:flutter/material.dart';
 
 class CurvedVideoItemWidget extends StatelessWidget {
@@ -29,7 +30,7 @@ class CurvedVideoItemWidget extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => VideoPlayerScreen(this.videoId),),
+              builder: (context) => PlayerScreen(this.videoId),),
         );
       },
       child: Container(
@@ -92,14 +93,14 @@ class CurvedVideoItemWidget extends StatelessWidget {
                   children: <Widget>[
                     InteractionButtonWidget(
                       icon: Icons.favorite,
-                      isSelected: false,
+                      active: false,
                     ),
                     SizedBox(
                       width: 22,
                     ),
                     InteractionButtonWidget(
                       icon: Icons.message,
-                      isSelected: false,
+                      active: false,
                     ),
                     SizedBox(
                       width: 40,
@@ -126,29 +127,4 @@ class CurvedVideoItemWidget extends StatelessWidget {
   }
 }
 
-class InteractionButtonWidget extends StatelessWidget {
-  final IconData icon;
-  final bool isSelected;
-  InteractionButtonWidget({this.icon, this.isSelected});
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Text(
-            '256',
-            style: TextStyle(
-                color: Colors.white, fontWeight: FontWeight.w700, fontSize: 12),
-          ),
-          SizedBox(
-            width: 6,
-          ),
-          Icon(this.icon,
-              color: isSelected ? Colors.red : Colors.white, size: 17),
-        ],
-      ),
-    );
-  }
-}
+

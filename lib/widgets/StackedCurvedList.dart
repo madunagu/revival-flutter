@@ -12,28 +12,28 @@ import 'package:devotion/widgets/CurvedVideoItemWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-List<CurvedListItem> items = [
-  CurvedListItem(
-    title: 'Practice French, English And Chinese',
-    time: 'TUESDAY 5:30 PM',
-    icon: Icons.public,
-  ),
-  CurvedListItem(
-    title: 'Yoga and Meditation for Beginners',
-    time: 'TODAY 5:30 PM',
-    icon: Icons.flight_land,
-  ),
-  CurvedListItem(
-    title: 'Practice French, English And Chinese',
-    time: 'TUESDAY 5:30 PM',
-    icon: Icons.hotel,
-  ),
-  CurvedListItem(
-    title: 'Yoga and Meditation for Beginners',
-    time: 'TODAY 5:30 PM',
-    icon: Icons.flight_land,
-  ),
-];
+// List<CurvedListItem> items = [
+//   CurvedListItem(
+//     title: 'Practice French, English And Chinese',
+//     time: 'TUESDAY 5:30 PM',
+//     icon: Icons.public,
+//   ),
+//   CurvedListItem(
+//     title: 'Yoga and Meditation for Beginners',
+//     time: 'TODAY 5:30 PM',
+//     icon: Icons.flight_land,
+//   ),
+//   CurvedListItem(
+//     title: 'Practice French, English And Chinese',
+//     time: 'TUESDAY 5:30 PM',
+//     icon: Icons.hotel,
+//   ),
+//   CurvedListItem(
+//     title: 'Yoga and Meditation for Beginners',
+//     time: 'TODAY 5:30 PM',
+//     icon: Icons.flight_land,
+//   ),
+// ];
 
 enum itemType { event, video, audio, post }
 
@@ -68,24 +68,6 @@ class _StackedCurvedListState extends State<StackedCurvedList> {
       );
     }
 
-    //   Positioned(
-    //     top: 195.0 * i,
-    //     child: Hero(
-    //       tag: 'mainTitle' + i.toString(),
-    //       child: CurvedVideoItemWidget(
-    //         title: items[i].name,
-    //         time: items[i].startingAt.toString(),
-    //         onTap: () {
-    //           Navigator.push(
-    //             context,
-    //             MaterialPageRoute(
-    //                 builder: (context) => SingleEventScreen(items[i])),
-    //           );
-    //         },
-    //       ),
-    //     ),
-    //   ),
-    // );
     return SingleChildScrollView(
       controller: _scrollController,
       child: Container(

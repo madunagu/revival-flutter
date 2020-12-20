@@ -14,6 +14,7 @@ class MyProfileScreen extends StatelessWidget {
         children: <Widget>[
           Container(
             width: MediaQuery.of(context).size.width,
+            margin: EdgeInsets.only(top:83),
             height: 287,
             child: ClipRRect(
               borderRadius: BorderRadius.only(
@@ -307,6 +308,7 @@ class MyProfileScreen extends StatelessWidget {
               ),
             ),
           ),
+          SizedBox(height: 100),
         ],
       ),
     );
