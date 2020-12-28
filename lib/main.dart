@@ -7,6 +7,7 @@ import 'package:devotion/MyProfileScreen.dart';
 import 'package:devotion/MusicPlayerScreen.dart';
 import 'package:devotion/PlayerScreen.dart';
 import 'package:devotion/blocs/authentication.bloc.dart';
+import 'package:devotion/blocs/player.bloc.dart';
 import 'package:devotion/blocs/post.bloc.dart';
 import 'package:devotion/events/AuthenticationEvent.dart';
 import 'package:devotion/events/PostEvent.dart';
@@ -38,9 +39,15 @@ void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
   final userRepository = UserRepository();
   runApp(
-    BlocProvider<AuthenticationBloc>(
-      create: (context) => AuthenticationBloc(userRepository: userRepository)
-        ..add(AuthenticationStarted()),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthenticationBloc>(
+          create: (context) =>
+              AuthenticationBloc(userRepository: userRepository)
+                ..add(AuthenticationStarted()),
+        ),
+        BlocProvider<PlayerBloc>(create: (context) => PlayerBloc())
+      ],
       child: MyApp(userRepository: userRepository),
     ),
   );
@@ -61,8 +68,8 @@ class MyApp extends StatelessWidget {
           }
           if (state is AuthenticationSuccess) {
             // return MainScreen();
-            
-             return PlayerScreen(1);
+
+            return PlayerScreen(1);
           }
           if (state is AuthenticationFailure) {
             // return PlayerScreen(1);
@@ -135,7 +142,7 @@ class _MainScreenState extends State<MainScreen>
       bodyColor: Color(0xffF1F0F2),
       paddingTop: 0,
       body: Container(
-        height: MediaQuery.of(context).size.height ,
+        height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: TabBarView(controller: _tabController, children: [
           SingleChildScrollView(child: MyProfileScreen()),

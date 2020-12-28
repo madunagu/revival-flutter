@@ -16,11 +16,11 @@ Address _$AddressFromJson(Map<String, dynamic> json) {
     ..state = json['state'] as String
     ..city = json['city'] as String
     ..postalCode = json['postal_code'] as String
-    ..defaultAddress = json['default_address'] as bool
+    ..defaultAddress = json['default_address'] as int
     ..name = json['name'] as String
     ..longitude = (json['longitude'] as num)?.toDouble()
     ..latitude = (json['latitude'] as num)?.toDouble()
-    ..parseable = json['parseable'] as bool
+    ..parseable = json['parseable'] as int
     ..deletedAt = json['deleted_at'] == null
         ? null
         : DateTime.parse(json['deleted_at'] as String)
@@ -32,30 +32,21 @@ Address _$AddressFromJson(Map<String, dynamic> json) {
         : DateTime.parse(json['updated_at'] as String);
 }
 
-Map<String, dynamic> _$AddressToJson(Address instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('id', instance.id);
-  writeNotNull('user_id', instance.userId);
-  val['address1'] = instance.address1;
-  val['address2'] = instance.address2;
-  val['country'] = instance.country;
-  val['state'] = instance.state;
-  val['city'] = instance.city;
-  writeNotNull('postal_code', instance.postalCode);
-  writeNotNull('default_address', instance.defaultAddress);
-  writeNotNull('name', instance.name);
-  writeNotNull('longitude', instance.longitude);
-  writeNotNull('latitude', instance.latitude);
-  writeNotNull('parseable', instance.parseable);
-  writeNotNull('deleted_at', instance.deletedAt?.toIso8601String());
-  writeNotNull('created_at', instance.createdAt?.toIso8601String());
-  writeNotNull('updated_at', instance.updatedAt?.toIso8601String());
-  return val;
-}
+Map<String, dynamic> _$AddressToJson(Address instance) => <String, dynamic>{
+      'id': instance.id,
+      'user_id': instance.userId,
+      'address1': instance.address1,
+      'address2': instance.address2,
+      'country': instance.country,
+      'state': instance.state,
+      'city': instance.city,
+      'postal_code': instance.postalCode,
+      'default_address': instance.defaultAddress,
+      'name': instance.name,
+      'longitude': instance.longitude,
+      'latitude': instance.latitude,
+      'parseable': instance.parseable,
+      'deleted_at': instance.deletedAt?.toIso8601String(),
+      'created_at': instance.createdAt?.toIso8601String(),
+      'updated_at': instance.updatedAt?.toIso8601String(),
+    };

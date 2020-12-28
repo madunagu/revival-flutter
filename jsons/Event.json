@@ -1,0 +1,21 @@
+{
+    "id": 1,
+    "name": "Inventore consequatur aut quaerat blanditiis.",
+    "description": "this is a string",
+    "starting_at": "@datetime",
+    "ending_at": "@datetime",
+    "user_id": 6,
+    "deleted_at": "@datetime",
+    "created_at": "@datetime",
+    "updated_at": "@datetime",
+    "comments_count": 0,
+    "attendees_count": 0,
+    "attending": 0,
+    "views_count": 0,
+    "viewed": 0,
+    "comments": "$[]Comment",
+    "user": "$User",
+    "churches": "$[]Church",
+    "addresses": "$[]Address",
+    "attendees": "$[]User"
+}

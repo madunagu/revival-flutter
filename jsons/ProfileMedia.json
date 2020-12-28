@@ -1,10 +1,12 @@
 {
   "id": 3,
-  "logo_url": "https://lorempixel.com/50/50/?96464",
-  "profile_image_url": "https://lorempixel.com/500,500/480/?71581",
-  "background_image_url": "https://lorempixel.com/500,500/480/?50999",
-  "color_choice": "YellowGreen",
-  "user_id": 1,
+  "logo_url": "https://lorempixel.com/50/50/?95790",
+  "profile_image_url": "https://lorempixel.com/500,500/480/?74188",
+  "background_image_url": "https://lorempixel.com/500,500/480/?58251",
+  "color_choice": "BurlyWood",
+  "user_id": 85,
+  "profile_mediable_id": null,
+  "profile_mediable_type": null,
   "deleted_at": "@datetime",
   "created_at": "@datetime",
   "updated_at": "@datetime"

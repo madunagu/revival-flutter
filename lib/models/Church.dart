@@ -1,4 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'Comment.dart';
+import 'User.dart';
+import 'User.dart';
 import 'Address.dart';
 import 'ProfileMedia.dart';
 
@@ -14,17 +17,22 @@ class Church {
   @JsonKey(name: 'parent_id') String parentId;
   @JsonKey(name: 'user_id') int userId;
   @JsonKey(name: 'leader_id') int leaderId;
-  @JsonKey(name: 'heirachy_group_id') int heirachyGroupId;
-  @JsonKey(name: 'address_id') int addressId;
-  @JsonKey(name: 'profile_media_id') int profileMediaId;
   String slogan;
   String description;
   int verified;
   @JsonKey(name: 'deleted_at') DateTime deletedAt;
   @JsonKey(name: 'created_at') DateTime createdAt;
   @JsonKey(name: 'updated_at') DateTime updatedAt;
-  Address address;
-  @JsonKey(name: 'profile_media') ProfileMedia profileMedia;
+  @JsonKey(name: 'comments_count') int commentsCount;
+  @JsonKey(name: 'likes_count') int likesCount;
+  int liked;
+  @JsonKey(name: 'views_count') int viewsCount;
+  int viewed;
+  List<Comment> comments;
+  User leader;
+  User user;
+  List<Address> addresses;
+  @JsonKey(name: 'profile_media') List<ProfileMedia> profileMedia;
 
   factory Church.fromJson(Map<String,dynamic> json) => _$ChurchFromJson(json);
   Map<String, dynamic> toJson() => _$ChurchToJson(this);

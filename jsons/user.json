@@ -4,6 +4,7 @@
   "api_token": null,
   "email": "gwolff@example.com",
   "email_verified_at": "@datetime",
+  "assigned_at": "@datetime",
   "phone": "+2348065708630",
   "gender": "String",
   "created_at": "@datetime",

@@ -1,20 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'Society.dart';
+part of 'Comment.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Society _$SocietyFromJson(Map<String, dynamic> json) {
-  return Society()
+Comment _$CommentFromJson(Map<String, dynamic> json) {
+  return Comment()
     ..id = json['id'] as int
-    ..name = json['name'] as String
-    ..churchId = json['church_id'] as int
     ..parentId = json['parent_id'] as int
-    ..closed = json['closed'] as int
+    ..comment = json['comment'] as String
     ..userId = json['user_id'] as int
-    ..description = json['description'] as String
+    ..commentableId = json['commentable_id'] as int
+    ..commentableType = json['commentable_type'] as String
     ..deletedAt = json['deleted_at'] == null
         ? null
         : DateTime.parse(json['deleted_at'] as String)
@@ -23,26 +22,17 @@ Society _$SocietyFromJson(Map<String, dynamic> json) {
         : DateTime.parse(json['created_at'] as String)
     ..updatedAt = json['updated_at'] == null
         ? null
-        : DateTime.parse(json['updated_at'] as String)
-    ..church = json['church'] == null
-        ? null
-        : Church.fromJson(json['church'] as Map<String, dynamic>)
-    ..profileMedia = json['profile_media'] == null
-        ? null
-        : ProfileMedia.fromJson(json['profile_media'] as Map<String, dynamic>);
+        : DateTime.parse(json['updated_at'] as String);
 }
 
-Map<String, dynamic> _$SocietyToJson(Society instance) => <String, dynamic>{
+Map<String, dynamic> _$CommentToJson(Comment instance) => <String, dynamic>{
       'id': instance.id,
-      'name': instance.name,
-      'church_id': instance.churchId,
       'parent_id': instance.parentId,
-      'closed': instance.closed,
+      'comment': instance.comment,
       'user_id': instance.userId,
-      'description': instance.description,
+      'commentable_id': instance.commentableId,
+      'commentable_type': instance.commentableType,
       'deleted_at': instance.deletedAt?.toIso8601String(),
       'created_at': instance.createdAt?.toIso8601String(),
       'updated_at': instance.updatedAt?.toIso8601String(),
-      'church': instance.church,
-      'profile_media': instance.profileMedia,
     };

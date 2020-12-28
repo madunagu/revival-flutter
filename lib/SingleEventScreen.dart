@@ -218,7 +218,7 @@ class SingleEvent extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            'my address q',
+                            event.addresses[0].address1,
                             style: largeWhiteTextStyle,
                           ),
                           SizedBox(

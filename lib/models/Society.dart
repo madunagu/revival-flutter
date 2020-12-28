@@ -13,9 +13,7 @@ class Society {
   @JsonKey(name: 'church_id') int churchId;
   @JsonKey(name: 'parent_id') int parentId;
   int closed;
-  @JsonKey(name: 'profile_media_id') int profileMediaId;
   @JsonKey(name: 'user_id') int userId;
-  @JsonKey(name: 'heirachy_group_id') int heirachyGroupId;
   String description;
   @JsonKey(name: 'deleted_at') DateTime deletedAt;
   @JsonKey(name: 'created_at') DateTime createdAt;

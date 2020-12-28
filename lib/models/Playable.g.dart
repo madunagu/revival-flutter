@@ -1,22 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'Church.dart';
+part of 'Playable.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Church _$ChurchFromJson(Map<String, dynamic> json) {
-  return Church()
+Playable _$PlayableFromJson(Map<String, dynamic> json) {
+  return Playable()
     ..id = json['id'] as int
     ..name = json['name'] as String
-    ..alternateName = json['alternate_name'] as String
-    ..parentId = json['parent_id'] as String
-    ..userId = json['user_id'] as int
-    ..leaderId = json['leader_id'] as int
-    ..slogan = json['slogan'] as String
+    ..srcUrl = json['src_url'] as String
+    ..fullText = json['full_text'] as String
     ..description = json['description'] as String
-    ..verified = json['verified'] as int
+    ..authorId = json['author_id'] as int
+    ..uploaderId = json['uploader_id'] as int
+    ..type = json['type'] as String
+    ..size = json['size'] as int
+    ..length = json['length'] as int
+    ..language = json['language'] as String
     ..deletedAt = json['deleted_at'] == null
         ? null
         : DateTime.parse(json['deleted_at'] as String)
@@ -31,36 +33,35 @@ Church _$ChurchFromJson(Map<String, dynamic> json) {
     ..liked = json['liked'] as int
     ..viewsCount = json['views_count'] as int
     ..viewed = json['viewed'] as int
-    ..comments = (json['comments'] as List)
-        ?.map((e) =>
-            e == null ? null : Comment.fromJson(e as Map<String, dynamic>))
-        ?.toList()
-    ..leader = json['leader'] == null
+    ..comments = json['comments'] as List
+    ..author = json['author'] == null
         ? null
-        : User.fromJson(json['leader'] as Map<String, dynamic>)
+        : User.fromJson(json['author'] as Map<String, dynamic>)
     ..user = json['user'] == null
         ? null
         : User.fromJson(json['user'] as Map<String, dynamic>)
+    ..churches = (json['churches'] as List)
+        ?.map((e) =>
+            e == null ? null : Church.fromJson(e as Map<String, dynamic>))
+        ?.toList()
     ..addresses = (json['addresses'] as List)
         ?.map((e) =>
             e == null ? null : Address.fromJson(e as Map<String, dynamic>))
-        ?.toList()
-    ..profileMedia = (json['profile_media'] as List)
-        ?.map((e) =>
-            e == null ? null : ProfileMedia.fromJson(e as Map<String, dynamic>))
         ?.toList();
 }
 
-Map<String, dynamic> _$ChurchToJson(Church instance) => <String, dynamic>{
+Map<String, dynamic> _$PlayableToJson(Playable instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'alternate_name': instance.alternateName,
-      'parent_id': instance.parentId,
-      'user_id': instance.userId,
-      'leader_id': instance.leaderId,
-      'slogan': instance.slogan,
+      'src_url': instance.srcUrl,
+      'full_text': instance.fullText,
       'description': instance.description,
-      'verified': instance.verified,
+      'author_id': instance.authorId,
+      'uploader_id': instance.uploaderId,
+      'type': instance.type,
+      'size': instance.size,
+      'length': instance.length,
+      'language': instance.language,
       'deleted_at': instance.deletedAt?.toIso8601String(),
       'created_at': instance.createdAt?.toIso8601String(),
       'updated_at': instance.updatedAt?.toIso8601String(),
@@ -70,8 +71,8 @@ Map<String, dynamic> _$ChurchToJson(Church instance) => <String, dynamic>{
       'views_count': instance.viewsCount,
       'viewed': instance.viewed,
       'comments': instance.comments,
-      'leader': instance.leader,
+      'author': instance.author,
       'user': instance.user,
+      'churches': instance.churches,
       'addresses': instance.addresses,
-      'profile_media': instance.profileMedia,
     };

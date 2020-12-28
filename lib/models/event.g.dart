@@ -10,16 +10,13 @@ Event _$EventFromJson(Map<String, dynamic> json) {
   return Event()
     ..id = json['id'] as int
     ..name = json['name'] as String
-    ..churchId = json['church_id'] as int
+    ..description = json['description'] as String
     ..startingAt = json['starting_at'] == null
         ? null
         : DateTime.parse(json['starting_at'] as String)
     ..endingAt = json['ending_at'] == null
         ? null
         : DateTime.parse(json['ending_at'] as String)
-    ..addressId = json['address_id'] as int
-    ..heirachyGroupId = json['heirachy_group_id'] as int
-    ..profileMediaId = json['profile_media_id'] as int
     ..userId = json['user_id'] as int
     ..deletedAt = json['deleted_at'] == null
         ? null
@@ -30,27 +27,50 @@ Event _$EventFromJson(Map<String, dynamic> json) {
     ..updatedAt = json['updated_at'] == null
         ? null
         : DateTime.parse(json['updated_at'] as String)
-    ..church = json['church'] == null
+    ..commentsCount = json['comments_count'] as int
+    ..attendeesCount = json['attendees_count'] as int
+    ..attending = json['attending'] as int
+    ..viewsCount = json['views_count'] as int
+    ..viewed = json['viewed'] as int
+    ..comments = (json['comments'] as List)
+        ?.map((e) =>
+            e == null ? null : Comment.fromJson(e as Map<String, dynamic>))
+        ?.toList()
+    ..user = json['user'] == null
         ? null
-        : Church.fromJson(json['church'] as Map<String, dynamic>)
-    ..address = json['address'] == null
-        ? null
-        : Address.fromJson(json['address'] as Map<String, dynamic>);
+        : User.fromJson(json['user'] as Map<String, dynamic>)
+    ..churches = (json['churches'] as List)
+        ?.map((e) =>
+            e == null ? null : Church.fromJson(e as Map<String, dynamic>))
+        ?.toList()
+    ..addresses = (json['addresses'] as List)
+        ?.map((e) =>
+            e == null ? null : Address.fromJson(e as Map<String, dynamic>))
+        ?.toList()
+    ..attendees = (json['attendees'] as List)
+        ?.map(
+            (e) => e == null ? null : User.fromJson(e as Map<String, dynamic>))
+        ?.toList();
 }
 
 Map<String, dynamic> _$EventToJson(Event instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'church_id': instance.churchId,
+      'description': instance.description,
       'starting_at': instance.startingAt?.toIso8601String(),
       'ending_at': instance.endingAt?.toIso8601String(),
-      'address_id': instance.addressId,
-      'heirachy_group_id': instance.heirachyGroupId,
-      'profile_media_id': instance.profileMediaId,
       'user_id': instance.userId,
       'deleted_at': instance.deletedAt?.toIso8601String(),
       'created_at': instance.createdAt?.toIso8601String(),
       'updated_at': instance.updatedAt?.toIso8601String(),
-      'church': instance.church,
-      'address': instance.address,
+      'comments_count': instance.commentsCount,
+      'attendees_count': instance.attendeesCount,
+      'attending': instance.attending,
+      'views_count': instance.viewsCount,
+      'viewed': instance.viewed,
+      'comments': instance.comments,
+      'user': instance.user,
+      'churches': instance.churches,
+      'addresses': instance.addresses,
+      'attendees': instance.attendees,
     };

@@ -1,0 +1,11 @@
+{
+    "id": 1,
+    "parent_id": 1,
+    "comment": "what is it",
+    "user_id": 1,
+    "commentable_id": 1,
+    "commentable_type": "thetype",
+    "deleted_at": "@datetime",
+    "created_at": "@datetime",
+    "updated_at": "@datetime"
+}

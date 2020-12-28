@@ -182,12 +182,12 @@ class _AddressSheetState extends State<AddressSheet> {
                       fontSize: 11,
                     ),
                   ),
-                  Switch(
-                    value: false,
-                    onChanged: (value) {
-                      this.myAddress.defaultAddress = value;
-                    },
-                  ),
+                  // Switch(
+                  //   value: false,
+                  //   onChanged: (value) {
+                  //     this.myAddress.defaultAddress = value;
+                  //   },
+                  // ),
                   GestureDetector(
                     onTap: state is FormInProgress ? null : submitButtonPressed,
                     child: Container(

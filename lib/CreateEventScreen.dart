@@ -26,8 +26,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
     setState(() {
       if (eventAddress == null) return;
-      myEvent.addressId = eventAddress.id;
-      myEvent.address = eventAddress;
+      
+      myEvent.addresses[0] = eventAddress;
     });
   }
 
@@ -118,11 +118,11 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
             ),
             CreateModelRowWidget(
               icon: Icons.location_on,
-              title: myEvent.address != null
-                  ? myEvent.address.address1
+              title: myEvent.addresses != null
+                  ? myEvent.addresses[0].address1
                   : 'Location',
-              description: myEvent.address != null
-                  ? myEvent.address.address2
+              description: myEvent.addresses != null
+                  ? myEvent.addresses[0].address2
                   : 'Select a location',
               body: SizedBox(),
               tapped: _showLocationAndReturn,

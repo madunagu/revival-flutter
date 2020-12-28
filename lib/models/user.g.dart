@@ -15,6 +15,9 @@ User _$UserFromJson(Map<String, dynamic> json) {
     ..emailVerifiedAt = json['email_verified_at'] == null
         ? null
         : DateTime.parse(json['email_verified_at'] as String)
+    ..assignedAt = json['assigned_at'] == null
+        ? null
+        : DateTime.parse(json['assigned_at'] as String)
     ..phone = json['phone'] as String
     ..gender = json['gender'] as String
     ..createdAt = json['created_at'] == null
@@ -31,6 +34,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'api_token': instance.apiToken,
       'email': instance.email,
       'email_verified_at': instance.emailVerifiedAt?.toIso8601String(),
+      'assigned_at': instance.assignedAt?.toIso8601String(),
       'phone': instance.phone,
       'gender': instance.gender,
       'created_at': instance.createdAt?.toIso8601String(),
