@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:devotion/PlayerScreen.dart';
 import 'package:devotion/misc/StyleConstants.dart';
 import 'package:devotion/models/Event.dart';
@@ -24,10 +26,11 @@ class CurvedMusicItemWidget extends StatelessWidget {
       this.people,
       this.onTap});
 
-  factory CurvedMusicItemWidget.fromAudioMessage(Event serverEvent) {
+  factory CurvedMusicItemWidget.fromAudio(String serverEvent) {
+    Event event = Event.fromJson(jsonDecode(serverEvent));
     return CurvedMusicItemWidget(
-      title: serverEvent.name,
-      time: serverEvent.startingAt.toString(),
+      title: event.name,
+      time: event.startingAt.toString(),
     );
   }
   @override
@@ -37,7 +40,7 @@ class CurvedMusicItemWidget extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => PlayerScreen(this.audioId),
+            builder: (context) => PlayerScreen(),
           ),
         );
       },

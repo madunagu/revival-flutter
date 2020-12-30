@@ -43,3 +43,6 @@ class PlayerFailure extends PlayerState {
   @override
   String toString() => 'PlayerFailure { error: $error }';
 }
+//class PlayerSheetClosed extends PlayerState {}
+class PlayerLiking extends PlayerState {}
+class PlayerUnLiking extends PlayerState {}

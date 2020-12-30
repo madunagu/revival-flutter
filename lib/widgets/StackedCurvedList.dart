@@ -3,6 +3,7 @@ import 'package:devotion/blocs/post.bloc.dart';
 import 'package:devotion/events/PostEvent.dart';
 import 'package:devotion/misc/StyleConstants.dart';
 import 'package:devotion/models/Feed.dart';
+import 'package:devotion/models/index.dart';
 import 'package:devotion/states/PostState.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/widgets/CurvedEventItemWidget.dart';
@@ -80,35 +81,18 @@ class _StackedCurvedListState extends State<StackedCurvedList> {
   }
 
   Widget switchFeedType(Feed item, color) {
-    switch (item.type) {
+    switch (item.parentableType) {
       case 'audio':
-        return CurvedMusicItemWidget(
-          title: item.name,
-          time: '4:30',
-          color: color,
-          audioId: item.itemId,
-        );
+        return CurvedMusicItemWidget.fromAudio(item.parentable);
         break;
       case 'video':
-        return CurvedVideoItemWidget(
-          title: item.name,
-          time: item.startingAt.toString(),
-        );
+        return CurvedVideoItemWidget.fromVideo(item.parentable);
         break;
       case 'event':
-        return CurvedEventItemWidget(
-          title: item.name,
-          time: item.startingAt.toString(),
-          color: color,
-          eventId: item.itemId,
-        );
+        return CurvedEventItemWidget.fromEvent(item.parentable);
         break;
       default:
-        return CurvedEventItemWidget(
-          title: item.name,
-          time: item.startingAt.toString(),
-          color: color,
-        );
+        return Container();
     }
   }
 

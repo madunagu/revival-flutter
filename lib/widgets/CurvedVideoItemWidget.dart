@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:devotion/PlayerScreen.dart';
 import 'package:devotion/models/Event.dart';
+import 'package:devotion/models/VideoPost.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/widgets/ImageAvatarWidget.dart';
 import 'package:devotion/widgets/InteractionButtonWidget.dart';
@@ -14,12 +17,18 @@ class CurvedVideoItemWidget extends StatelessWidget {
   final int videoId;
 
   CurvedVideoItemWidget(
-      {this.title, this.time, this.icon, this.people, this.onTap,this.videoId});
+      {this.title,
+      this.time,
+      this.icon,
+      this.people,
+      this.onTap,
+      this.videoId,});
 
-  factory CurvedVideoItemWidget.fromEvent(Event serverEvent) {
+  factory CurvedVideoItemWidget.fromVideo(String serverEvent) {
+    VideoPost video = VideoPost.fromJson(jsonDecode(serverEvent));
     return CurvedVideoItemWidget(
-      title: serverEvent.name,
-      time: serverEvent.startingAt.toString(),
+      title: video.name,
+      time: video.length.toString(),
     );
   }
   @override
@@ -30,7 +39,8 @@ class CurvedVideoItemWidget extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => PlayerScreen(this.videoId),),
+            builder: (context) => PlayerScreen(),
+          ),
         );
       },
       child: Container(
@@ -126,5 +136,3 @@ class CurvedVideoItemWidget extends StatelessWidget {
     );
   }
 }
-
-

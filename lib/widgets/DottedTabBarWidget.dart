@@ -30,7 +30,7 @@ class DottedTabBarWidget extends StatelessWidget {
     }
 
     return Container(
-      width: MediaQuery.of(context).size.width,
+      width: count*16.0,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,

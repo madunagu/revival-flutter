@@ -25,8 +25,10 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
   Stream<PlayerState> mapEventToState(PlayerEvent event) async* {
     if (event is PlayerTouched) {
       yield PlayerAttentive();
-      await Future.delayed(Duration(seconds: 2));
-      yield PlayerPlaying();
+    }
+
+    if (event is PlayerLiked) {
+      yield* _mapPlayerLikedToState(event);
     }
     if (event is PlayerFetched) {
       yield* _mapPlayerFetchedToState(event);
@@ -57,9 +59,28 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
     }
   }
 
-  Stream<PlayerState> _mapPlayerTouchedToState(PlayerTouched event) async* {
-    yield PlayerAttentive();
-    await Future.delayed(Duration(seconds: 12));
-    yield PlayerPlaying();
+  Stream<PlayerState> _mapPlayerLikedToState(PlayerLiked event) async* {
+    try {
+      yield PlayerLiking();
+      NetworkingClass server = NetworkingClass();
+      String url = event.playedType == PlayedType.video
+          ? '/video-posts/'
+          : '/audio-posts/';
+      Map<ResponseKey, dynamic> liked =
+          await server.post(url + event.id.toString(), []);
+      if (liked[ResponseKey.type] == ResponseType.data) {
+        var res = liked[ResponseKey.data]['data'];
+        if (res == 'true') {
+          yield PlayerLiking();
+        } else {
+          yield PlayerUnLiking();
+        }
+      }
+      yield PlayerUnLiking();
+    } catch (error) {
+      log(error.toString());
+      yield PlayerFailure(error: error.toString());
+    }
   }
+
 }

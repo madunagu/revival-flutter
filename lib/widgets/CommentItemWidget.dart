@@ -61,7 +61,7 @@ class CommentItemWidget extends StatelessWidget {
     return CurvedCornerWidget(
       // padding: EdgeInsets.only(top: this.radius),
       radius: this.radius,
-      borderColor: Color(0x3d352641),
+      borderColor: Color(0xffE7E4E9),
       child: Container(
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.only(left: 18, top: 30, right: 12, bottom: 16),

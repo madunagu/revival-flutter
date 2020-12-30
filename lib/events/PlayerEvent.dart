@@ -24,16 +24,9 @@ class PlayerFetched extends PlayerEvent {
 
 class PlayerPaused extends PlayerEvent {}
 
-class PlayerDocked extends PlayerEvent {
-  final double height;
-    const PlayerDocked({ @required this.height});
-
-  @override
-  List<Object> get props => [height];
-
-  @override
-  String toString() => 'PlayerDocked { height: $height }';
-}
+//class PlayerDocked extends PlayerEvent {}
+//
+//class PlayerUnDocked extends PlayerEvent {}
 
 class PlayerTouched extends PlayerEvent {}
 
@@ -43,4 +36,17 @@ class PlayerSkipped extends PlayerEvent {}
 
 class PlayerSwitched extends PlayerEvent {}
 
-class PlayerLiked extends PlayerEvent {}
+class PlayerLiked extends PlayerEvent {
+  final int id;
+  final PlayedType playedType;
+
+  const PlayerLiked({@required this.id, @required this.playedType});
+
+  @override
+  List<Object> get props => [id, playedType];
+
+  @override
+  String toString() => 'PlayerLiked { id: $id }';
+}
+
+class PlayerRelaxed extends PlayerEvent {}

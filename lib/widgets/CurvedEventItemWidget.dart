@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:devotion/SingleEventScreen.dart';
 import 'package:devotion/misc/StyleConstants.dart';
 import 'package:devotion/models/Event.dart';
@@ -24,10 +26,11 @@ class CurvedEventItemWidget extends StatelessWidget {
     this.color,
   });
 
-  factory CurvedEventItemWidget.fromEvent(Event serverEvent) {
+  factory CurvedEventItemWidget.fromEvent(String serverEvent) {
+    Event event = Event.fromJson(jsonDecode(serverEvent));
     return CurvedEventItemWidget(
-      title: serverEvent.name,
-      time: serverEvent.startingAt.toString(),
+      title: event.name,
+      time: event.startingAt.toString(),
     );
   }
   @override
