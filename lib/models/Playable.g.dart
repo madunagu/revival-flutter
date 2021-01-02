@@ -19,9 +19,6 @@ Playable _$PlayableFromJson(Map<String, dynamic> json) {
     ..size = json['size'] as int
     ..length = json['length'] as int
     ..language = json['language'] as String
-    ..deletedAt = json['deleted_at'] == null
-        ? null
-        : DateTime.parse(json['deleted_at'] as String)
     ..createdAt = json['created_at'] == null
         ? null
         : DateTime.parse(json['created_at'] as String)
@@ -62,7 +59,6 @@ Map<String, dynamic> _$PlayableToJson(Playable instance) => <String, dynamic>{
       'size': instance.size,
       'length': instance.length,
       'language': instance.language,
-      'deleted_at': instance.deletedAt?.toIso8601String(),
       'created_at': instance.createdAt?.toIso8601String(),
       'updated_at': instance.updatedAt?.toIso8601String(),
       'comments_count': instance.commentsCount,

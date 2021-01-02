@@ -9,7 +9,7 @@ import 'package:devotion/widgets/ImageAvatarWidget.dart';
 import 'package:devotion/widgets/InteractionButtonWidget.dart';
 import 'package:flutter/material.dart';
 
-class CurvedVideoItemWidget extends StatelessWidget {
+class CurvedPostItemWidget extends StatelessWidget {
   final String title;
   final String time;
   final String people;
@@ -18,7 +18,7 @@ class CurvedVideoItemWidget extends StatelessWidget {
   final int videoId;
   final VideoPost video;
 
-  CurvedVideoItemWidget({
+  CurvedPostItemWidget({
     this.title,
     this.time,
     this.icon,
@@ -28,11 +28,11 @@ class CurvedVideoItemWidget extends StatelessWidget {
     this.videoId,
   });
 
-  factory CurvedVideoItemWidget.fromVideo(VideoPost video) {
-    return CurvedVideoItemWidget(
+  factory CurvedPostItemWidget.fromPost(Post video) {
+    return CurvedPostItemWidget(
       title: video.name,
-      time: video.length.toString(),
-      video: video,
+//      time: video.length.toString(),
+//      video: video,
     );
   }
   @override
@@ -40,30 +40,26 @@ class CurvedVideoItemWidget extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => PlayerScreen(isVideo: true, playable: video),
-          ),
-        );
+//        Navigator.push(
+//          context,
+//          MaterialPageRoute(
+//            builder: (context) => PlayerScreen(isVideo: true, playable: video),
+//          ),
+//        );
       },
-      child: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('images/avatar1.jpg'), fit: BoxFit.cover),
-          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(70)),
-        ),
-        height: 270,
-        width: MediaQuery.of(context).size.width,
-        child: Stack(
-          overflow: Overflow.clip,
-          children: [
-            Positioned(
-              top: 110,
-              child: Container(
+      child: CurvedCornerWidget(
+        padding: EdgeInsets.only(top: 70),
+        borderColor: Color(0xffE7E4E9),
+        color: Colors.white,
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 40),
+          height: 200,
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            children: [
+              SizedBox(height: 20),
+              Container(
                 height: 36,
-                padding: EdgeInsets.symmetric(horizontal: 40),
-                width: MediaQuery.of(context).size.width,
                 child: Row(children: <Widget>[
                   ImageAvatarWidget(
                     imageURL: 'images/avatar1.jpg',
@@ -82,25 +78,26 @@ class CurvedVideoItemWidget extends StatelessWidget {
                           style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
-                              color: Colors.white,
+//                              color: Colors.white,
                               height: 19 / 16),
                         ),
                         Text(
                           '8 Nov',
                           style: TextStyle(
                               fontSize: 12,
-                              color: Color(0x90ffffff),
+//                              color: Color(0x90ffffff),
                               height: 15 / 12),
                         ),
                       ]),
                 ]),
               ),
-            ),
-            Positioned(
-              bottom: 33,
-              left: 0,
-              width: size.width,
-              child: Container(
+              SizedBox(height: 20),
+              Text(
+                'When one door of happiness closes, another opens, but often we look so long at the closed door that we do not see the one that has been opened for us. ',
+                style: TextStyle(fontSize: 13, color: Color(0xff817889)),
+              ),
+              SizedBox(height: 20),
+              Container(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   mainAxisSize: MainAxisSize.max,
@@ -108,13 +105,17 @@ class CurvedVideoItemWidget extends StatelessWidget {
                     InteractionButtonWidget(
                       icon: Icons.favorite,
                       active: false,
+                      color: Color(0xff757575),
+                      count: 1 ,
                     ),
                     SizedBox(
                       width: 22,
                     ),
                     InteractionButtonWidget(
                       icon: Icons.message,
+                      count: 0,
                       active: false,
+                      color: Color(0xff757575),
                     ),
                     SizedBox(
                       width: 40,
@@ -122,19 +123,8 @@ class CurvedVideoItemWidget extends StatelessWidget {
                   ],
                 ),
               ),
-            ),
-            Positioned(
-              bottom: 65,
-              left: (size.width / 2) - 50 / 2,
-              width: 50,
-              height: 50,
-              child: Icon(
-                Icons.play_circle_filled,
-                size: 50,
-                color: Colors.white,
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

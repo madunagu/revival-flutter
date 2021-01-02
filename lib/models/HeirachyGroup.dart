@@ -11,7 +11,6 @@ class HeirachyGroup {
   String name;
   String description;
   @JsonKey(name: 'user_id') int userId;
-  @JsonKey(name: 'deleted_at') DateTime deletedAt;
   @JsonKey(name: 'created_at') DateTime createdAt;
   @JsonKey(name: 'updated_at') DateTime updatedAt;
   List<Heirachy> heirachies;

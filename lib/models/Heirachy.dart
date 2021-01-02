@@ -16,7 +16,6 @@ class Heirachy {
   @JsonKey(name: 'user_id') int userId;
   @JsonKey(name: 'created_at') DateTime createdAt;
   @JsonKey(name: 'updated_at') DateTime updatedAt;
-  @JsonKey(name: 'deleted_at') DateTime deletedAt;
   User user;
 
   factory Heirachy.fromJson(Map<String,dynamic> json) => _$HeirachyFromJson(json);

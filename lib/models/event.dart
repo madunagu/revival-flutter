@@ -17,7 +17,6 @@ class Event {
   @JsonKey(name: 'starting_at') DateTime startingAt;
   @JsonKey(name: 'ending_at') DateTime endingAt;
   @JsonKey(name: 'user_id') int userId;
-  @JsonKey(name: 'deleted_at') DateTime deletedAt;
   @JsonKey(name: 'created_at') DateTime createdAt;
   @JsonKey(name: 'updated_at') DateTime updatedAt;
   @JsonKey(name: 'comments_count') int commentsCount;

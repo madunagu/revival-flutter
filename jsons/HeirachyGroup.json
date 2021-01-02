@@ -3,7 +3,6 @@
     "name": "Mr. Isaiah Conn",
     "description": "Sint ea similique ullam et enim aut corporis quisquam.",
     "user_id": 1,
-    "deleted_at": "@datetime",
     "created_at": "@datetime",
     "updated_at": "@datetime",
     "heirachies": "$[]Heirachy"

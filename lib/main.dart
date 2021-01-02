@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:devotion/ActivitiesScreen.dart';
 import 'package:devotion/ChatScreen.dart';
 import 'package:devotion/CreateEventScreen.dart';
+import 'package:devotion/FeedScreen.dart';
 import 'package:devotion/FlightsScreen.dart';
 import 'package:devotion/MessagesScreen.dart';
 import 'package:devotion/MyProfileScreen.dart';
@@ -29,7 +30,6 @@ import 'package:devotion/ProfileScreen.dart';
 import 'package:devotion/VideosScreen.dart';
 import 'package:devotion/SingleEventScreen.dart';
 import 'package:devotion/widgets/AppScaffoldWidget.dart';
-import 'package:devotion/widgets/StackedCurvedList.dart';
 import 'package:devotion/widgets/TrendingWidget.dart';
 import 'package:devotion/misc/StyleConstants.dart';
 
@@ -70,7 +70,7 @@ class MyApp extends StatelessWidget {
             return SplashScreen();
           }
           if (state is AuthenticationSuccess) {
-            // return MainScreen();
+             return MainScreen();
             VideoPost video = VideoPost.fromJson(jsonDecode('''{
               "id": 3,
               "name": "At ut laudantium dolores quis molestiae tenetur aliquid.",
@@ -98,7 +98,7 @@ class MyApp extends StatelessWidget {
               "viewed": 0}
             '''));
 
-            return PlayerScreen(playable: video);
+//            return PlayerScreen(playable: video);
           }
           if (state is AuthenticationFailure) {
             // return PlayerScreen(1);
@@ -182,16 +182,16 @@ class _MainScreenState extends State<MainScreen>
             create: (BuildContext context) => PostBloc(
               authenticationBloc: _authenticationBloc,
             )..add(PostFetched()),
-            child: StackedCurvedList(colors: trendingColors),
+            child: FeedScreen(colors: trendingColors),
           ),
           BlocProvider(
             create: (BuildContext context) => PostBloc(
               authenticationBloc: _authenticationBloc,
             )..add(PostFetched()),
-            child: StackedCurvedList(colors: healthColors),
+            child: FeedScreen(colors: healthColors),
           ),
-          StackedCurvedList(colors: trendingColors),
-          StackedCurvedList(colors: trendingColors),
+          FeedScreen(colors: trendingColors),
+          FeedScreen(colors: trendingColors),
         ]),
       ),
       showFloatingButton: true,

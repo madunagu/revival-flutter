@@ -8,14 +8,13 @@ class Feed {
       Feed();
 
   int id;
-  @JsonKey(name: 'created_at') String createdAt;
-  @JsonKey(name: 'updated_at') String updatedAt;
   @JsonKey(name: 'parentable_type') String parentableType;
-  @JsonKey(name: 'parentable_id') int parentableId;
   @JsonKey(name: 'postable_type') String postableType;
   @JsonKey(name: 'postable_id') int postableId;
-  String parentable;
-  @JsonKey(name: 'deleted_at') dynamic deletedAt;
+  @JsonKey(name: 'parentable_id') int parentableId;
+  @JsonKey(name: 'created_at') DateTime createdAt;
+  @JsonKey(name: 'updated_at') DateTime updatedAt;
+  @JsonKey(ignore: true) dynamic parentable;
 
   factory Feed.fromJson(Map<String,dynamic> json) => _$FeedFromJson(json);
   Map<String, dynamic> toJson() => _$FeedToJson(this);

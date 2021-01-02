@@ -12,3 +12,5 @@ List<String> months = [
   'November',
   'December'
 ];
+String rootURL = 'https://devotion.wakabout.com.ng';
+

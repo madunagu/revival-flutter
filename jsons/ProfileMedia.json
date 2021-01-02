@@ -7,7 +7,6 @@
   "user_id": 85,
   "profile_mediable_id": null,
   "profile_mediable_type": null,
-  "deleted_at": "@datetime",
   "created_at": "@datetime",
   "updated_at": "@datetime"
 }

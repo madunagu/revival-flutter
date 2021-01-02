@@ -16,9 +16,6 @@ ProfileMedia _$ProfileMediaFromJson(Map<String, dynamic> json) {
     ..userId = json['user_id'] as int
     ..profileMediableId = json['profile_mediable_id']
     ..profileMediableType = json['profile_mediable_type']
-    ..deletedAt = json['deleted_at'] == null
-        ? null
-        : DateTime.parse(json['deleted_at'] as String)
     ..createdAt = json['created_at'] == null
         ? null
         : DateTime.parse(json['created_at'] as String)
@@ -37,7 +34,6 @@ Map<String, dynamic> _$ProfileMediaToJson(ProfileMedia instance) =>
       'user_id': instance.userId,
       'profile_mediable_id': instance.profileMediableId,
       'profile_mediable_type': instance.profileMediableType,
-      'deleted_at': instance.deletedAt?.toIso8601String(),
       'created_at': instance.createdAt?.toIso8601String(),
       'updated_at': instance.updatedAt?.toIso8601String(),
     };

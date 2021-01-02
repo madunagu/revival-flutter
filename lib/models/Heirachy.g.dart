@@ -21,9 +21,6 @@ Heirachy _$HeirachyFromJson(Map<String, dynamic> json) {
     ..updatedAt = json['updated_at'] == null
         ? null
         : DateTime.parse(json['updated_at'] as String)
-    ..deletedAt = json['deleted_at'] == null
-        ? null
-        : DateTime.parse(json['deleted_at'] as String)
     ..user = json['user'] == null
         ? null
         : User.fromJson(json['user'] as Map<String, dynamic>);
@@ -39,6 +36,5 @@ Map<String, dynamic> _$HeirachyToJson(Heirachy instance) => <String, dynamic>{
       'user_id': instance.userId,
       'created_at': instance.createdAt?.toIso8601String(),
       'updated_at': instance.updatedAt?.toIso8601String(),
-      'deleted_at': instance.deletedAt?.toIso8601String(),
       'user': instance.user,
     };

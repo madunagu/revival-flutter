@@ -5,6 +5,8 @@ class CurvedCornerWidget extends StatelessWidget {
   final Widget child;
   final Color color;
   final double radius;
+  final double height;
+  final double width;
   final Color borderColor;
   final EdgeInsetsGeometry padding;
   final DecorationImage decorationImage;
@@ -12,9 +14,11 @@ class CurvedCornerWidget extends StatelessWidget {
   CurvedCornerWidget(
       {Key key,
       this.child,
+      this.height,
+      this.width,
       this.color = const Color(0x00fff),
       this.radius = 80,
-      this.decorationImage = null,
+      this.decorationImage,
       this.padding = const EdgeInsets.only(),
       this.borderColor = const Color(0xff000)})
       : super(key: key);
@@ -28,6 +32,8 @@ class CurvedCornerWidget extends StatelessWidget {
         borderColor: this.borderColor,
       ),
       child: Container(
+        height: height,
+        width: width,
         padding: this.padding,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(

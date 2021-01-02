@@ -6,7 +6,6 @@
   "closed": 1,
   "user_id": 31,
   "description": "Rerum magnam rem et sint.",
-  "deleted_at": "@datetime",
   "created_at": "@datetime",
   "updated_at": "@datetime",
   "church": "$Church",

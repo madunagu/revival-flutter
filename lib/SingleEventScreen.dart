@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:devotion/misc/StyleConstants.dart';
 import 'package:devotion/util/NetworkingClass.dart';
 import 'package:devotion/widgets/ErrorNotification.dart';
@@ -22,8 +24,8 @@ var smallWhiteTextStyle = TextStyle(
 
 class SingleEventScreen extends StatefulWidget {
   @required
-  final int eventId;
-  SingleEventScreen(this.eventId);
+  final Event event;
+  SingleEventScreen(this.event);
   @override
   _SingleEventScreenState createState() => _SingleEventScreenState();
 }
@@ -37,8 +39,12 @@ class _SingleEventScreenState extends State<SingleEventScreen> {
   }
 
   Future<Map<ResponseKey, dynamic>> getEvent() {
-    NetworkingClass server = NetworkingClass();
-    return server.get('/events/' + widget.eventId.toString());
+    try {
+      NetworkingClass server = NetworkingClass();
+      return server.get('/events/' + widget.event.id.toString());
+    }catch(_){
+      log(_.toString());
+    }
   }
 
   @override
@@ -71,7 +77,7 @@ class _SingleEventScreenState extends State<SingleEventScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => SingleEventScreen(widget.eventId),
+                        builder: (context) => SingleEventScreen(widget.event),
                       ),
                     );
                   },

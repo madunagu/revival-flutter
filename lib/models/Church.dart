@@ -20,7 +20,6 @@ class Church {
   String slogan;
   String description;
   int verified;
-  @JsonKey(name: 'deleted_at') DateTime deletedAt;
   @JsonKey(name: 'created_at') DateTime createdAt;
   @JsonKey(name: 'updated_at') DateTime updatedAt;
   @JsonKey(name: 'comments_count') int commentsCount;

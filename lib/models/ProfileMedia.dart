@@ -15,7 +15,6 @@ class ProfileMedia {
   @JsonKey(name: 'user_id') int userId;
   @JsonKey(name: 'profile_mediable_id') dynamic profileMediableId;
   @JsonKey(name: 'profile_mediable_type') dynamic profileMediableType;
-  @JsonKey(name: 'deleted_at') DateTime deletedAt;
   @JsonKey(name: 'created_at') DateTime createdAt;
   @JsonKey(name: 'updated_at') DateTime updatedAt;
 

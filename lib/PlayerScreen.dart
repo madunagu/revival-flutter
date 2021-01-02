@@ -13,11 +13,13 @@ import 'package:devotion/widgets/DottedTabBarWidget.dart';
 import 'package:devotion/widgets/ImageAvatarWidget.dart';
 import 'package:devotion/widgets/InteractionButtonWidget.dart';
 import 'package:devotion/widgets/MessageItemWidget.dart';
+import 'package:devotion/widgets/PlayerTabsWidgets.dart';
 import 'package:devotion/widgets/SmallItemWidget.dart';
 import 'package:devotion/widgets/UserInfoWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:video_player/video_player.dart';
 
 class PlayerScreen extends StatefulWidget {
   final VideoPost playable;
@@ -29,42 +31,50 @@ class PlayerScreen extends StatefulWidget {
 
 class _PlayerScreenState extends State<PlayerScreen>
     with TickerProviderStateMixin {
-  double screenHeight = 340;
-  double playedRatio = 0.4;
-  TabController _tabController;
-  bool isScreenControlsVisible = true;
+  double videoScreenRatio = 1;
+  double playedRatio = 0;
+
+  double sheetPositionTop = 280;
   int activeSlide = 0;
+
+  TabController _tabController;
+  VideoPlayerController _videoController;
+
+  Future<void> _initializeVideoPlayerFuture;
+
   final titles = ['Details', 'Lyrics', 'Comments', 'Related'];
+
   toggleSheet(DragEndDetails e) {
     log(e.velocity.pixelsPerSecond.dy.toString());
     if (e.velocity.pixelsPerSecond.dy > 330) {
       setState(() {
-        screenHeight = 340;
+        log(videoScreenRatio.toString());
+        Size size = MediaQuery.of(context).size;
+        sheetPositionTop = size.width / videoScreenRatio + 36;
       });
-//      screenHeight = 340;
-//      BlocProvider.of<PlayerBloc>(context).add(PlayerDocked());
     } else {
       setState(() {
-        screenHeight = 130;
+        sheetPositionTop = 130;
       });
     }
   }
 
-  showScreenControls() {
-    setState(() {
-      isScreenControlsVisible = true;
-    });
-  }
-
-  hideScreenControls() {
-    setState(() {
-      isScreenControlsVisible = false;
-    });
-  }
-
   @override
   void initState() {
-    // TODO: implement initState
+    _videoController =
+        VideoPlayerController.network(rootURL + widget.playable.srcUrl);
+    _initializeVideoPlayerFuture = _videoController.initialize().then((_) {
+      log('VIDEO LOADED FROM NET');
+      _videoController.play();
+      setState(() {
+        videoScreenRatio = _videoController.value.aspectRatio;
+        Size size = MediaQuery.of(context).size;
+        sheetPositionTop = size.width / videoScreenRatio + 36;
+      });
+    });
+
+    _videoController.setLooping(true);
+
     _tabController = TabController(vsync: this, length: 4);
     _tabController.addListener(() {
       int i = _tabController.index;
@@ -79,8 +89,8 @@ class _PlayerScreenState extends State<PlayerScreen>
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _tabController.dispose();
+    _videoController.dispose();
     super.dispose();
   }
 
@@ -95,32 +105,21 @@ class _PlayerScreenState extends State<PlayerScreen>
         height: size.height,
         child: Stack(
           children: [
-            InkWell(
-              onTap: showScreenControls,
-              child: VideoWidget(),
+            VideoWidget(
+              size: size,
+              controller: _videoController,
+              initFunction: _initializeVideoPlayerFuture,
+            ),
+            VideoControls(
+              size: size,
+              controller: _videoController,
             ),
             Positioned(
-              top: 0,
-              child: isScreenControlsVisible
-                  ? GestureDetector(
-                      onTap: hideScreenControls,
-                      child: Container(
-                        color: Colors.transparent,
-                        padding: EdgeInsets.only(top: 56),
-                        child: PlayerControls(size: size),
-                      ),
-                    )
-                  : Container(),
-            ),
-            Positioned(
-              top: screenHeight,
-              height: size.height - screenHeight,
-
-              // width: size.width,
+              top: sheetPositionTop,
+              height: size.height - sheetPositionTop + 20,
               child: Container(
                 padding: EdgeInsets.only(top: 12),
                 width: size.width,
-                // height: size.height - screenHeight,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(40),
@@ -129,42 +128,10 @@ class _PlayerScreenState extends State<PlayerScreen>
                   children: [
                     GestureDetector(
                       onVerticalDragEnd: toggleSheet,
-                      child: Container(
-                        width: size.width,
-                        color: Colors.transparent,
-                        height: 66,
-                        child: Column(
-                          children: [
-                            SizedBox(height: 12),
-                            BottomSheetLine(),
-                            SizedBox(height: 20),
-                            Container(
-                              width: size.width,
-                              padding: EdgeInsets.symmetric(horizontal: 24),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    titles[activeSlide],
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  DottedTabBarWidget(
-                                      count: 4, active: activeSlide),
-                                ],
-                              ),
-                            ),
-//                    SizedBox(height: 10),
-                          ],
-                        ),
-                      ),
+                      child: SheetHeaderWidget(size: size, titles: titles, tabController: _tabController),
                     ),
                     Container(
-                      height: size.height - screenHeight - 78,
+                      height: size.height - sheetPositionTop - 78,
                       child: TabBarView(
                         controller: _tabController,
                         children: [
@@ -192,6 +159,229 @@ class _PlayerScreenState extends State<PlayerScreen>
           ],
         ),
       ),
+    );
+  }
+}
+
+class SheetHeaderWidget extends StatefulWidget {
+  const SheetHeaderWidget({
+    Key key,
+    @required this.size,
+    @required this.tabController,
+    @required this.titles,
+  }) : super(key: key);
+
+  final TabController tabController;
+  final Size size;
+  final List<String> titles;
+
+  @override
+  _SheetHeaderWidgetState createState() => _SheetHeaderWidgetState();
+}
+
+class _SheetHeaderWidgetState extends State<SheetHeaderWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: widget.size.width,
+      color: Colors.transparent,
+      height: 66,
+      child: Column(
+        children: [
+          SizedBox(height: 12),
+          BottomSheetLine(),
+          SizedBox(height: 20),
+          Container(
+            width: widget.size.width,
+            padding: EdgeInsets.symmetric(horizontal: 24),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment:
+                  MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  widget.titles[widget.tabController.index],
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                DottedTabBarWidget(
+                  count: 4,
+                  active: widget.tabController.index,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class VideoControls extends StatefulWidget {
+  VideoControls({
+    this.size,
+    this.controller,
+  });
+
+  final VideoPlayerController controller;
+  final Size size;
+  @override
+  _VideoControlsState createState() => _VideoControlsState();
+}
+
+class _VideoControlsState extends State<VideoControls> {
+  bool isControlsVisible = false;
+  double height = 280;
+
+  showControls() {
+    setState(() {
+      isControlsVisible = true;
+    });
+  }
+
+  hideControls() {
+    setState(() {
+      isControlsVisible = false;
+    });
+  }
+
+  double sliderVal() {
+    return widget.controller.value.duration.inSeconds /
+        widget.controller.value.duration.inSeconds;
+  }
+
+  void sliderChanged(val) {
+    widget.controller.seekTo(
+      Duration(
+        seconds: (widget.controller.value.duration.inSeconds * val).round(),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    log('video controls built again');
+    return Positioned(
+      top: 0,
+      width: widget.size.width,
+      child: widget.controller.value.initialized
+          ? GestureDetector(
+              onTap: showControls,
+              child: Container(
+                width: widget.size.width,
+                height: height,
+                color: Colors.transparent,
+                child: isControlsVisible
+                    ? GestureDetector(
+                        onTap: hideControls,
+                        child: Container(
+                            height: height,
+                            width: widget.size.width,
+                            color: Colors.transparent,
+                            padding: const EdgeInsets.only(top: 56),
+                            child: Column(
+                              children: [
+                                Container(
+                                  width: widget.size.width,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 24.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Icon(
+                                        Icons.arrow_back,
+                                        color: Colors.white,
+                                      ),
+                                      Icon(
+                                        Icons.filter,
+                                        color: Colors.white,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: 60 / 540 * height),
+                                Container(
+                                  width: widget.size.width,
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 50,
+                                      vertical: 30 / 540 * height),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Icon(
+                                        Icons.skip_previous,
+                                        color: Colors.white,
+                                        size: 34,
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            if (widget
+                                                .controller.value.isPlaying) {
+                                              widget.controller.pause();
+                                            } else {
+                                              widget.controller.play();
+                                            }
+                                          });
+                                        },
+                                        child: Container(
+                                          height: 50,
+                                          width: 50,
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                            color: Color(0xffd47fa6),
+                                          ),
+                                          child:
+                                              widget.controller.value.isPlaying
+                                                  ? Icon(
+                                                      Icons.pause,
+                                                      color: Colors.white,
+                                                      size: 34,
+                                                    )
+                                                  : Icon(
+                                                      Icons.play_arrow,
+                                                      color: Colors.white,
+                                                      size: 34,
+                                                    ),
+                                        ),
+                                      ),
+                                      Icon(Icons.skip_next,
+                                          color: Colors.white, size: 34),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: 50 / 540 * height),
+                                Container(
+                                  width: widget.size.width,
+                                  child: Slider(
+                                    value: sliderVal(),
+                                    onChanged: sliderChanged,
+                                    inactiveColor: Color(0x50d47fa6),
+                                    activeColor: Color(0xdfffffff),
+                                  ),
+                                )
+                              ],
+                            )),
+                      )
+                    : Container(
+                        width: widget.size.width,
+                        height: height,
+                      ),
+              ),
+            )
+          : Container(
+              height: height,
+              width: widget.size.width,
+              alignment: Alignment.center,
+              child: CircularProgressIndicator(),
+            ),
     );
   }
 }
@@ -270,26 +460,55 @@ class DockedCurrentlyPlaying extends StatelessWidget {
 }
 
 class VideoWidget extends StatelessWidget {
+  final VideoPlayerController controller;
+  final Future<void> initFunction;
+  final Size size;
+  VideoWidget({
+    @required this.controller,
+    @required this.initFunction,
+    this.size,
+  });
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Image.asset(
-        'images/photo.png',
-//      width: size.width,
-        height: 430,
-        fit: BoxFit.cover,
+      height: size.height,
+      width: size.width,
+      alignment: Alignment.topCenter,
+      color: Colors.black,
+      child: FutureBuilder(
+        future: initFunction,
+        builder: (context, snapshot) {
+          log('built video again');
+          if (snapshot.connectionState == ConnectionState.done) {
+            return Container(
+              width: size.width,
+              height: size.width/ controller.value.aspectRatio +60,
+              alignment: Alignment.center,
+              child: AspectRatio(
+                aspectRatio: controller.value.aspectRatio,
+                child: VideoPlayer(controller),
+              ),
+            );
+          } else {
+            return Container();
+          }
+        },
       ),
     );
   }
 }
 
 class PlayerControls extends StatelessWidget {
+  final VideoPlayerController controller;
   const PlayerControls({
     Key key,
     @required this.size,
+    @required this.height,
+    @required this.controller,
   }) : super(key: key);
 
   final Size size;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
@@ -313,10 +532,11 @@ class PlayerControls extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 60),
+        SizedBox(height: 60 / 540 * height),
         Container(
           width: size.width,
-          padding: EdgeInsets.symmetric(horizontal: 50, vertical: 30),
+          padding:
+              EdgeInsets.symmetric(horizontal: 50, vertical: 30 / 540 * height),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -325,415 +545,52 @@ class PlayerControls extends StatelessWidget {
                 color: Colors.white,
                 size: 34,
               ),
-              Container(
-                height: 50,
-                width: 50,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                  color: Color(0xffd47fa6),
-                ),
-                child: Icon(
-                  Icons.play_arrow,
-                  color: Colors.white,
-                  size: 34,
+              InkWell(
+                onTap: () {
+                  if (controller.value.isPlaying) {
+                    controller.pause();
+                  } else {
+                    // If the video is paused, play it.
+                    controller.play();
+                  }
+                },
+                child: Container(
+                  height: 50,
+                  width: 50,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: Color(0xffd47fa6),
+                  ),
+                  child: Icon(
+                    Icons.play_arrow,
+                    color: Colors.white,
+                    size: 34,
+                  ),
                 ),
               ),
               Icon(Icons.skip_next, color: Colors.white, size: 34),
             ],
           ),
         ),
-        SizedBox(height: 50),
+        SizedBox(height: 50 / 540 * height),
         Container(
           width: size.width,
           child: Slider(
-            value: .4,
+            value: controller.value.position.inSeconds /
+                controller.value.duration.inSeconds,
             onChanged: (val) {
-              // setState(() {
-              //   playedRatio = val;
-              // });
+              controller.seekTo(
+                Duration(
+                  seconds: (controller.value.duration.inSeconds * val).round(),
+                ),
+              );
             },
             inactiveColor: Color(0x50d47fa6),
             activeColor: Color(0xdfffffff),
           ),
         )
       ],
-    );
-  }
-}
-
-class VideoDetailsWidget extends StatelessWidget {
-  final VideoPost video;
-  const VideoDetailsWidget({Key key, @required this.video}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-//      padding: EdgeInsets.symmetric(horizontal: 24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  video.name,
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    // color: Colors.white,
-                  ),
-                ),
-                SizedBox(height: 3),
-                Text(
-                  '${video.viewsCount} views',
-                ),
-              ],
-            ),
-          ),
-          CurvedCornerWidget(
-            borderColor: Color(0xffE7E4E9),
-            radius: 60,
-            child: Container(
-              padding: EdgeInsets.only(top: 10,bottom: 30, right: 24, left: 24),
-//              margin: EdgeInsets.only(bottom: 30),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  VideoInteraction(
-                    active: video.liked == 1,
-                    counter: '${video.likesCount} likes',
-                    onTap: (){
-                      BlocProvider.of<PlayerBloc>(context).add(PlayerLiked(id: video.id,playedType: PlayedType.video));
-                    },
-                  ),
-                  VideoInteraction(
-                    icon: Icons.chat_bubble_outline,
-                    counter: '${video.commentsCount} comments',
-                  ),
-                  VideoInteraction(
-                    counter: '',
-                    icon: Icons.share,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          CurvedCornerWidget(
-            radius: 60,
-            borderColor: Color(0xffE7E4E9),
-            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-            child: UserInfoWidget(user: video.user),
-          ),
-          SizedBox(height: 10),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  " ${video.createdAt.day.toString()} ${months[video.createdAt.month - 1]},  ${video.createdAt.year}",
-                  style: TextStyle(
-                    color: Color(0xff817889),
-                    fontWeight: FontWeight.bold,
-                    height: 2,
-                  ),
-                ),
-                Text(
-                  video.description,
-                  style: TextStyle(color: Color(0xff817889)),
-                ),
-              ],
-            ),
-          ),
-                SizedBox(height: 20),
-        ],
-      ),
-    );
-  }
-}
-
-class CommentsSectionWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        CreateCommentWidget(),
-        CommentItemWidget(
-          message:
-              'Check out this meetup with an extrely long oent in order to hek how the iew is going to be displayed without inter ferene of the elastiity',
-          image: Image.asset('images/avatar1.jpg'),
-          timeAgo: 'Aug 19',
-          name: 'Stephen Moreau',
-        ),
-        CommentItemWidget(
-          message: 'Welcome to Kizomba meetup',
-          image: Image.asset('images/avatar1.jpg'),
-          timeAgo: 'Jun 21',
-          name: 'Andy Lane',
-        ),
-        CommentItemWidget(
-          message: 'Feb 13',
-          image: Image.asset('images/avatar1.jpg'),
-          timeAgo: '8hrs',
-          name: 'Anson Buck',
-        ),
-        CommentItemWidget(
-          message: 'Bonjour',
-          image: Image.asset('images/avatar1.jpg'),
-          timeAgo: 'Sep 18, 2017',
-          name: 'Dinar Meyer',
-        ),
-      ],
-    );
-  }
-}
-
-class CreateCommentWidget extends StatelessWidget {
-  CreateCommentWidget({
-    Key key,
-    this.image,
-  }) : super(key: key);
-  final Image image;
-  final double radius = 60;
-
-  @override
-  Widget build(BuildContext context) {
-    return CurvedCornerWidget(
-      // padding: EdgeInsets.only(top: this.radius),
-      radius: this.radius,
-      borderColor: Color(0xffE7E4E9),
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.only(left: 18, top: 30, right: 12, bottom: 16),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            ImageAvatarWidget(
-              imageURL: 'images/avatar1.jpg',
-              borderWidth: 2,
-              borderColor: Color(0xff8A56AC),
-            ),
-            SizedBox(
-              width: 12,
-            ),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  TextField(
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.w500,
-                      height: 1.42,
-                      letterSpacing: -0.14,
-                    ),
-                    minLines: 3,
-                    maxLines: 5,
-                    decoration: InputDecoration(
-                      hintText: 'Comment here...',
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xffE7E4E9)),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              width: 69,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(height: 30),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(35),
-                      color: Color(0xff8A56AC),
-                    ),
-                    padding: EdgeInsets.all(20),
-                    child: Icon(
-                      Icons.send,
-                      size: 16,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class VideoInteraction extends StatelessWidget {
-  final String counter;
-  final IconData icon;
-  final bool active;
-  final Function onTap;
-  const VideoInteraction({
-    Key key,
-    this.counter = '123k Likes',
-    this.icon = Icons.favorite_border,
-    this.active = false,
-    this.onTap,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Icon(
-          icon,
-          size: 40,
-          color: active ? Color(0xffd47fa6) : Colors.black,
-        ),
-        SizedBox(
-          height: 6,
-        ),
-        Text(
-          counter,
-        ),
-      ],
-    );
-  }
-}
-
-class MusicListWidget extends StatelessWidget {
-  const MusicListWidget({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SmallItemWidget(
-          image: 'images/avatar1.jpg',
-          title: 'I surrender',
-          subTitle: 'Hillsong United',
-          amount: '4:30',
-        ),
-        SmallItemWidget(
-          isActive: true,
-          image: 'images/avatar1.jpg',
-          title: 'I surrender',
-          subTitle: 'Hillsong United',
-          amount: '4:30',
-        ),
-        SmallItemWidget(
-          image: 'images/avatar1.jpg',
-          title: 'I surrender',
-          subTitle: 'Hillsong United',
-          amount: '4:30',
-        ),
-        SmallItemWidget(
-          image: 'images/avatar1.jpg',
-          title: 'I surrender',
-          subTitle: 'Hillsong United',
-          amount: '4:30',
-        ),
-        SmallItemWidget(
-          image: 'images/avatar1.jpg',
-          title: 'I surrender',
-          subTitle: 'Hillsong United',
-          amount: '4:30',
-        ),
-        SmallItemWidget(
-          image: 'images/avatar1.jpg',
-          title: 'I surrender',
-          subTitle: 'Hillsong United',
-          amount: '4:30',
-        ),
-        SmallItemWidget(
-          image: 'images/avatar1.jpg',
-          title: 'I surrender',
-          subTitle: 'Hillsong United',
-          amount: '4:30',
-        ),
-        SmallItemWidget(
-          image: 'images/avatar1.jpg',
-          title: 'I surrender',
-          subTitle: 'Hillsong United',
-          amount: '4:30',
-        ),
-        SmallItemWidget(
-          image: 'images/avatar1.jpg',
-          title: 'I surrender',
-          subTitle: 'Hillsong United',
-          amount: '4:30',
-        ),
-        SmallItemWidget(
-          image: 'images/avatar1.jpg',
-          title: 'I surrender',
-          subTitle: 'Hillsong United',
-          amount: '4:30',
-        ),
-        SmallItemWidget(
-          image: 'images/avatar1.jpg',
-          title: 'I surrender',
-          subTitle: 'Hillsong United',
-          amount: '4:30',
-        ),
-        SmallItemWidget(
-          image: 'images/avatar1.jpg',
-          title: 'I surrender',
-          subTitle: 'Hillsong United',
-          amount: '4:30',
-        ),
-      ],
-    );
-  }
-}
-
-class LyricsWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    TextStyle normalStyle = TextStyle(
-        fontSize: 24,
-        color: Color(0xff817889),
-        fontWeight: FontWeight.bold,
-        height: 1.2,
-        wordSpacing: 2);
-    TextStyle highlightedStyle =
-        normalStyle.copyWith(color: Color(0xffd47fa6), fontSize: 26);
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-      child: Column(
-        children: [
-          Text(
-            'This is all I have, that the love I have for you',
-            style: normalStyle,
-          ),
-          SizedBox(height: 20),
-          Text(
-            'Doesn\'t fade along with you',
-            style: normalStyle,
-          ),
-          SizedBox(height: 20),
-          Text('The reason that I ask, I\'ve seen far too ',
-              style: normalStyle),
-          SizedBox(height: 20),
-          Text('many friends walkaway and not come back',
-              style: highlightedStyle),
-          SizedBox(height: 20),
-          Text('I would wash away, like branches on leaves,',
-              style: normalStyle),
-          SizedBox(height: 20),
-          Text('Ill rather be kindling in your love', style: normalStyle),
-          SizedBox(height: 20),
-          Text(
-              'So set me on fire like i\'ve never known, I wanna love you more',
-              style: normalStyle),
-        ],
-      ),
     );
   }
 }

@@ -8,6 +8,5 @@
     "user_id": 1,
     "created_at": "@datetime",
     "updated_at":"@datetime",
-    "deleted_at": "@datetime",
     "user": "$User"
 }

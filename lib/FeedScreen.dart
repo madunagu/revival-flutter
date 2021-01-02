@@ -10,6 +10,7 @@ import 'package:devotion/widgets/CurvedEventItemWidget.dart';
 import 'package:devotion/widgets/CurvedListItem.dart';
 import 'package:devotion/widgets/CurvedMusicItemWidget.dart';
 import 'package:devotion/widgets/CurvedVideoItemWidget.dart';
+import 'package:devotion/widgets/CurvedPostItemWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -38,16 +39,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 enum itemType { event, video, audio, post }
 
-class StackedCurvedList extends StatefulWidget {
+class FeedScreen extends StatefulWidget {
   final List<Color> colors;
   final tag;
-  StackedCurvedList({Key key, this.colors, this.tag = 0}) : super(key: key);
+  FeedScreen({Key key, this.colors, this.tag = 0}) : super(key: key);
 
   @override
-  _StackedCurvedListState createState() => _StackedCurvedListState();
+  _FeedScreenState createState() => _FeedScreenState();
 }
 
-class _StackedCurvedListState extends State<StackedCurvedList> {
+class _FeedScreenState extends State<FeedScreen> {
   List<dynamic> items = [];
 
   final _scrollController = ScrollController();
@@ -83,13 +84,16 @@ class _StackedCurvedListState extends State<StackedCurvedList> {
   Widget switchFeedType(Feed item, color) {
     switch (item.parentableType) {
       case 'audio':
-        return CurvedMusicItemWidget.fromAudio(item.parentable);
+        return CurvedMusicItemWidget.fromAudio(item.parentable, color);
         break;
       case 'video':
         return CurvedVideoItemWidget.fromVideo(item.parentable);
         break;
       case 'event':
-        return CurvedEventItemWidget.fromEvent(item.parentable);
+        return CurvedEventItemWidget.fromEvent(item.parentable, color);
+        break;
+      case 'post':
+        return CurvedPostItemWidget.fromPost(item.parentable);
         break;
       default:
         return Container();

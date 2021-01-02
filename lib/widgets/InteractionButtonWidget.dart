@@ -5,8 +5,9 @@ class InteractionButtonWidget extends StatelessWidget {
   final int count;
   final bool active;
   final Function onTap;
+  final Color color;
   InteractionButtonWidget(
-      {this.icon, this.count, this.onTap, this.active = false});
+      {this.icon, this.count, this.onTap,this.color =Colors.white, this.active = false});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -17,7 +18,7 @@ class InteractionButtonWidget extends StatelessWidget {
           Text(
             count.toString(),
             style: TextStyle(
-              color: Colors.white,
+              color: color,
               fontWeight: FontWeight.w700,
               fontSize: 12,
             ),
@@ -27,7 +28,7 @@ class InteractionButtonWidget extends StatelessWidget {
           ),
           Icon(
             icon,
-            color: active ? Colors.red : Colors.white,
+            color: active ? Colors.red : color,
             size: 17,
           ),
         ],

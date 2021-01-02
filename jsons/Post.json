@@ -1,0 +1,17 @@
+{
+  "id": 10,
+  "name": "Asperiores repudiandae aliquid modi similique sed.",
+  "body": "Eaque possimus doloribus labore id id suscipit. Omnis modi ut sit voluptas voluptas id. Quo sint nostrum quo dicta explicabo qui dolorem. Ab ut perferendis est voluptatem iste praesentium.\n\nQuis corporis doloremque autem omnis illo sed. Eos asperiores saepe molestiae asperiores beatae quia. Consequatur voluptatibus molestias aut est labore ea numquam. Animi et sit aliquam qui nesciunt.\n\nNam delectus asperiores quas doloribus amet dolor eaque ut. Aspernatur est possimus pariatur et. Repellendus esse sed corrupti in nam dolorem minima voluptatem. Aliquid et atque ipsam exercitationem incidunt.\n\nAut enim necessitatibus pariatur laboriosam. Saepe porro necessitatibus cupiditate. Odio aut qui dolor molestias non ut enim amet.\n\nHarum suscipit minima dolorum quos. Enim et ex amet cupiditate. Et aliquam dolor non aspernatur et necessitatibus.\n\nSimilique minus deleniti facere adipisci excepturi. Error excepturi iste ut consequatur qui quis.",
+  "user_id": 7,
+  "created_at": "@datetime",
+  "updated_at": "@datetime",
+  "comments_count": 0,
+  "likes_count": 0,
+  "liked": 0,
+  "views_count": 0,
+  "viewed": 0,
+  "comments": [],
+  "user": "$User",
+  "churches": "$[]Church",
+  "addresses": "$[]Address"
+}

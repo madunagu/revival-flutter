@@ -15,7 +15,6 @@ class Society {
   int closed;
   @JsonKey(name: 'user_id') int userId;
   String description;
-  @JsonKey(name: 'deleted_at') DateTime deletedAt;
   @JsonKey(name: 'created_at') DateTime createdAt;
   @JsonKey(name: 'updated_at') DateTime updatedAt;
   Church church;
