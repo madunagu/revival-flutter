@@ -1,9 +1,8 @@
 import 'dart:developer';
 
-import 'package:devotion/blocs/player.bloc.dart';
-import 'package:devotion/events/PlayerEvent.dart';
+import 'package:devotion/bloc/blocs/player.bloc.dart';
+import 'package:devotion/bloc/events/index.dart';
 import 'package:devotion/models/index.dart';
-import 'package:devotion/states/PlayerState.dart';
 import 'package:devotion/util/Constants.dart';
 import 'package:devotion/widgets/AppScaffoldWidget.dart';
 import 'package:devotion/widgets/BottomSheetLine.dart';

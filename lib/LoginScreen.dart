@@ -1,8 +1,8 @@
-import 'package:devotion/blocs/authentication.bloc.dart';
-import 'package:devotion/blocs/login.bloc.dart';
-import 'package:devotion/events/LoginEvent.dart';
+import 'package:devotion/bloc/blocs/authentication.bloc.dart';
+import 'package:devotion/bloc/blocs/login.bloc.dart';
+import 'package:devotion/bloc/events/LoginEvent.dart';
+import 'package:devotion/bloc/states/LoginState.dart';
 import 'package:devotion/repositories/UserRepository.dart';
-import 'package:devotion/states/LoginState.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

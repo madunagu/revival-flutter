@@ -4,34 +4,27 @@ import 'package:devotion/PlayerScreen.dart';
 import 'package:devotion/models/Event.dart';
 import 'package:devotion/models/VideoPost.dart';
 import 'package:devotion/models/index.dart';
+import 'package:devotion/util/TimeHandler.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/widgets/ImageAvatarWidget.dart';
 import 'package:devotion/widgets/InteractionButtonWidget.dart';
 import 'package:flutter/material.dart';
 
 class CurvedVideoItemWidget extends StatelessWidget {
-  final String title;
-  final String time;
-  final String people;
-  final IconData icon;
-  final Function onTap;
-  final int videoId;
+//  final String title;
+//  final String time;
+//  final String people;
+//  final IconData icon;
+//  final Function onTap;
+//  final int videoId;
   final VideoPost video;
 
   CurvedVideoItemWidget({
-    this.title,
-    this.time,
-    this.icon,
-    this.people,
-    this.onTap,
     this.video,
-    this.videoId,
   });
 
   factory CurvedVideoItemWidget.fromVideo(VideoPost video) {
     return CurvedVideoItemWidget(
-      title: video.name,
-      time: video.length.toString(),
       video: video,
     );
   }
@@ -51,7 +44,9 @@ class CurvedVideoItemWidget extends StatelessWidget {
         decoration: BoxDecoration(
           image: DecorationImage(
               image: AssetImage('images/avatar1.jpg'), fit: BoxFit.cover),
-          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(70)),
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(70),
+          ),
         ),
         height: 270,
         width: MediaQuery.of(context).size.width,
@@ -66,7 +61,7 @@ class CurvedVideoItemWidget extends StatelessWidget {
                 width: MediaQuery.of(context).size.width,
                 child: Row(children: <Widget>[
                   ImageAvatarWidget(
-                    imageURL: 'images/avatar1.jpg',
+                    imageURL: video.user.avatar,
                     size: 36,
                   ),
                   SizedBox(
@@ -78,7 +73,7 @@ class CurvedVideoItemWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          'John Brown',
+                          video.user.name,
                           style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -86,7 +81,7 @@ class CurvedVideoItemWidget extends StatelessWidget {
                               height: 19 / 16),
                         ),
                         Text(
-                          '8 Nov',
+                          getRelativeTime(video.createdAt),
                           style: TextStyle(
                               fontSize: 12,
                               color: Color(0x90ffffff),
@@ -107,14 +102,15 @@ class CurvedVideoItemWidget extends StatelessWidget {
                   children: <Widget>[
                     InteractionButtonWidget(
                       icon: Icons.favorite,
-                      active: false,
+                      count: video.likesCount,
+                      active: video.liked == 1,
                     ),
                     SizedBox(
                       width: 22,
                     ),
                     InteractionButtonWidget(
                       icon: Icons.message,
-                      active: false,
+                      count: video.commentsCount,
                     ),
                     SizedBox(
                       width: 40,

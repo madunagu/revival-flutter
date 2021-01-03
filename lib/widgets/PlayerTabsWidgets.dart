@@ -1,5 +1,5 @@
-import 'package:devotion/blocs/player.bloc.dart';
-import 'package:devotion/events/PlayerEvent.dart';
+import 'package:devotion/bloc/blocs/player.bloc.dart';
+import 'package:devotion/bloc/events/PlayerEvent.dart';
 import 'package:devotion/models/VideoPost.dart';
 import 'package:devotion/util/Constants.dart';
 import 'package:devotion/widgets/CommentItemWidget.dart';

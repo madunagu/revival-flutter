@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:devotion/events/FormEvent.dart';
-import 'package:devotion/states/FormSheetState.dart';
+import 'package:devotion/bloc/events/index.dart';
+import 'package:devotion/bloc/states/FormSheetState.dart';
 import 'package:devotion/util/NetworkingClass.dart';
 import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';

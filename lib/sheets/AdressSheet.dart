@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:devotion/blocs/form.bloc.dart';
-import 'package:devotion/events/FormEvent.dart';
-import 'package:devotion/states/FormSheetState.dart';
+
+import 'package:devotion/bloc/blocs/form.bloc.dart';
+import 'package:devotion/bloc/events/FormEvent.dart';
+import 'package:devotion/bloc/states/FormSheetState.dart';
 import 'package:devotion/models/Address.dart';
 import 'package:devotion/util/NetworkingClass.dart';
 import 'package:flutter/material.dart';

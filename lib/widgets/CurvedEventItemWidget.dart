@@ -4,6 +4,7 @@ import 'package:devotion/SingleEventScreen.dart';
 import 'package:devotion/misc/StyleConstants.dart';
 import 'package:devotion/models/Event.dart';
 import 'package:devotion/util/Constants.dart';
+import 'package:devotion/util/TimeHandler.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/widgets/ImageAvatarListWidget.dart';
 import 'package:devotion/widgets/ImageAvatarWidget.dart';
@@ -22,15 +23,6 @@ class CurvedEventItemWidget extends StatelessWidget {
       event: event,
       color: color,
     );
-  }
-  String getRelativeTime() {
-    try {
-      return event.startingAt.day.toString() +
-          ' ' +
-          months[event.startingAt.month];
-    } catch (_) {
-      return 'D Month';
-    }
   }
 
   @override
@@ -59,7 +51,7 @@ class CurvedEventItemWidget extends StatelessWidget {
                   height: 32,
                 ),
                 Text(
-                  getRelativeTime(),
+                  getRelativeTime(event.startingAt),
                   style: TextStyle(
                     color: Color(0x70ffffff),
                     fontSize: 11,
@@ -83,31 +75,32 @@ class CurvedEventItemWidget extends StatelessWidget {
                   ),
                 ),
                 Spacer(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    ImageAvatarListWidget(
-                      images: [
-                        'images/avatar1.jpg',
-                        'images/avatar1.jpg',
-                      ],
-                      size: 24,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      'Join Marie, John and ${event.attendeesCount} others',
-                      style: TextStyle(
-                        color: Color(0x70ffffff),
-                        letterSpacing: -0.24,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.italic,
-                      ),
-                    ),
-                  ],
-                ),
+                event.attendeesCount > 0
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          ImageAvatarListWidget(
+                            images: event.attendees
+                                .getRange(0, 7)
+                                .map((e) => e.avatar),
+                            size: 24,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            'Join ${event.attendees.getRange(0, 2).map((e) => e.name).join(", ")} and ${event.attendeesCount} others',
+                            style: TextStyle(
+                              color: Color(0x70ffffff),
+                              letterSpacing: -0.24,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        ],
+                      )
+                    : Container(),
                 SizedBox(
                   height: 40,
                 ),

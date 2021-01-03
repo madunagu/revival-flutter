@@ -26,7 +26,7 @@ class ImageAvatarWidget extends StatelessWidget {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(50)),
-        child: Image.asset(
+        child: Image.network(
           imageURL,
           fit: BoxFit.fitWidth,
         ),

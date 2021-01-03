@@ -2,6 +2,7 @@
   "id": 1,
   "name": "Dr. Maria Rolfson MD",
   "api_token": null,
+  "avatar": "this/url",
   "email": "gwolff@example.com",
   "email_verified_at": "@datetime",
   "assigned_at": "@datetime",

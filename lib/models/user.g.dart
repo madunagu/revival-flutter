@@ -11,6 +11,7 @@ User _$UserFromJson(Map<String, dynamic> json) {
     ..id = json['id'] as int
     ..name = json['name'] as String
     ..apiToken = json['api_token']
+    ..avatar = json['avatar'] as String
     ..email = json['email'] as String
     ..emailVerifiedAt = json['email_verified_at'] == null
         ? null
@@ -32,6 +33,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'api_token': instance.apiToken,
+      'avatar': instance.avatar,
       'email': instance.email,
       'email_verified_at': instance.emailVerifiedAt?.toIso8601String(),
       'assigned_at': instance.assignedAt?.toIso8601String(),

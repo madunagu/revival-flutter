@@ -10,6 +10,7 @@ class User {
   int id;
   String name;
   @JsonKey(name: 'api_token') dynamic apiToken;
+  String avatar;
   String email;
   @JsonKey(name: 'email_verified_at') DateTime emailVerifiedAt;
   @JsonKey(name: 'assigned_at') DateTime assignedAt;

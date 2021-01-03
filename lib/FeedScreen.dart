@@ -1,10 +1,9 @@
 import 'package:devotion/SingleEventScreen.dart';
-import 'package:devotion/blocs/post.bloc.dart';
-import 'package:devotion/events/PostEvent.dart';
+import 'package:devotion/bloc/blocs/post.bloc.dart';
+import 'package:devotion/bloc/events/index.dart';
 import 'package:devotion/misc/StyleConstants.dart';
 import 'package:devotion/models/Feed.dart';
 import 'package:devotion/models/index.dart';
-import 'package:devotion/states/PostState.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/widgets/CurvedEventItemWidget.dart';
 import 'package:devotion/widgets/CurvedListItem.dart';
@@ -13,6 +12,8 @@ import 'package:devotion/widgets/CurvedVideoItemWidget.dart';
 import 'package:devotion/widgets/CurvedPostItemWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'bloc/states/index.dart';
 
 // List<CurvedListItem> items = [
 //   CurvedListItem(

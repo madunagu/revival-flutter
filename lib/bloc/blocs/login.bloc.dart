@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:devotion/blocs/authentication.bloc.dart';
-import 'package:devotion/events/AuthenticationEvent.dart';
-import 'package:devotion/events/LoginEvent.dart';
+
+import 'package:devotion/bloc/blocs/authentication.bloc.dart';
+import 'package:devotion/bloc/events/index.dart';
+import 'package:devotion/bloc/states/index.dart';
 import 'package:devotion/repositories/UserRepository.dart';
-import 'package:devotion/states/LoginState.dart';
 import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
 
