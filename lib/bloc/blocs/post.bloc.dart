@@ -259,6 +259,23 @@ class PostBloc extends Bloc<PostEvent, PostState> {
           "updated_at": "2021-01-02 22:05:50"
         },
         "attendees": [],
+        "addresses":[
+        {
+    "id": 3,
+    "user_id": 1,
+    "address1": "67682 Matilda Manor",
+    "address2": "692 Dickinson Mission Apt. 216",
+    "country": "Trinidad and Tobago",
+    "state": "Maine",
+    "city": "Starkchester",
+    "postal_code": "39321-2828",
+    "default_address": 0,
+    "name": "Shayna Bauch",
+    "longitude": -131.358437,
+    "latitude": -76.45348,
+    "parseable": 1
+}
+        ],
         "profile_media": null
       }
     },

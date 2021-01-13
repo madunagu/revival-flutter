@@ -12,6 +12,8 @@ Comment _$CommentFromJson(Map<String, dynamic> json) {
     ..parentId = json['parent_id'] as int
     ..comment = json['comment'] as String
     ..userId = json['user_id'] as int
+    ..likes = json['likes'] as int
+    ..liked = json['liked'] as int
     ..commentableId = json['commentable_id'] as int
     ..commentableType = json['commentable_type'] as String
     ..createdAt = json['created_at'] == null
@@ -30,6 +32,8 @@ Map<String, dynamic> _$CommentToJson(Comment instance) => <String, dynamic>{
       'parent_id': instance.parentId,
       'comment': instance.comment,
       'user_id': instance.userId,
+      'likes': instance.likes,
+      'liked': instance.liked,
       'commentable_id': instance.commentableId,
       'commentable_type': instance.commentableType,
       'created_at': instance.createdAt?.toIso8601String(),

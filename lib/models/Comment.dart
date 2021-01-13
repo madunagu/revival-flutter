@@ -11,6 +11,8 @@ class Comment {
   @JsonKey(name: 'parent_id') int parentId;
   String comment;
   @JsonKey(name: 'user_id') int userId;
+  int likes;
+  int liked;
   @JsonKey(name: 'commentable_id') int commentableId;
   @JsonKey(name: 'commentable_type') String commentableType;
   @JsonKey(name: 'created_at') DateTime createdAt;

@@ -12,7 +12,7 @@ class UserInfoWidget extends StatelessWidget {
         children: [
           ImageAvatarWidget(
             size: 36,
-            imageURL: 'images/avatar1.jpg',
+            imageURL: user.avatar,
           ),
           SizedBox(width: 20),
           Column(

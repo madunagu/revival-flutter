@@ -1,20 +1,15 @@
 import 'dart:developer';
 
+import 'package:devotion/bloc/blocs/list.bloc.dart';
 import 'package:devotion/bloc/blocs/player.bloc.dart';
+import 'package:devotion/bloc/events/ListEvent.dart';
 import 'package:devotion/bloc/events/index.dart';
 import 'package:devotion/models/index.dart';
 import 'package:devotion/util/Constants.dart';
 import 'package:devotion/widgets/AppScaffoldWidget.dart';
 import 'package:devotion/widgets/BottomSheetLine.dart';
-import 'package:devotion/widgets/CommentItemWidget.dart';
-import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/widgets/DottedTabBarWidget.dart';
-import 'package:devotion/widgets/ImageAvatarWidget.dart';
-import 'package:devotion/widgets/InteractionButtonWidget.dart';
-import 'package:devotion/widgets/MessageItemWidget.dart';
 import 'package:devotion/widgets/PlayerTabsWidgets.dart';
-import 'package:devotion/widgets/SmallItemWidget.dart';
-import 'package:devotion/widgets/UserInfoWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,7 +25,7 @@ class PlayerScreen extends StatefulWidget {
 
 class _PlayerScreenState extends State<PlayerScreen>
     with TickerProviderStateMixin {
-  double videoScreenRatio = 1;
+  double videoScreenRatio = 1.77;
   double playedRatio = 0;
 
   double sheetPositionTop = 280;
@@ -62,25 +57,23 @@ class _PlayerScreenState extends State<PlayerScreen>
   void initState() {
     _videoController =
         VideoPlayerController.network(rootURL + widget.playable.srcUrl);
-    _initializeVideoPlayerFuture = _videoController.initialize().then((_) {
-      log('VIDEO LOADED FROM NET');
-      _videoController.play();
-      setState(() {
-        videoScreenRatio = _videoController.value.aspectRatio;
-        Size size = MediaQuery.of(context).size;
-        sheetPositionTop = size.width / videoScreenRatio + 36;
-      });
-    });
+//    _initializeVideoPlayerFuture = _videoController.initialize()
+//      .then((_) {
+//        log('VIDEO LOADED FROM NET');
+//        _videoController.play();
+//        setState(() {
+//          videoScreenRatio = _videoController.value.aspectRatio;
+//          Size size = MediaQuery.of(context).size;
+//          sheetPositionTop = size.width / videoScreenRatio + 36;
+//        });
+//      }, onError: (_) {
+//        log('error initializing video');
+//      });
 
     _videoController.setLooping(true);
 
     _tabController = TabController(vsync: this, length: 4);
-    _tabController.addListener(() {
-      int i = _tabController.index;
-      setState(() {
-        activeSlide = i;
-      });
-    });
+
     BlocProvider.of<PlayerBloc>(context)
         .add(PlayerFetched(id: 1, playedType: PlayedType.video));
     super.initState();
@@ -127,7 +120,10 @@ class _PlayerScreenState extends State<PlayerScreen>
                   children: [
                     GestureDetector(
                       onVerticalDragEnd: toggleSheet,
-                      child: SheetHeaderWidget(size: size, titles: titles, tabController: _tabController),
+                      child: SheetHeaderWidget(
+                          size: size,
+                          titles: titles,
+                          tabController: _tabController),
                     ),
                     Container(
                       height: size.height - sheetPositionTop - 78,
@@ -142,7 +138,10 @@ class _PlayerScreenState extends State<PlayerScreen>
                           SingleChildScrollView(
                             child: LyricsWidget(),
                           ),
-                          SingleChildScrollView(
+                          BlocProvider(
+                            create: (BuildContext context) => ListBloc(
+                                  feedType: 'comment', resource: '/comments')
+                                ..add(ListFetched()),
                             child: CommentsSectionWidget(),
                           ),
                           SingleChildScrollView(
@@ -179,6 +178,19 @@ class SheetHeaderWidget extends StatefulWidget {
 }
 
 class _SheetHeaderWidgetState extends State<SheetHeaderWidget> {
+  int activeSlide = 0;
+  @override
+  void initState() {
+    widget.tabController.addListener(() {
+      int i = widget.tabController.index;
+      setState(() {
+        activeSlide = i;
+      });
+    });
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -195,11 +207,10 @@ class _SheetHeaderWidgetState extends State<SheetHeaderWidget> {
             padding: EdgeInsets.symmetric(horizontal: 24),
             child: Row(
               mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment:
-                  MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  widget.titles[widget.tabController.index],
+                  widget.titles[activeSlide],
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
@@ -207,7 +218,7 @@ class _SheetHeaderWidgetState extends State<SheetHeaderWidget> {
                 ),
                 DottedTabBarWidget(
                   count: 4,
-                  active: widget.tabController.index,
+                  active: activeSlide,
                 ),
               ],
             ),
@@ -244,19 +255,6 @@ class _VideoControlsState extends State<VideoControls> {
     setState(() {
       isControlsVisible = false;
     });
-  }
-
-  double sliderVal() {
-    return widget.controller.value.duration.inSeconds /
-        widget.controller.value.duration.inSeconds;
-  }
-
-  void sliderChanged(val) {
-    widget.controller.seekTo(
-      Duration(
-        seconds: (widget.controller.value.duration.inSeconds * val).round(),
-      ),
-    );
   }
 
   @override
@@ -356,15 +354,10 @@ class _VideoControlsState extends State<VideoControls> {
                                     ],
                                   ),
                                 ),
-                                SizedBox(height: 50 / 540 * height),
-                                Container(
-                                  width: widget.size.width,
-                                  child: Slider(
-                                    value: sliderVal(),
-                                    onChanged: sliderChanged,
-                                    inactiveColor: Color(0x50d47fa6),
-                                    activeColor: Color(0xdfffffff),
-                                  ),
+                                SizedBox(height: 20 / 540 * height),
+                                VideoSlider(
+                                  controller: widget.controller,
+                                  size: widget.size,
                                 )
                               ],
                             )),
@@ -382,6 +375,64 @@ class _VideoControlsState extends State<VideoControls> {
               child: CircularProgressIndicator(),
             ),
     );
+  }
+}
+
+class VideoSlider extends StatefulWidget {
+  const VideoSlider({
+    Key key,
+    @required this.controller,
+    @required this.size,
+  }) : super(key: key);
+
+  final VideoPlayerController controller;
+  final Size size;
+
+  @override
+  _VideoSliderState createState() => _VideoSliderState();
+}
+
+class _VideoSliderState extends State<VideoSlider> {
+  double sliderPos = 0;
+  void sliderChanged(val) {
+    setState(() {
+      sliderPos = val;
+    });
+    widget.controller.seekTo(
+      Duration(
+        seconds: val.round(),
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    sliderPos = widget.controller.value.position.inSeconds.toDouble();
+    widget.controller.addListener(() {
+      setState(() {
+        sliderPos = widget.controller.value.position.inSeconds.toDouble();
+      });
+    });
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        width: widget.size.width,
+        child: Slider(
+          value: sliderPos,
+          max: widget.controller.value.duration.inSeconds * 1.0,
+          onChanged: sliderChanged,
+          inactiveColor: Color(0x50d47fa6),
+          activeColor: Color(0xdfffffff),
+        ));
   }
 }
 
@@ -481,7 +532,7 @@ class VideoWidget extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.done) {
             return Container(
               width: size.width,
-              height: size.width/ controller.value.aspectRatio +60,
+              height: size.width / controller.value.aspectRatio + 60,
               alignment: Alignment.center,
               child: AspectRatio(
                 aspectRatio: controller.value.aspectRatio,
@@ -493,103 +544,6 @@ class VideoWidget extends StatelessWidget {
           }
         },
       ),
-    );
-  }
-}
-
-class PlayerControls extends StatelessWidget {
-  final VideoPlayerController controller;
-  const PlayerControls({
-    Key key,
-    @required this.size,
-    @required this.height,
-    @required this.controller,
-  }) : super(key: key);
-
-  final Size size;
-  final double height;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          width: size.width,
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Icon(
-                Icons.arrow_back,
-                color: Colors.white,
-              ),
-              Icon(
-                Icons.filter,
-                color: Colors.white,
-              ),
-            ],
-          ),
-        ),
-        SizedBox(height: 60 / 540 * height),
-        Container(
-          width: size.width,
-          padding:
-              EdgeInsets.symmetric(horizontal: 50, vertical: 30 / 540 * height),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Icon(
-                Icons.skip_previous,
-                color: Colors.white,
-                size: 34,
-              ),
-              InkWell(
-                onTap: () {
-                  if (controller.value.isPlaying) {
-                    controller.pause();
-                  } else {
-                    // If the video is paused, play it.
-                    controller.play();
-                  }
-                },
-                child: Container(
-                  height: 50,
-                  width: 50,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    color: Color(0xffd47fa6),
-                  ),
-                  child: Icon(
-                    Icons.play_arrow,
-                    color: Colors.white,
-                    size: 34,
-                  ),
-                ),
-              ),
-              Icon(Icons.skip_next, color: Colors.white, size: 34),
-            ],
-          ),
-        ),
-        SizedBox(height: 50 / 540 * height),
-        Container(
-          width: size.width,
-          child: Slider(
-            value: controller.value.position.inSeconds /
-                controller.value.duration.inSeconds,
-            onChanged: (val) {
-              controller.seekTo(
-                Duration(
-                  seconds: (controller.value.duration.inSeconds * val).round(),
-                ),
-              );
-            },
-            inactiveColor: Color(0x50d47fa6),
-            activeColor: Color(0xdfffffff),
-          ),
-        )
-      ],
     );
   }
 }

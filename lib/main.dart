@@ -101,7 +101,6 @@ class MyApp extends StatelessWidget {
 //            return PlayerScreen(playable: video);
           }
           if (state is AuthenticationFailure) {
-            // return PlayerScreen(1);
             return LoginScreen(userRepository: userRepository);
           }
           if (state is AuthenticationInProgress) {

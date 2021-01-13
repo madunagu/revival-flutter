@@ -1,7 +1,14 @@
+import 'dart:convert';
+
 import 'package:devotion/bloc/blocs/player.bloc.dart';
+import 'package:devotion/bloc/blocs/list.bloc.dart';
 import 'package:devotion/bloc/events/PlayerEvent.dart';
+import 'package:devotion/bloc/events/ListEvent.dart';
+import 'package:devotion/bloc/states/ListState.dart';
+import 'package:devotion/models/Comment.dart';
 import 'package:devotion/models/VideoPost.dart';
 import 'package:devotion/util/Constants.dart';
+import 'package:devotion/util/NetworkingClass.dart';
 import 'package:devotion/widgets/CommentItemWidget.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/widgets/ImageAvatarWidget.dart';
@@ -10,9 +17,42 @@ import 'package:devotion/widgets/UserInfoWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class VideoDetailsWidget extends StatelessWidget {
+class VideoDetailsWidget extends StatefulWidget {
   final VideoPost video;
-  const VideoDetailsWidget({Key key, @required this.video}) : super(key: key);
+  final PlayedType playedType;
+  const VideoDetailsWidget(
+      {Key key, @required this.video, @required this.playedType})
+      : super(key: key);
+
+  @override
+  _VideoDetailsWidgetState createState() => _VideoDetailsWidgetState();
+}
+
+class _VideoDetailsWidgetState extends State<VideoDetailsWidget> {
+  VideoPost video;
+  likeVideo() async {
+    String url = widget.playedType == PlayedType.video
+        ? '/video-posts/'
+        : '/audio-posts/';
+    Map<ResponseKey, dynamic> liked =
+        await NetworkingClass().post(url + video.id.toString(), []);
+    if (liked[ResponseKey.type] == ResponseType.data) {
+      var res = liked[ResponseKey.data]['data'];
+      if (res == 'true') {
+        setState(() {
+          this.video.liked = 1;
+        });
+      } else {
+        //handle liking error
+      }
+    }
+  }
+
+  @override
+  initState() {
+    video = widget.video;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +86,7 @@ class VideoDetailsWidget extends StatelessWidget {
             radius: 60,
             child: Container(
               padding:
-              EdgeInsets.only(top: 10, bottom: 30, right: 24, left: 24),
+                  EdgeInsets.only(top: 10, bottom: 30, right: 24, left: 24),
 //              margin: EdgeInsets.only(bottom: 30),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
@@ -55,14 +95,11 @@ class VideoDetailsWidget extends StatelessWidget {
                   VideoInteraction(
                     active: video.liked == 1,
                     counter: '${video.likesCount} likes',
-                    onTap: () {
-                      BlocProvider.of<PlayerBloc>(context).add(PlayerLiked(
-                          id: video.id, playedType: PlayedType.video));
-                    },
+                    onTap: likeVideo,
                   ),
                   VideoInteraction(
                     icon: Icons.chat_bubble_outline,
-                    counter: '${video.commentsCount} comments',
+                    counter: '${widget.video.commentsCount} comments',
                   ),
                   VideoInteraction(
                     counter: '',
@@ -76,7 +113,7 @@ class VideoDetailsWidget extends StatelessWidget {
             radius: 60,
             borderColor: Color(0xffE7E4E9),
             padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-            child: UserInfoWidget(user: video.user),
+            child: UserInfoWidget(user: widget.video.user),
           ),
           SizedBox(height: 10),
           Container(
@@ -85,7 +122,7 @@ class VideoDetailsWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  " ${video.createdAt.day.toString()} ${months[video.createdAt.month - 1]},  ${video.createdAt.year}",
+                  " ${widget.video.createdAt.day.toString()} ${months[widget.video.createdAt.month - 1]},  ${widget.video.createdAt.year}",
                   style: TextStyle(
                     color: Color(0xff817889),
                     fontWeight: FontWeight.bold,
@@ -93,7 +130,7 @@ class VideoDetailsWidget extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  video.description,
+                  widget.video.description,
                   style: TextStyle(color: Color(0xff817889)),
                 ),
               ],
@@ -106,38 +143,56 @@ class VideoDetailsWidget extends StatelessWidget {
   }
 }
 
-class CommentsSectionWidget extends StatelessWidget {
+class CommentsSectionWidget extends StatefulWidget {
+  @override
+  _CommentsSectionWidgetState createState() => _CommentsSectionWidgetState();
+}
+
+class _CommentsSectionWidgetState extends State<CommentsSectionWidget> {
+  List<CommentItemWidget> comments = [];
+  final _scrollController = ScrollController();
+  final _scrollThreshold = 200.0;
+  ListBloc _listBloc;
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+    _listBloc = BlocProvider.of<ListBloc>(context);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.position.pixels;
+    if (maxScroll - currentScroll <= _scrollThreshold) {
+      _listBloc.add(ListFetched());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        CreateCommentWidget(),
-        CommentItemWidget(
-          message:
-          'Check out this meetup with an extrely long oent in order to hek how the iew is going to be displayed without inter ferene of the elastiity',
-          image: Image.asset('images/avatar1.jpg'),
-          timeAgo: 'Aug 19',
-          name: 'Stephen Moreau',
-        ),
-        CommentItemWidget(
-          message: 'Welcome to Kizomba meetup',
-          image: Image.asset('images/avatar1.jpg'),
-          timeAgo: 'Jun 21',
-          name: 'Andy Lane',
-        ),
-        CommentItemWidget(
-          message: 'Feb 13',
-          image: Image.asset('images/avatar1.jpg'),
-          timeAgo: '8hrs',
-          name: 'Anson Buck',
-        ),
-        CommentItemWidget(
-          message: 'Bonjour',
-          image: Image.asset('images/avatar1.jpg'),
-          timeAgo: 'Sep 18, 2017',
-          name: 'Dinar Meyer',
-        ),
-      ],
+    return BlocBuilder<ListBloc, ListState>(
+      builder: (BuildContext context, ListState state) {
+        if (state is ListSuccess) {
+          return SingleChildScrollView(
+            controller: _scrollController,
+            child: Column(
+              children: state.models
+                  .map((e) => CommentItemWidget(comment: e))
+                  .toList(),
+            ),
+          );
+        } else if (state is ListInitial) {
+          return Center(child: CircularProgressIndicator());
+        } else {
+          return Center(child: Text('No Comments'));
+        }
+      },
     );
   }
 }
@@ -182,11 +237,11 @@ class CreateCommentWidget extends StatelessWidget {
                       height: 1.42,
                       letterSpacing: -0.14,
                     ),
-                    minLines: 3,
+                    minLines: 1,
                     maxLines: 5,
                     decoration: InputDecoration(
                       hintText: 'Comment here...',
-                      border: OutlineInputBorder(
+                      border: UnderlineInputBorder(
                         borderSide: BorderSide(color: Color(0xffE7E4E9)),
                         borderRadius: BorderRadius.circular(20),
                       ),
@@ -238,20 +293,25 @@ class VideoInteraction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Icon(
-          icon,
-          size: 40,
-          color: active ? Color(0xffd47fa6) : Colors.black,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        child: Column(
+          children: [
+            Icon(
+              icon,
+              size: 40,
+              color: active ? Color(0xffd47fa6) : Colors.black,
+            ),
+            SizedBox(
+              height: 6,
+            ),
+            Text(
+              counter,
+            ),
+          ],
         ),
-        SizedBox(
-          height: 6,
-        ),
-        Text(
-          counter,
-        ),
-      ],
+      ),
     );
   }
 }
@@ -343,17 +403,18 @@ class MusicListWidget extends StatelessWidget {
   }
 }
 
+TextStyle normalStyle = TextStyle(
+    fontSize: 24,
+    color: Color(0xff817889),
+    fontWeight: FontWeight.bold,
+    height: 1.2,
+    wordSpacing: 2);
+TextStyle highlightedStyle =
+    normalStyle.copyWith(color: Color(0xffd47fa6), fontSize: 26);
+
 class LyricsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    TextStyle normalStyle = TextStyle(
-        fontSize: 24,
-        color: Color(0xff817889),
-        fontWeight: FontWeight.bold,
-        height: 1.2,
-        wordSpacing: 2);
-    TextStyle highlightedStyle =
-    normalStyle.copyWith(color: Color(0xffd47fa6), fontSize: 26);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
       child: Column(
@@ -382,6 +443,21 @@ class LyricsWidget extends StatelessWidget {
           Text(
               'So set me on fire like i\'ve never known, I wanna love you more',
               style: normalStyle),
+        ],
+      ),
+    );
+  }
+}
+
+class LyricLine extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      child: Column(
+        children: [
+          Text('Ill rather be kindling in your love', style: normalStyle),
+          SizedBox(height: 20),
         ],
       ),
     );

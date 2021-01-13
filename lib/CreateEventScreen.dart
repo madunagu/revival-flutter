@@ -6,6 +6,7 @@ import 'package:devotion/widgets/AppBarWidget.dart';
 import 'package:devotion/widgets/AppScaffoldWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:devotion/misc/my_flutter_app_icons.dart';
 
 class CreateEventScreen extends StatefulWidget {
   @override
@@ -26,7 +27,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
     setState(() {
       if (eventAddress == null) return;
-      
+
       myEvent.addresses[0] = eventAddress;
     });
   }
@@ -46,7 +47,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Give your group a name. Describe who should join and what you’ll do.',
+              'Give your event a name. Describe who should attend and what you’ll do.',
               style: TextStyle(
                 fontWeight: FontWeight.w500,
                 letterSpacing: -0.14,
@@ -57,7 +58,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
               height: 20,
             ),
             Text(
-              'Group name',
+              'Event Name',
               style: TextStyle(
                 letterSpacing: -0.22,
                 fontWeight: FontWeight.w600,
@@ -260,7 +261,7 @@ class CreateModelRowWidget extends StatelessWidget {
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w700,
-                          letterSpacing: -0.14),
+                          letterSpacing: -0.1),
                     ),
                     Icon(
                       Icons.arrow_forward_ios,

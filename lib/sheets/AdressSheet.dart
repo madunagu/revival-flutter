@@ -1,20 +1,18 @@
 import 'dart:convert';
 import 'dart:developer';
 
-
 import 'package:devotion/bloc/blocs/form.bloc.dart';
 import 'package:devotion/bloc/events/FormEvent.dart';
 import 'package:devotion/bloc/states/FormSheetState.dart';
 import 'package:devotion/models/Address.dart';
 import 'package:devotion/util/NetworkingClass.dart';
+import 'package:devotion/widgets/MapWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddressSheet extends StatefulWidget {
   AddressSheet({Key key}) : super(key: key);
-  final EdgeInsetsGeometry inputPadding = EdgeInsets.all(8);
-
   @override
   _AddressSheetState createState() => _AddressSheetState();
 }
@@ -23,12 +21,44 @@ class _AddressSheetState extends State<AddressSheet> {
   final Address myAddress = Address();
   final NetworkingClass myNetwork = NetworkingClass();
   final _formKey = GlobalKey<FormState>();
-  String countryValue = 'Nigeria';
-
+  String countryValue;
+  String stateValue;
+  List<String> countries = ['Nigeria', 'Ghana', 'Kenya', 'Uganda'];
+  List<String> states = ['Imo', 'Enugu', 'Anambara', 'Lagos'];
   TextEditingController line1Controller = TextEditingController();
   TextEditingController line2Controller = TextEditingController();
   TextEditingController cityController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+  final TextStyle inputStyle = const TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+    color: Color(0x52241332),
+    height: 20 / 16,
+    fontFamily: 'Montserrat',
+    letterSpacing: -0.1,
+  );
+  final InputDecoration inputDecoration = const InputDecoration(
+    enabledBorder: UnderlineInputBorder(
+      borderSide: BorderSide(
+        style: BorderStyle.solid,
+        color: Color(0xffdddddd),
+      ),
+    ),
+    focusedBorder: UnderlineInputBorder(
+      borderSide: BorderSide(
+        style: BorderStyle.solid,
+        color: Color(0xff352641),
+        width: 2,
+      ),
+    ),
+    border: UnderlineInputBorder(
+      borderSide: BorderSide(
+        style: BorderStyle.solid,
+        color: Color(0xffdddddd),
+      ),
+    ),
+    hintText: 'Address line 1',
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -37,13 +67,14 @@ class _AddressSheetState extends State<AddressSheet> {
         builder: (BuildContext context, FormSheetState state) {
           return Container(
             color: Colors.white,
-            padding: EdgeInsets.symmetric(horizontal: 32),
+            padding: EdgeInsets.symmetric(horizontal: 40),
             child: BlocListener<FormBloc, FormSheetState>(
               listener: (context, state) {
                 print(state);
                 if (state is FormSuccess) {
                   log(state.toString());
-                  Navigator.of(context).pop(Address.fromJson(state.object['data']));
+                  Navigator.of(context)
+                      .pop(Address.fromJson(state.object['data']));
                 }
               },
               // condition: (state, state2) {
@@ -63,146 +94,109 @@ class _AddressSheetState extends State<AddressSheet> {
                     Text(
                       'Create Address',
                       style:
-                          TextStyle(fontSize: 32, fontWeight: FontWeight.w700),
+                          TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
                     ),
                     SizedBox(
                       height: 21,
                     ),
                     TextFormField(
                       controller: line1Controller,
-                      decoration: InputDecoration(
+                      style: inputStyle.copyWith(color: Color(0xff241332)),
+                      decoration: inputDecoration.copyWith(
                           errorText: validationMessage(state, 'address1'),
-                          contentPadding: widget.inputPadding,
-                          border: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              style: BorderStyle.solid,
-                              color: Colors.red,
-                            ),
-                          ),
-                          hintText: 'Address line 1'),
+                          hintText: 'Address line 1',
+                          hintStyle: inputStyle),
                     ),
                     SizedBox(
                       height: 21,
                     ),
                     TextFormField(
+                      style: inputStyle.copyWith(color: Color(0xff241332)),
                       controller: line2Controller,
-                      decoration: InputDecoration(
+                      decoration: inputDecoration.copyWith(
                           errorText: validationMessage(state, 'address2'),
-                          contentPadding: widget.inputPadding,
-                          border: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              style: BorderStyle.solid,
-                              color: Colors.red,
-                            ),
-                          ),
-                          hintText: 'Address line 2'),
-                    ),
-                    SizedBox(
-                      height: 21,
-                    ),
-                    Text(
-                      'Country',
-                      style: TextStyle(
-                        letterSpacing: -0.22,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 11,
-                      ),
-                    ),
-                    Container(
-                      width: double.infinity,
-                      child: DropdownButton<String>(
-                        value: countryValue,
-                        icon: Icon(Icons.arrow_downward),
-                        iconSize: 18,
-                        elevation: 16,
-                        style: TextStyle(color: Colors.black),
-                        underline: Container(
-                          height: 1,
-                          color: Colors.grey,
-                        ),
-                        onChanged: (String newValue) {
-                          setState(() {
-                            countryValue = newValue;
-                          });
-                        },
-                        items: <String>['Nigeria', 'Ghana', 'Kenya', 'Uganda']
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 18,
-                    ),
-                    Text(
-                      'State',
-                      style: TextStyle(
-                        letterSpacing: -0.22,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 11,
-                      ),
-                    ),
-                    Container(
-                      width: double.infinity,
-                      child: DropdownButton<String>(
-                        value: countryValue,
-                        icon: Icon(Icons.arrow_downward),
-                        iconSize: 18,
-                        elevation: 16,
-                        style: TextStyle(color: Colors.black),
-                        underline: Container(
-                          height: 1,
-                          color: Colors.grey,
-                        ),
-                        onChanged: (String newValue) {
-                          setState(() {
-                            countryValue = newValue;
-                          });
-                        },
-                        items: <String>['Nigeria', 'Ghana', 'Kenya', 'Uganda']
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
+                          hintText: 'Address line 2',
+                          hintStyle: inputStyle),
                     ),
                     SizedBox(
                       height: 21,
                     ),
                     TextFormField(
                       controller: cityController,
-                      decoration: InputDecoration(
-                          contentPadding: widget.inputPadding,
-                          border: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              style: BorderStyle.solid,
-                              color: Colors.red,
-                            ),
-                          ),
-                          hintText: 'City'),
+                      style: inputStyle.copyWith(color: Color(0xff241332)),
+                      decoration: inputDecoration.copyWith(
+                          errorText: validationMessage(state, 'city'),
+                          hintText: 'City',
+                          hintStyle: inputStyle),
+                    ),
+                    SizedBox(height: 21),
+//                    Text(
+//                      'Country',
+//                      style: TextStyle(
+//                        letterSpacing: -0.22,
+//                        fontWeight: FontWeight.w600,
+//                        fontSize: 11,
+//                      ),
+//                    ),
+                    Container(
+                      width: double.infinity,
+                      child: DropdownButton<String>(
+                        value: countryValue,
+                        hint: Text('Country', style: inputStyle),
+                        elevation: 16,
+                        style: inputStyle.copyWith(color: Color(0xff241332)),
+                        underline: Container(
+                          padding: EdgeInsets.only(top:8),
+                          height: 1,
+                          color: Color(0xffdddddd),
+                        ),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            countryValue = newValue;
+                          });
+                        },
+                        items: countries
+                            .map((String value) => DropdownMenuItem(
+                                  value: value,
+                                  child: Text(value),
+                                ))
+                            .toList(),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 18,
+                    ),
+
+                    Container(
+                      width: double.infinity,
+                      child: DropdownButton<String>(
+                        value: stateValue,
+                        hint: Text('State', style: inputStyle),
+                        elevation: 16,
+                        style: inputStyle.copyWith(color: Color(0xff241332)),
+                        underline: Container(
+                          height: 1,
+                          color: Color(0xffdddddd),
+                        ),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            stateValue = newValue;
+                          });
+                        },
+                        items: states
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
                     ),
                     SizedBox(
                       height: 21,
                     ),
-                    Text(
-                      'Country',
-                      style: TextStyle(
-                        letterSpacing: -0.22,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 11,
-                      ),
-                    ),
-                    // Switch(
-                    //   value: false,
-                    //   onChanged: (value) {
-                    //     this.myAddress.defaultAddress = value;
-                    //   },
-                    // ),
+                    MapWidget(),
+                    SizedBox(height: 20),
                     GestureDetector(
                       onTap:
                           state is FormInProgress ? null : submitButtonPressed,
@@ -226,6 +220,7 @@ class _AddressSheetState extends State<AddressSheet> {
                         ),
                       ),
                     ),
+                    SizedBox(height: 20),
                   ],
                 ),
               ),

@@ -20,5 +20,6 @@
     "author": "$User",
     "user": "$User",
     "churches": "$[]Church",
+    "images": "$[]ImageSource",
     "addresses": "$[]Address"
 }

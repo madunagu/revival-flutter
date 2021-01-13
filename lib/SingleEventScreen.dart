@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:devotion/misc/StyleConstants.dart';
 import 'package:devotion/util/NetworkingClass.dart';
+import 'package:devotion/util/TimeHandler.dart';
 import 'package:devotion/widgets/ErrorNotification.dart';
 import 'package:devotion/widgets/ImageAvatarListWidget.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
@@ -31,71 +32,29 @@ class SingleEventScreen extends StatefulWidget {
 }
 
 class _SingleEventScreenState extends State<SingleEventScreen> {
-  Event event = Event();
+  Event event;
 
   @override
   void initState() {
+    event = widget.event;
     super.initState();
   }
 
   Future<Map<ResponseKey, dynamic>> getEvent() {
     try {
-      NetworkingClass server = NetworkingClass();
-      return server.get('/events/' + widget.event.id.toString());
-    }catch(_){
+      return NetworkingClass().get('/events/' + widget.event.id.toString());
+    } catch (_) {
       log(_.toString());
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Map<ResponseKey, dynamic>>(
-        future: getEvent(),
-        builder: (
-          context,
-          AsyncSnapshot<Map<ResponseKey, dynamic>> snapshot,
-        ) {
-          if (snapshot.hasData) {
-            if (snapshot.data[ResponseKey.type] == ResponseType.data) {
-              var res = snapshot.data[ResponseKey.data]['data'];
-              event = Event.fromJson(snapshot.data[ResponseKey.data]['data']);
-              return AppScaffoldWidget(
-                paddingTop: 55,
-                appBar: EventAppBarWidget(event: event),
-                body: SingleEvent(event: event),
-              );
-            } else {
-              //TODO: add logic for failed event get
-              return AppScaffoldWidget(
-                paddingTop: 155,
-                appBar: EventAppBarWidget(event: event),
-                body: Center(child: Text('Failed')),
-                error: ErrorNotification(
-                  titleText: 'Loading Failed',
-                  okText: 'Reload',
-                  okTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SingleEventScreen(widget.event),
-                      ),
-                    );
-                  },
-                  backTap: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              );
-            }
-          } else {
-            return AppScaffoldWidget(
-              paddingTop: 155,
-              appBar: EventAppBarWidget(event: event),
-              body: Center(child: Text('Failed')),
-              error: CircularProgressIndicator(),
-            );
-          }
-        });
+    return AppScaffoldWidget(
+      appBar: EventAppBarWidget(event: event),
+      paddingTop: 55,
+      body: SingleEvent(event: event),
+    );
   }
 }
 
@@ -104,61 +63,84 @@ class SingleEvent extends StatelessWidget {
   SingleEvent({
     this.event,
   });
+
+  String getEventTimes() {
+    String times = '';
+    if (this.event.startingAt != null) {
+      times += event.startingAt.hour.toString() +
+          ':' +
+          event.startingAt.minute.toString();
+    }
+    if (this.event.endingAt != null) {
+      times += ' - ' +
+          event.endingAt.hour.toString() +
+          ':' +
+          event.endingAt.minute.toString();
+    }
+    return times;
+  }
+
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Container(
       child: Column(
         children: <Widget>[
           Container(
             color: trendingColors[2],
             child: CurvedCornerWidget(
-              padding: EdgeInsets.only(top: 120),
+              padding: EdgeInsets.only(top: 214),
               color: Colors.white,
               child: Container(
+                width: size.width,
                 padding: EdgeInsets.symmetric(horizontal: 35, vertical: 22),
                 child: Column(
                   children: <Widget>[
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        SizedBox(width: 15),
+                        SizedBox(width: 18),
                         ClipRRect(
                           borderRadius: BorderRadius.circular(50),
-                          child: Image.asset(
-                            'images/avatar1.jpg',
-                            height: 32,
-                            width: 32,
+                          child: Image.network(
+                            event.user.avatar,
+                            height: 35,
+                            width: 35,
                           ),
                         ),
                         SizedBox(
-                          width: 16,
+                          width: 14,
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              event.name,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                letterSpacing: -0.14,
+                        Container(
+                          width: size.width - 70 - 67,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                event.user.name,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: -0.14,
+                                ),
                               ),
-                            ),
-                            Text(
-                              'Montreal, QC Private Group',
-                              style: TextStyle(
-                                color: Color(0x7A403249),
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                letterSpacing: -0.19,
+                              Text(
+                                'Montreal, QC Private Group',
+                                style: TextStyle(
+                                  color: Color(0x7A403249),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: -0.19,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ],
                     ),
                     SizedBox(
                       height: 25,
                     ),
-                    AreYouGoing(isGoing: false),
+                    AreYouGoing(isGoing: event.attending == 1),
                   ],
                 ),
               ),
@@ -184,21 +166,21 @@ class SingleEvent extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          'TODAY',
+                          getRelativeTime(event.startingAt),
                           style: largeWhiteTextStyle,
                         ),
                         SizedBox(
                           height: 5,
                         ),
                         Text(
-                          '5:30 - 8:30',
+                          getEventTimes(),
                           style: smallWhiteTextStyle,
                         ),
                         SizedBox(
                           height: 5,
                         ),
                         Text(
-                          'EVERY WEEK ON MONDAY',
+                          'SINGLE OCCURENCE EVENT',
                           style: smallWhiteTextStyle,
                         ),
                       ],
@@ -208,75 +190,55 @@ class SingleEvent extends StatelessWidget {
                 SizedBox(
                   height: 29,
                 ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Icon(
-                      Icons.access_time,
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Flexible(
-                      child: Column(
+                (event.addresses != null)
+                    ? Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(
-                            event.addresses[0].address1,
-                            style: largeWhiteTextStyle,
+                          Icon(
+                            Icons.location_on,
+                            color: Colors.white,
+                            size: 20,
                           ),
                           SizedBox(
-                            height: 5,
+                            width: 20,
                           ),
-                          Text(
-                            '585 Saint Catherine Street West, Montreal Quebec Canada',
-                            style: smallWhiteTextStyle,
-                          ),
-                          SizedBox(
-                            height: 18,
-                          ),
-                          ClipRRect(
-                            borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(40),
-                                bottomLeft: Radius.circular(40)),
-                            child: Container(
-                              height: 116,
-                              width: double.infinity,
-                              child: Image.asset(
-                                'images/avatar1.jpg',
-                                fit: BoxFit.cover,
-                              ),
+                          Flexible(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  event.addresses[0].address1,
+                                  style: largeWhiteTextStyle,
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  '${event.addresses[0].address2} ${event.addresses[0].city}, ${event.addresses[0].state} ${event.addresses[0].country}',
+                                  style: smallWhiteTextStyle,
+                                ),
+                                SizedBox(
+                                  height: 18,
+                                ),
+                                ClipRRect(
+                                  borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(40),
+                                      bottomLeft: Radius.circular(40)),
+                                  child: Container(
+                                    height: 116,
+                                    width: double.infinity,
+                                    child: Image.asset(
+                                      'images/avatar1.jpg',
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
+                          )
                         ],
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 29,
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Icon(
-                      Icons.credit_card,
-                      color: Color(0xff757575),
-                      size: 20,
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Flexible(
-                      child: Text(
-                        '\$ 21.00',
-                        style: largeWhiteTextStyle,
-                      ),
-                    )
-                  ],
-                ),
+                      )
+                    : Container(),
                 SizedBox(
                   height: 29,
                 ),
@@ -292,7 +254,7 @@ class SingleEvent extends StatelessWidget {
                       width: 20,
                     ),
                     Text(
-                      'Hosted By Joe',
+                      'Hosted By ${event.user.name}',
                       style: largeWhiteTextStyle,
                     )
                   ],
@@ -301,18 +263,7 @@ class SingleEvent extends StatelessWidget {
                   height: 30,
                 ),
                 Text(
-                  'New to Yoga, or looking to take your mat to practice in new places?',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xff998fa2),
-                    letterSpacing: -0.14,
-                  ),
-                ),
-                SizedBox(
-                  height: 18,
-                ),
-                Text(
-                  'Get to know your local community and neighbours better by joining our Yoga family.',
+                  event.description != null ? event.description : '',
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     color: Color(0xff998fa2),
@@ -344,44 +295,46 @@ class SingleEvent extends StatelessWidget {
                           SizedBox(
                             height: 9,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Container(
-                                  height: 30,
+                          event.attendeesCount > 0
+                              ? Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        height: 30,
 //                                    width: 200,
-                                  child: ImageAvatarListWidget(
-                                    images: [
-                                      'images/avatar1.jpg',
-                                      'images/avatar1.jpg',
-                                      'images/avatar1.jpg',
-                                      'images/avatar1.jpg',
-                                      'images/avatar1.jpg',
-                                    ],
-                                    size: 30,
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Text(
-                                  '& 12 others',
-                                  style: TextStyle(
-                                    fontStyle: FontStyle.italic,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(0xB0ffffff),
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                              Icon(
-                                Icons.arrow_forward_ios,
-                                color: Colors.white,
-                                size: 18,
-                              ),
-                            ],
-                          ),
+                                        child: ImageAvatarListWidget(
+                                          images: event.attendees
+                                              .getRange(0, 7)
+                                              .map((e) => e.avatar),
+                                          size: 30,
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        event.attendeesCount > 7
+                                            ? '& ${event.attendeesCount} others'
+                                            : ' Group chat',
+                                        style: TextStyle(
+                                          fontStyle: FontStyle.italic,
+                                          fontWeight: FontWeight.w500,
+                                          color: Color(0xB0ffffff),
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: Colors.white,
+                                      size: 18,
+                                    ),
+                                  ],
+                                )
+                              : Container(
+                                  child: Text('be the first to attend')),
                         ],
                       ),
                     ),
@@ -459,25 +412,54 @@ class EventAppBarWidget extends StatelessWidget {
   }
 }
 
-class AreYouGoing extends StatelessWidget {
+class AreYouGoing extends StatefulWidget {
   final bool isGoing;
-  const AreYouGoing({Key key, this.isGoing}) : super(key: key);
+  final Event event;
+  const AreYouGoing({Key key, this.isGoing, this.event}) : super(key: key);
+
+  @override
+  _AreYouGoingState createState() => _AreYouGoingState();
+}
+
+class _AreYouGoingState extends State<AreYouGoing> {
+  bool isGoing;
+  attendEvent() async {
+    Map<ResponseKey, dynamic> liked = await NetworkingClass()
+        .post('/events/' + widget.event.id.toString(), []);
+    if (liked[ResponseKey.type] == ResponseType.data) {
+      var res = liked[ResponseKey.data]['data'];
+      if (res == 'true') {
+        setState(() {
+          this.isGoing = true;
+        });
+      } else {
+        //handle liking error
+      }
+    }
+  }
+
+  @override
+  initState() {
+    isGoing = widget.isGoing;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: 20, top: 14, right: 14, bottom: 14),
+      padding: EdgeInsets.only(left: 27, top: 14, right: 5, bottom: 14),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
-        border: isGoing ? Border.all(color: Color(0xffE7E4E9)) : null,
-        color: isGoing ? Colors.white : Color(0xff352641),
+        border: widget.isGoing ? null : Border.all(color: Color(0xffE7E4E9)),
+        color: widget.isGoing ? Color(0xff352641) : Colors.white,
       ),
       child: Row(
         children: <Widget>[
           InkWell(
             child: Icon(
               Icons.open_in_browser,
-              color: isGoing ? Color(0xff757575) : Color(0xff998fa2),
+              size: 24,
+              color: widget.isGoing ? Color(0xff998fa2) : Color(0xff757575),
             ),
           ),
           SizedBox(
@@ -487,9 +469,9 @@ class AreYouGoing extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                isGoing ? 'You are going' : 'Are you going?',
+                widget.isGoing ? 'You are going' : 'Are you going?',
                 style: TextStyle(
-                  color: isGoing ? Colors.black : Colors.white,
+                  color: widget.isGoing ? Colors.white : Colors.black,
                   fontWeight: FontWeight.w700,
                   letterSpacing: -0.14,
                 ),
@@ -504,34 +486,40 @@ class AreYouGoing extends StatelessWidget {
             ],
           ),
           Spacer(),
-          isGoing
-              ? Container()
-              : Container(
-                  width: 40,
-                  height: 40,
-                  margin: EdgeInsets.symmetric(horizontal: 6),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Color(0xff594f62),
-                    borderRadius: BorderRadius.circular(50),
+          widget.isGoing
+              ? GestureDetector(
+                  onTap: attendEvent,
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    margin: EdgeInsets.symmetric(horizontal: 6),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Color(0xff594f62),
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: Icon(
+                      Icons.cancel,
+                      color: Colors.white,
+                    ),
                   ),
-                  child: Icon(
-                    Icons.cancel,
-                    color: Colors.white,
-                  ),
-                ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 6),
-            width: 40,
-            height: 40,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: isGoing ? Color(0xff58B2BE) : Color(0xff594f62),
-              borderRadius: BorderRadius.circular(50),
-            ),
-            child: Icon(
-              Icons.check,
-              color: Colors.white,
+                )
+              : Container(),
+          GestureDetector(
+            onTap: attendEvent,
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 6),
+              width: 40,
+              height: 40,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: widget.isGoing ? Color(0xff594f62) : Color(0xff58B2BE),
+                borderRadius: BorderRadius.circular(50),
+              ),
+              child: Icon(
+                Icons.check,
+                color: Colors.white,
+              ),
             ),
           ),
         ],

@@ -6,6 +6,7 @@ export 'Event.dart';
 export 'Feed.dart';
 export 'Heirachy.dart';
 export 'HeirachyGroup.dart';
+export 'ImageSource.dart';
 export 'LoginData.dart';
 export 'MediaPost.dart';
 export 'Paginated.dart';

@@ -10,7 +10,7 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">2.1.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -56,6 +56,7 @@ flutter:
         - asset: fonts/Montserrat-Bold.ttf
         - asset: fonts/Montserrat-MediumItalic.ttf
         - asset: fonts/Montserrat-Regular.ttf
+        - asset: fonts/CustomIcons.ttf
   assets:
     - images/athens.jpg
     - images/avatar1.jpg

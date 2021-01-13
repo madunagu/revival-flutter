@@ -3,6 +3,8 @@
     "parent_id": 1,
     "comment": "what is it",
     "user_id": 1,
+    "likes": 20,
+    "liked": 1,
     "commentable_id": 1,
     "commentable_type": "thetype",
     "created_at": "@datetime",

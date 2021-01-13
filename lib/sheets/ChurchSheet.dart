@@ -11,15 +11,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AddressSheet extends StatefulWidget {
-  AddressSheet({Key key}) : super(key: key);
+class ChurchSheet extends StatefulWidget {
+  ChurchSheet({Key key}) : super(key: key);
   final EdgeInsetsGeometry inputPadding = EdgeInsets.all(8);
 
   @override
-  _AddressSheetState createState() => _AddressSheetState();
+  _ChurchSheetState createState() => _ChurchSheetState();
 }
 
-class _AddressSheetState extends State<AddressSheet> {
+class _ChurchSheetState extends State<ChurchSheet> {
   final Address myAddress = Address();
   final NetworkingClass myNetwork = NetworkingClass();
   final _formKey = GlobalKey<FormState>();

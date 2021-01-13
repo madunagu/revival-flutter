@@ -1,3 +1,5 @@
+import 'package:devotion/models/Comment.dart';
+import 'package:devotion/util/TimeHandler.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/widgets/ImageAvatarWidget.dart';
 import 'package:flutter/material.dart';
@@ -42,34 +44,31 @@ import 'package:flutter/material.dart';
 //           ),
 
 class CommentItemWidget extends StatelessWidget {
-  final String message;
-  final Image image;
-  final timeAgo;
-  final String name;
-  final double radius = 60;
+  final Comment comment;
+
+//  final Size size;
 
   CommentItemWidget({
     Key key,
-    this.message,
-    this.image,
-    this.timeAgo,
-    this.name,
+    this.comment,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return CurvedCornerWidget(
       // padding: EdgeInsets.only(top: this.radius),
-      radius: this.radius,
+      radius: 60,
       borderColor: Color(0xffE7E4E9),
       child: Container(
-        width: MediaQuery.of(context).size.width,
+//        width: size.width,
         padding: EdgeInsets.only(left: 18, top: 30, right: 12, bottom: 16),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             ImageAvatarWidget(
-              imageURL: 'images/avatar1.jpg',
+              imageURL: comment.user.avatar != null
+                  ? comment.user.avatar
+                  : 'aurl/at/least',
               borderWidth: 2,
               borderColor: Color(0xff8A56AC),
             ),
@@ -81,7 +80,7 @@ class CommentItemWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    name,
+                    comment.user.name,
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
@@ -91,7 +90,7 @@ class CommentItemWidget extends StatelessWidget {
                   ),
                   SizedBox(height: 6),
                   Text(
-                    message,
+                    comment.comment,
                     style: TextStyle(
                       fontSize: 13,
                       fontFamily: 'Montserrat',
@@ -100,6 +99,8 @@ class CommentItemWidget extends StatelessWidget {
                       letterSpacing: -0.14,
                     ),
                   ),
+                  SizedBox(height: 10),
+                  GestureDetector(child: Text('Reply'))
                 ],
               ),
             ),
@@ -109,7 +110,7 @@ class CommentItemWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    timeAgo,
+                    getRelativeTime(comment.createdAt),
                     style: TextStyle(
                       // color: Color(0xb2ffffff),
                       fontSize: 12,
@@ -119,10 +120,15 @@ class CommentItemWidget extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 16),
-                  Icon(
-                    Icons.favorite_border,
-                    size: 16,
-                  ),
+                  comment.liked == 1
+                      ? Icon(
+                          Icons.favorite_border,
+                          size: 16,
+                        )
+                      : Icon(
+                          Icons.favorite,
+                          size: 16,
+                        ),
                 ],
               ),
             ),
