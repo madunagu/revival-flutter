@@ -24,7 +24,6 @@ class TrendingWidget extends StatelessWidget {
             SingleNavigationItem(
               title: 'HEALTH',
               icon: Icons.favorite_border,
-              isSelected: true,
               size: 80,
             ),
             SizedBox(

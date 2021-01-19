@@ -36,14 +36,17 @@ class CurvedVideoItemWidget extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => PlayerScreen(isVideo: true, playable: video),
+            builder: (context) => PlayerScreen(playable: video),
           ),
         );
       },
       child: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage('images/avatar1.jpg'), fit: BoxFit.cover),
+              image: video.images != null
+                  ? NetworkImage(video.images[0].mediumUrl)
+                  : AssetImage('images/avatar1.jpg'),
+              fit: BoxFit.cover),
           borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(70),
           ),

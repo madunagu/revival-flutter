@@ -70,35 +70,7 @@ class MyApp extends StatelessWidget {
             return SplashScreen();
           }
           if (state is AuthenticationSuccess) {
-             return MainScreen();
-            VideoPost video = VideoPost.fromJson(jsonDecode('''{
-              "id": 3,
-              "name": "At ut laudantium dolores quis molestiae tenetur aliquid.",
-              "src_url": "/storage/video/videoplayback.mp4",
-              "full_text": "Alias voluptas quam et explicabo et. Numquam tempora fuga nostrum id quia. Eaque velit a aut expedita omnis aliquid placeat nisi.",
-              "description": "Aliquid perferendis ex sint fuga sit.",
-              "author_id": 1,
-              "uploader_id": 1,
-              "created_at": "2020-12-28 05:25:16",
-              "size": 97158,
-              "length": 167198,
-              "language": "hr",
-              "comments_count": 0,
-              "likes_count": 0,
-              "liked": 0,
-              "views_count": 0,
-              "user":{
-                "id": 1,
-                "name": "Dr. Maria Rolfson MD",
-                "api_token": null,
-                "email": "gwolff@example.com",
-                "phone": "+2348065708630",
-                "gender": "String"
-              },
-              "viewed": 0}
-            '''));
-
-//            return PlayerScreen(playable: video);
+            return MainScreen();
           }
           if (state is AuthenticationFailure) {
             return LoginScreen(userRepository: userRepository);
@@ -153,8 +125,7 @@ class _MainScreenState extends State<MainScreen>
   AuthenticationBloc _authenticationBloc;
   @override
   void initState() {
-    this._tabController =
-        TabController(vsync: this, length: navigationItems.length);
+    this._tabController = TabController(vsync: this, length: 5);
     this._authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
     super.initState();
   }
@@ -167,8 +138,6 @@ class _MainScreenState extends State<MainScreen>
 
   @override
   Widget build(BuildContext context) {
-//    AuthenticationBloc authenticationBloc =
-//        BlocProvider.of<AuthenticationBloc>(context);
     return AppScaffoldWidget(
       bodyColor: Color(0xffF1F0F2),
       paddingTop: 0,
@@ -193,7 +162,7 @@ class _MainScreenState extends State<MainScreen>
           FeedScreen(colors: trendingColors),
         ]),
       ),
-      showFloatingButton: true,
+      floatingButtonIcon: Icons.add,
       floatingButtonTap: () {
         Navigator.push(
           context,

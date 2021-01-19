@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:devotion/bloc/blocs/list.bloc.dart';
 import 'package:devotion/bloc/blocs/player.bloc.dart';
 import 'package:devotion/bloc/events/ListEvent.dart';
+import 'package:devotion/bloc/events/PlayerEvent.dart';
 import 'package:devotion/bloc/events/index.dart';
 import 'package:devotion/models/index.dart';
 import 'package:devotion/util/Constants.dart';
@@ -17,8 +18,7 @@ import 'package:video_player/video_player.dart';
 
 class PlayerScreen extends StatefulWidget {
   final VideoPost playable;
-  final bool isVideo;
-  PlayerScreen({this.playable, this.isVideo = true});
+  PlayerScreen({this.playable});
   @override
   _PlayerScreenState createState() => _PlayerScreenState();
 }
@@ -133,6 +133,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                           SingleChildScrollView(
                             child: VideoDetailsWidget(
                               video: widget.playable,
+                              playedType: PlayedType.video,
                             ),
                           ),
                           SingleChildScrollView(

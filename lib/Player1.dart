@@ -12,7 +12,6 @@ class PlayerScreen extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
 
     return AppScaffoldWidget(
-      showFloatingButton: false,
       appBar: AppBarWidget(
         color: Color(0xff352641),
         title: 'Summer Playlist',

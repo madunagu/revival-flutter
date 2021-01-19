@@ -1,12 +1,12 @@
+import 'package:devotion/misc/CustomIcons.dart';
 import 'package:devotion/models/Address.dart';
 import 'package:devotion/models/Event.dart';
 import 'package:devotion/sheets/AdressSheet.dart';
+import 'package:devotion/util/NetworkingClass.dart';
 import 'package:devotion/widgets/BottomSheetWidget.dart';
 import 'package:devotion/widgets/AppBarWidget.dart';
 import 'package:devotion/widgets/AppScaffoldWidget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:devotion/misc/my_flutter_app_icons.dart';
 
 class CreateEventScreen extends StatefulWidget {
   @override
@@ -15,6 +15,9 @@ class CreateEventScreen extends StatefulWidget {
 
 class _CreateEventScreenState extends State<CreateEventScreen> {
   Event myEvent = Event();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+
   void _showLocationAndReturn(BuildContext context) async {
     Address eventAddress = await Navigator.push(
       context,
@@ -32,6 +35,10 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     });
   }
 
+  postEvent() async {
+    var res = await NetworkingClass().post('/events', myEvent);
+  }
+
   @override
   Widget build(BuildContext context) {
     return AppScaffoldWidget(
@@ -46,27 +53,11 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Give your event a name. Describe who should attend and what you’ll do.',
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                letterSpacing: -0.14,
-                color: Color(0xff998fa2),
-              ),
-            ),
             SizedBox(
               height: 20,
             ),
-            Text(
-              'Event Name',
-              style: TextStyle(
-                letterSpacing: -0.22,
-                fontWeight: FontWeight.w600,
-                fontSize: 11,
-                color: Color(0x99ffffff),
-              ),
-            ),
             TextField(
+              controller: nameController,
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
@@ -93,6 +84,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
               height: 36,
             ),
             TextField(
+              controller: descriptionController,
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
@@ -118,7 +110,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
               height: 40,
             ),
             CreateModelRowWidget(
-              icon: Icons.location_on,
+              icon: CustomIcons.icons_light_localization,
               title: myEvent.addresses != null
                   ? myEvent.addresses[0].address1
                   : 'Location',
@@ -154,7 +146,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            'Interests',
+                            'Images',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w700,
@@ -189,18 +181,23 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
             SizedBox(
               height: 32,
             ),
-            Container(
-              width: double.infinity,
-              alignment: Alignment.center,
-              padding: EdgeInsets.symmetric(vertical: 14),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                color: Color(0xff8a56ac),
-              ),
-              child: Text(
-                'CONTINUE',
-                style:
-                    TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+            GestureDetector(
+              onTap: postEvent,
+              child: Container(
+                width: double.infinity,
+                alignment: Alignment.center,
+                padding: EdgeInsets.symmetric(vertical: 14),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  color: Color(0xff8a56ac),
+                ),
+                child: Text(
+                  'CONTINUE',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ),
             SizedBox(

@@ -1,27 +1,10 @@
+import 'package:devotion/MyProfileScreen.dart';
+import 'package:devotion/ProfileScreen.dart';
 import 'package:devotion/misc/BorderTabIndicator.dart';
+import 'package:devotion/misc/StyleConstants.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:flutter/material.dart';
-
-final List<Widget> navigationItems = [
-  ProfileNavigationItem(),
-  SingleNavigationItem(
-    title: 'TRENDING',
-    icon: Icons.trending_up,
-    isSelected: true,
-  ),
-  SingleNavigationItem(
-    title: 'HEALTH',
-    icon: Icons.favorite_border,
-  ),
-  SingleNavigationItem(
-    title: 'MUSIC',
-    icon: Icons.headset,
-  ),
-  SingleNavigationItem(
-    title: 'READING',
-    icon: Icons.chrome_reader_mode,
-  ),
-];
+import 'package:flutter/rendering.dart';
 
 class MainNavigationBarWidget extends StatefulWidget {
   final TabController tabController;
@@ -33,146 +16,211 @@ class MainNavigationBarWidget extends StatefulWidget {
 }
 
 class _MainNavigationBarWidgetState extends State<MainNavigationBarWidget> {
+  ScrollController _scrollController;
+  @override
+  void initState() {
+    widget.tabController.addListener(() {
+      setState(() {
+        int i = widget.tabController.index;
+        _scrollController.animateTo(
+          108.0 * (i - 1),
+          duration: Duration(milliseconds: 300),
+          curve: Curves.ease,
+        );
+      });
+    });
+    _scrollController = ScrollController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return CurvedCornerWidget(
       color: Colors.white,
       child: Container(
         height: 156,
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.only(top: 47, left: 40),
+        width: size.width,
+        padding: EdgeInsets.only(top: 47, left: 10),
         alignment: Alignment.topCenter,
-        child: TabBar(
-          isScrollable: true,
-          labelPadding: EdgeInsets.all(10),
-          labelColor: Color(0xff374750),
-          labelStyle: TextStyle(
-            color: Color.fromARGB(143, 51, 71, 70),
-            fontSize: ((widget.navItemSize - 48) / 8 + 11),
-            fontWeight: FontWeight.w700,
-            fontFamily: 'Montserrat',
-            letterSpacing: 0.34,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          controller: _scrollController,
+          child: Row(
+            children: [
+              ProfileNavigationItem(
+                index: 0,
+                tabController: widget.tabController,
+                isSelected: widget.tabController.index == 0,
+              ),
+              SingleNavigationItem(
+                title: 'TRENDING',
+                icon: Icons.trending_up,
+                index: 1,
+                tabController: widget.tabController,
+                isSelected: widget.tabController.index == 1,
+              ),
+              SingleNavigationItem(
+                title: 'HEALTH',
+                icon: Icons.favorite_border,
+                index: 2,
+                tabController: widget.tabController,
+                isSelected: widget.tabController.index == 2,
+              ),
+              SingleNavigationItem(
+                title: 'MUSIC',
+                icon: Icons.headset,
+                index: 3,
+                tabController: widget.tabController,
+                isSelected: widget.tabController.index == 3,
+              ),
+              SingleNavigationItem(
+                title: 'READING',
+                icon: Icons.chrome_reader_mode,
+                index: 4,
+                tabController: widget.tabController,
+                isSelected: widget.tabController.index == 4,
+              ),
+            ],
           ),
-          unselectedLabelColor: Color.fromARGB(143, 51, 71, 70),
-          indicator: BorderTabIndicator(
-            indicatorHeight: 48,
-            colors: [Colors.red, Colors.yellow, Colors.green],
-            tabController: widget.tabController,
-          ),
-          controller: widget.tabController,
-          onTap: (index) {
-            widget.tabController.animateTo(
-              index,
-              duration: const Duration(milliseconds: 300),
-            );
-          },
-          tabs: navigationItems,
         ),
       ),
     );
   }
 }
 
-var defaultDecorationColor = Color.fromARGB(255, 224, 224, 224);
-var defaultIconColor = Color.fromARGB(255, 154, 166, 172);
-var defaultTextColor = Color.fromARGB(255, 51, 71, 70);
-var defaultTextOpacity = .56;
-
-var selectedDecorationColor = Color.fromARGB(255, 212, 127, 166);
-var selectedIconColor = Color.fromARGB(255, 53, 38, 65);
-var selectedTextColor = Color.fromARGB(255, 51, 71, 80);
-var selectedOpacity = 1;
+List<Color> borderColors = [
+  Color(0xff9599b3),
+  trendingColors[0],
+  healthColors[0],
+  musicColors[0],
+];
 
 class SingleNavigationItem extends StatelessWidget {
   final IconData icon;
-  final String imagePath;
   final String title;
   final double size;
+  final int index;
+  final TabController tabController;
   final bool isSelected;
 
   SingleNavigationItem({
     this.title,
     this.icon,
-    this.imagePath,
+    this.index,
     this.size = 48,
-    this.isSelected = false,
+    this.tabController,
+    this.isSelected,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 30),
-      child: Column(
-        children: <Widget>[
-          SizedBox(
-            height: 8,
-          ),
-          Container(
-            width: this.size,
-            height: this.size,
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Color.fromARGB(255, 224, 224, 224),
-                width: 1,
+    return InkWell(
+      onTap: () => tabController.animateTo(
+        index,
+        duration: const Duration(milliseconds: 300),
+      ),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 30),
+        child: Column(
+          children: <Widget>[
+            SizedBox(
+              height: 8,
+            ),
+            Container(
+              width: this.size,
+              height: this.size,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: isSelected ? borderColors[index%4] : Color(0xffE0E0E0),
+                  width: isSelected ? 2 : 1,
+                ),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(50),
+                ),
               ),
-              borderRadius: BorderRadius.all(
-                Radius.circular(50),
+              child: Icon(
+                icon,
+                size: this.size / 2,
+                color: isSelected ? Color(0xff352641) : Color(0xff9AA6AC),
               ),
             ),
-            child: Icon(
-              icon,
-              size: this.size / 2,
-              // color: (isSelected
-              //     ? Color.fromARGB(255, 53, 38, 65)
-              //     : Color.fromARGB(255, 154, 166, 172)),
+            SizedBox(
+              height: this.size / 6,
             ),
-          ),
-          SizedBox(
-            height: this.size / 6,
-          ),
-          Text(
-            title,
-            // style: TextStyle(
-            //   color: isSelected
-            //       ? Color(0xff374750)
-            //       : Color.fromARGB(143, 51, 71, 70),
-            //   fontSize: ((this.size - 48) / 8 + 11),
-            //   fontWeight: FontWeight.w700,
-            //   letterSpacing: 0.34,
-            // ),
-          ),
-        ],
+            Text(
+              title,
+              style: TextStyle(
+                color: isSelected ? Color(0xff374750) : Color(0x89374750),
+                fontSize: 11,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
 class ProfileNavigationItem extends StatelessWidget {
+  final double size;
+  final int index;
+  final TabController tabController;
+  final bool isSelected;
+  final int notifications;
+  final String image;
+
+  ProfileNavigationItem({
+    this.index,
+    this.size = 48,
+    this.tabController,
+    this.isSelected,
+    this.image = 'images/avatar1.jpg',
+    this.notifications = 12,
+  });
+
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 30),
       child: InkWell(
-        onTap: () {
-          // here add routing code
-        },
+        onTap: () => tabController.animateTo(
+          index,
+          duration: const Duration(milliseconds: 300),
+        ),
         child: Column(
           children: <Widget>[
             Container(
-              width: 48,
+              width: 52,
               height: 66,
               child: Stack(
                 children: [
                   Positioned(
                     top: 8,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(50),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: isSelected ? Color(0xff9599b3) : Color(0x009599b3),
+                          width:  2,
+                        ),
+                        borderRadius: BorderRadius.circular(50),
                       ),
-                      child: Image.asset(
-                        'images/avatar1.jpg',
-                        height: 48,
-                        width: 48,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(50),
+                        ),
+                        child: Image.asset(
+                          image,
+                          height: 48,
+                          width: 48,
+                        ),
                       ),
                     ),
                   ),
@@ -188,7 +236,7 @@ class ProfileNavigationItem extends StatelessWidget {
                         color: Color(0xff9599b3),
                       ),
                       child: Text(
-                        '12',
+                        notifications.toString(),
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w600,
@@ -202,6 +250,11 @@ class ProfileNavigationItem extends StatelessWidget {
             ),
             Text(
               'YOU',
+              style: TextStyle(
+                color: isSelected ? Color(0xff374750) : Color(0x89374750),
+                fontSize: 11,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ],
         ),

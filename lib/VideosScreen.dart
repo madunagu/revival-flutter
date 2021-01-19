@@ -5,13 +5,18 @@ import 'package:devotion/misc/StyleConstants.dart';
 import 'package:devotion/widgets/InteractionButtonWidget.dart';
 import 'package:flutter/material.dart';
 
-class VideosScreen extends StatelessWidget {
+class VideosScreen extends StatefulWidget {
+  @override
+  _VideosScreenState createState() => _VideosScreenState();
+}
+
+class _VideosScreenState extends State<VideosScreen> {
   @override
   Widget build(BuildContext context) {
     return AppScaffoldWidget(
       appBar: AppBarWidget(
         color: Colors.white,
-        title: 'Feeds',
+        title: 'Videos',
         rightIcon: Icons.filter,
       ),
       body: Container(

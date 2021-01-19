@@ -8,8 +8,6 @@ export 'Heirachy.dart';
 export 'HeirachyGroup.dart';
 export 'ImageSource.dart';
 export 'LoginData.dart';
-export 'MediaPost.dart';
-export 'Paginated.dart';
 export 'Pagination.dart';
 export 'Playable.dart';
 export 'Post.dart';

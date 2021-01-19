@@ -433,6 +433,7 @@ class _AreYouGoingState extends State<AreYouGoing> {
           this.isGoing = true;
         });
       } else {
+        this.isGoing = false;
         //handle liking error
       }
     }
@@ -450,8 +451,8 @@ class _AreYouGoingState extends State<AreYouGoing> {
       padding: EdgeInsets.only(left: 27, top: 14, right: 5, bottom: 14),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
-        border: widget.isGoing ? null : Border.all(color: Color(0xffE7E4E9)),
-        color: widget.isGoing ? Color(0xff352641) : Colors.white,
+        border: isGoing ? null : Border.all(color: Color(0xffE7E4E9)),
+        color: isGoing ? Color(0xff352641) : Colors.white,
       ),
       child: Row(
         children: <Widget>[
@@ -459,7 +460,7 @@ class _AreYouGoingState extends State<AreYouGoing> {
             child: Icon(
               Icons.open_in_browser,
               size: 24,
-              color: widget.isGoing ? Color(0xff998fa2) : Color(0xff757575),
+              color: isGoing ? Color(0xff998fa2) : Color(0xff757575),
             ),
           ),
           SizedBox(
@@ -469,9 +470,9 @@ class _AreYouGoingState extends State<AreYouGoing> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                widget.isGoing ? 'You are going' : 'Are you going?',
+              isGoing ? 'You are going' : 'Are you going?',
                 style: TextStyle(
-                  color: widget.isGoing ? Colors.white : Colors.black,
+                  color: isGoing ? Colors.white : Colors.black,
                   fontWeight: FontWeight.w700,
                   letterSpacing: -0.14,
                 ),
@@ -486,7 +487,7 @@ class _AreYouGoingState extends State<AreYouGoing> {
             ],
           ),
           Spacer(),
-          widget.isGoing
+          isGoing
               ? GestureDetector(
                   onTap: attendEvent,
                   child: Container(
@@ -513,7 +514,7 @@ class _AreYouGoingState extends State<AreYouGoing> {
               height: 40,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: widget.isGoing ? Color(0xff594f62) : Color(0xff58B2BE),
+                color: isGoing ? Color(0xff594f62) : Color(0xff58B2BE),
                 borderRadius: BorderRadius.circular(50),
               ),
               child: Icon(

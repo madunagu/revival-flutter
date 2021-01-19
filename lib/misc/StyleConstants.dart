@@ -14,7 +14,7 @@ const smallTextStyle = TextStyle(
   letterSpacing: 0,
 );
 
-const List<Color> trendingColors = [
+const List<Color> trendingColors = const [
   Color.fromARGB(255, 217, 111, 159),
   Color.fromARGB(255, 133, 65, 176),
   Color.fromARGB(255, 21, 4, 40),

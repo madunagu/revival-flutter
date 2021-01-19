@@ -39,5 +39,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         yield LoginFailure(error: error.toString());
       }
     }
+    if(event is RegisterButtonPressed){
+      yield LoginInProgress();
+      try{}
+      catch(error){}
+    }
   }
 }

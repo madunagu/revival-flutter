@@ -16,5 +16,6 @@
     "user": "$User",
     "churches": "$[]Church",
     "addresses": "$[]Address",
-    "attendees": "$[]User"
+    "attendees": "$[]User",
+    "profile_media": "$[]ProfileMedia"
 }

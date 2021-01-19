@@ -4,6 +4,7 @@ import 'User.dart';
 import 'Church.dart';
 import 'Address.dart';
 import 'User.dart';
+import 'ProfileMedia.dart';
 
 part 'Event.g.dart';
 
@@ -29,6 +30,7 @@ class Event {
   List<Church> churches;
   List<Address> addresses;
   List<User> attendees;
+  @JsonKey(name: 'profile_media') List<ProfileMedia> profileMedia;
 
   factory Event.fromJson(Map<String,dynamic> json) => _$EventFromJson(json);
   Map<String, dynamic> toJson() => _$EventToJson(this);

@@ -43,6 +43,10 @@ VideoPost _$VideoPostFromJson(Map<String, dynamic> json) {
         ?.map((e) =>
             e == null ? null : Church.fromJson(e as Map<String, dynamic>))
         ?.toList()
+    ..images = (json['images'] as List)
+        ?.map((e) =>
+            e == null ? null : ImageSource.fromJson(e as Map<String, dynamic>))
+        ?.toList()
     ..addresses = (json['addresses'] as List)
         ?.map((e) =>
             e == null ? null : Address.fromJson(e as Map<String, dynamic>))
@@ -71,5 +75,6 @@ Map<String, dynamic> _$VideoPostToJson(VideoPost instance) => <String, dynamic>{
       'author': instance.author,
       'user': instance.user,
       'churches': instance.churches,
+      'images': instance.images,
       'addresses': instance.addresses,
     };

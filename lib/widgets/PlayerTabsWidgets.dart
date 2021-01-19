@@ -18,7 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class VideoDetailsWidget extends StatefulWidget {
-  final VideoPost video;
+  final dynamic video;
   final PlayedType playedType;
   const VideoDetailsWidget(
       {Key key, @required this.video, @required this.playedType})
@@ -29,23 +29,26 @@ class VideoDetailsWidget extends StatefulWidget {
 }
 
 class _VideoDetailsWidgetState extends State<VideoDetailsWidget> {
-  VideoPost video;
+  dynamic video;
   likeVideo() async {
     String url = widget.playedType == PlayedType.video
         ? '/video-posts/'
         : '/audio-posts/';
-    Map<ResponseKey, dynamic> liked =
-        await NetworkingClass().post(url + video.id.toString(), []);
-    if (liked[ResponseKey.type] == ResponseType.data) {
-      var res = liked[ResponseKey.data]['data'];
-      if (res == 'true') {
-        setState(() {
-          this.video.liked = 1;
-        });
-      } else {
-        //handle liking error
+    try {
+      Map<ResponseKey, dynamic> liked =
+      await NetworkingClass().post(url + video.id.toString(), []);
+      if (liked[ResponseKey.type] == ResponseType.data) {
+        var res = liked[ResponseKey.data]['data'];
+        if (res == 'true') {
+          setState(() {
+            this.video.liked = 1;
+          });
+        } else {
+          //handle liking error
+        }
       }
     }
+    catch(_){}
   }
 
   @override

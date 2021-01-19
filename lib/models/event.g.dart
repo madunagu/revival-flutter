@@ -47,6 +47,10 @@ Event _$EventFromJson(Map<String, dynamic> json) {
     ..attendees = (json['attendees'] as List)
         ?.map(
             (e) => e == null ? null : User.fromJson(e as Map<String, dynamic>))
+        ?.toList()
+    ..profileMedia = (json['profile_media'] as List)
+        ?.map((e) =>
+            e == null ? null : ProfileMedia.fromJson(e as Map<String, dynamic>))
         ?.toList();
 }
 
@@ -69,4 +73,5 @@ Map<String, dynamic> _$EventToJson(Event instance) => <String, dynamic>{
       'churches': instance.churches,
       'addresses': instance.addresses,
       'attendees': instance.attendees,
+      'profile_media': instance.profileMedia,
     };

@@ -15,31 +15,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/states/index.dart';
 
-// List<CurvedListItem> items = [
-//   CurvedListItem(
-//     title: 'Practice French, English And Chinese',
-//     time: 'TUESDAY 5:30 PM',
-//     icon: Icons.public,
-//   ),
-//   CurvedListItem(
-//     title: 'Yoga and Meditation for Beginners',
-//     time: 'TODAY 5:30 PM',
-//     icon: Icons.flight_land,
-//   ),
-//   CurvedListItem(
-//     title: 'Practice French, English And Chinese',
-//     time: 'TUESDAY 5:30 PM',
-//     icon: Icons.hotel,
-//   ),
-//   CurvedListItem(
-//     title: 'Yoga and Meditation for Beginners',
-//     time: 'TODAY 5:30 PM',
-//     icon: Icons.flight_land,
-//   ),
-// ];
-
-enum itemType { event, video, audio, post }
-
 class FeedScreen extends StatefulWidget {
   final List<Color> colors;
   final tag;
@@ -144,6 +119,7 @@ class _FeedScreenState extends State<FeedScreen> {
           }
           return this.organiseStack(state.posts, context);
         }
+        return Container();
       },
     );
   }

@@ -24,7 +24,13 @@ class CurvedEventItemWidget extends StatelessWidget {
       color: color,
     );
   }
-
+  TextStyle italicStyle = const TextStyle(
+    color: Color(0x70ffffff),
+    letterSpacing: -0.24,
+    fontSize: 12,
+    fontWeight: FontWeight.w500,
+    fontStyle: FontStyle.italic,
+  );
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -44,67 +50,82 @@ class CurvedEventItemWidget extends StatelessWidget {
           padding: EdgeInsets.only(
             left: 32,
           ),
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(
-                  height: 32,
-                ),
-                Text(
-                  getRelativeTime(event.startingAt),
-                  style: TextStyle(
-                    color: Color(0x70ffffff),
-                    fontSize: 11,
-                    letterSpacing: -0.22,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                RichText(
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                  text: TextSpan(
-                    text: event.name,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      letterSpacing: -0.39,
-                      height: 1.25,
-                      fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.bold,
+          child: Stack(
+            children: [
+              Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 32,
                     ),
-                  ),
+                    Text(
+                      getRelativeTime(event.startingAt),
+                      style: TextStyle(
+                        color: Color(0x70ffffff),
+                        fontSize: 11,
+                        letterSpacing: -0.22,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    RichText(
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                      text: TextSpan(
+                        text: event.name,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          letterSpacing: -0.39,
+                          height: 1.25,
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Spacer(),
+                    event.attendeesCount > 0
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              ImageAvatarListWidget(
+                                images: event.attendees
+                                    .getRange(0, 7)
+                                    .map((e) => e.avatar),
+                                size: 24,
+                              ),
+                              SizedBox(width: 10),
+                              Text(
+                                'Join ${event.attendees.getRange(0, 2).map((e) => e.name).join(", ")} and ${event.attendeesCount} others',
+                                style: italicStyle,
+                              ),
+                            ],
+                          )
+                        : Row(
+                            children: [
+                              ImageAvatarWidget(
+                                  imageURL: event.user.avatar, size: 24),
+                              SizedBox(width: 10),
+                              Text(
+                                '...Be the first to join?',
+                                style: italicStyle,
+                              ),
+                            ],
+                          ),
+                    SizedBox(
+                      height: 40,
+                    ),
+                  ]),
+              Positioned(
+                right: 40,
+                bottom: 50,
+                child: Icon(
+                  Icons.event,
+                  size: 70,
+                  color: Color.fromARGB(50, 255, 255, 255),
                 ),
-                Spacer(),
-                event.attendeesCount > 0
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          ImageAvatarListWidget(
-                            images: event.attendees
-                                .getRange(0, 7)
-                                .map((e) => e.avatar),
-                            size: 24,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            'Join ${event.attendees.getRange(0, 2).map((e) => e.name).join(", ")} and ${event.attendeesCount} others',
-                            style: TextStyle(
-                              color: Color(0x70ffffff),
-                              letterSpacing: -0.24,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              fontStyle: FontStyle.italic,
-                            ),
-                          ),
-                        ],
-                      )
-                    : Container(),
-                SizedBox(
-                  height: 40,
-                ),
-              ]),
+              ),
+            ],
+          ),
         ),
       ),
     );

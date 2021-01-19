@@ -14,7 +14,7 @@ class MyProfileScreen extends StatelessWidget {
         children: <Widget>[
           Container(
             width: MediaQuery.of(context).size.width,
-            margin: EdgeInsets.only(top:83),
+            margin: EdgeInsets.only(top: 83),
             height: 287,
             child: ClipRRect(
               borderRadius: BorderRadius.only(
@@ -40,7 +40,7 @@ class MyProfileScreen extends StatelessWidget {
                     bottom: 0,
                     left: 0,
                     width: MediaQuery.of(context).size.width,
-                    height: 287,
+                    height: 87,
                     child: Container(
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
@@ -116,8 +116,8 @@ class MyProfileScreen extends StatelessWidget {
           CurvedCornerWidget(
             borderColor: Color(0xff423050),
             child: Container(
-              height: 145,
-              padding: EdgeInsets.symmetric(vertical: 30),
+              height: 125,
+              padding: EdgeInsets.symmetric(vertical: 24),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -128,12 +128,13 @@ class MyProfileScreen extends StatelessWidget {
                       children: [
                         Container(
                           width: 55,
-                          height: 55,
+                          height: 50,
                           child: Stack(
                             alignment: Alignment.topCenter,
                             children: [
                               Positioned(
-                                top: 20,
+                                top: 12,
+                                left: 0,
                                 child: Icon(
                                   Icons.email,
                                   color: Colors.white,
@@ -153,7 +154,11 @@ class MyProfileScreen extends StatelessWidget {
                                   ),
                                   child: Text(
                                     '7',
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               )
@@ -183,12 +188,12 @@ class MyProfileScreen extends StatelessWidget {
                       children: [
                         Container(
                           width: 55,
-                          height: 55,
+                          height: 50,
                           child: Stack(
                             alignment: Alignment.topCenter,
                             children: [
                               Positioned(
-                                top: 20,
+                                top: 10,
                                 child: Icon(
                                   Icons.notifications_none,
                                   color: Colors.white,
@@ -208,7 +213,11 @@ class MyProfileScreen extends StatelessWidget {
                                   ),
                                   child: Text(
                                     '7',
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               )
@@ -308,7 +317,7 @@ class MyProfileScreen extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 100),
+          SizedBox(height: 20),
         ],
       ),
     );
