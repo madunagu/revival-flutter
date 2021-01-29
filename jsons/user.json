@@ -8,6 +8,7 @@
   "assigned_at": "@datetime",
   "phone": "+2348065708630",
   "gender": "String",
+  "follower_count": 0,
   "created_at": "@datetime",
   "updated_at": "@datetime"
 }

@@ -27,7 +27,7 @@ class UserInfoWidget extends StatelessWidget {
                 ),
               ),
               Text(
-                '20 followers',
+                '${user.followerCount} followers',
                 style: TextStyle(
                   fontSize: 12,
                   color: Color(0x90352641),

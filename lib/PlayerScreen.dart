@@ -36,7 +36,6 @@ class _PlayerScreenState extends State<PlayerScreen>
 
   Future<void> _initializeVideoPlayerFuture;
 
-  final titles = ['Details', 'Lyrics', 'Comments', 'Related'];
 
   toggleSheet(DragEndDetails e) {
     log(e.velocity.pixelsPerSecond.dy.toString());
@@ -107,6 +106,13 @@ class _PlayerScreenState extends State<PlayerScreen>
               controller: _videoController,
             ),
             Positioned(
+              top: sheetPositionTop - 25,
+              child: VideoSlider(
+                controller: _videoController,
+                size: size,
+              ),
+            ),
+            Positioned(
               top: sheetPositionTop,
               height: size.height - sheetPositionTop + 20,
               child: Container(
@@ -121,9 +127,10 @@ class _PlayerScreenState extends State<PlayerScreen>
                     GestureDetector(
                       onVerticalDragEnd: toggleSheet,
                       child: SheetHeaderWidget(
-                          size: size,
-                          titles: titles,
-                          tabController: _tabController),
+                        size: size,
+                        titles: titles,
+                        tabController: _tabController,
+                      ),
                     ),
                     Container(
                       height: size.height - sheetPositionTop - 78,
@@ -141,8 +148,8 @@ class _PlayerScreenState extends State<PlayerScreen>
                           ),
                           BlocProvider(
                             create: (BuildContext context) => ListBloc(
-                                  feedType: 'comment', resource: '/comments')
-                                ..add(ListFetched()),
+                                feedType: 'comment', resource: '/comments')
+                              ..add(ListFetched()),
                             child: CommentsSectionWidget(),
                           ),
                           SingleChildScrollView(
@@ -264,117 +271,114 @@ class _VideoControlsState extends State<VideoControls> {
     return Positioned(
       top: 0,
       width: widget.size.width,
-      child: widget.controller.value.initialized
-          ? GestureDetector(
-              onTap: showControls,
-              child: Container(
-                width: widget.size.width,
-                height: height,
-                color: Colors.transparent,
-                child: isControlsVisible
-                    ? GestureDetector(
-                        onTap: hideControls,
-                        child: Container(
-                            height: height,
-                            width: widget.size.width,
-                            color: Colors.transparent,
-                            padding: const EdgeInsets.only(top: 56),
-                            child: Column(
-                              children: [
-                                Container(
-                                  width: widget.size.width,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 24.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Icon(
-                                        Icons.arrow_back,
-                                        color: Colors.white,
-                                      ),
-                                      Icon(
-                                        Icons.filter,
-                                        color: Colors.white,
-                                      ),
-                                    ],
-                                  ),
+      child: GestureDetector(
+        onTap: showControls,
+        child: Container(
+          width: widget.size.width,
+          height: height,
+          color: Colors.transparent,
+          child: isControlsVisible
+              ? GestureDetector(
+                  onTap: hideControls,
+                  child: Container(
+                    height: height,
+                    width: widget.size.width,
+                    color: Colors.transparent,
+                    padding: const EdgeInsets.only(top: 56),
+                    child: Column(
+                      children: [
+                        Container(
+                          width: widget.size.width,
+                          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Icon(
+                                  Icons.arrow_back,
+                                  color: Colors.white,
                                 ),
-                                SizedBox(height: 60 / 540 * height),
-                                Container(
-                                  width: widget.size.width,
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 50,
-                                      vertical: 30 / 540 * height),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Icon(
-                                        Icons.skip_previous,
-                                        color: Colors.white,
-                                        size: 34,
-                                      ),
-                                      InkWell(
-                                        onTap: () {
-                                          setState(() {
-                                            if (widget
-                                                .controller.value.isPlaying) {
-                                              widget.controller.pause();
-                                            } else {
-                                              widget.controller.play();
-                                            }
-                                          });
-                                        },
-                                        child: Container(
-                                          height: 50,
-                                          width: 50,
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(50),
-                                            color: Color(0xffd47fa6),
-                                          ),
-                                          child:
-                                              widget.controller.value.isPlaying
-                                                  ? Icon(
-                                                      Icons.pause,
-                                                      color: Colors.white,
-                                                      size: 34,
-                                                    )
-                                                  : Icon(
-                                                      Icons.play_arrow,
-                                                      color: Colors.white,
-                                                      size: 34,
-                                                    ),
+                              ),
+                              Icon(
+                                Icons.filter,
+                                color: Colors.white,
+                              ),
+                            ],
+                          ),
+                        ),
+                        widget.controller.value.initialized
+                            ? Container(
+                                width: widget.size.width,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 50,
+                                    vertical: 30 / 540 * height),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Icon(
+                                      Icons.skip_previous,
+                                      color: Colors.white,
+                                      size: 34,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          if (widget
+                                              .controller.value.isPlaying) {
+                                            widget.controller.pause();
+                                          } else {
+                                            widget.controller.play();
+                                          }
+                                        });
+                                      },
+                                      child: Container(
+                                        height: 50,
+                                        width: 50,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          color: Color(0xffd47fa6),
                                         ),
+                                        child: widget.controller.value.isPlaying
+                                            ? Icon(
+                                                Icons.pause,
+                                                color: Colors.white,
+                                                size: 34,
+                                              )
+                                            : Icon(
+                                                Icons.play_arrow,
+                                                color: Colors.white,
+                                                size: 34,
+                                              ),
                                       ),
-                                      Icon(Icons.skip_next,
-                                          color: Colors.white, size: 34),
-                                    ],
-                                  ),
+                                    ),
+                                    Icon(Icons.skip_next,
+                                        color: Colors.white, size: 34),
+                                  ],
                                 ),
-                                SizedBox(height: 20 / 540 * height),
-                                VideoSlider(
-                                  controller: widget.controller,
-                                  size: widget.size,
-                                )
-                              ],
-                            )),
-                      )
-                    : Container(
-                        width: widget.size.width,
-                        height: height,
-                      ),
-              ),
-            )
-          : Container(
-              height: height,
-              width: widget.size.width,
-              alignment: Alignment.center,
-              child: CircularProgressIndicator(),
-            ),
+                              )
+                            : Container(
+                                height: height-105,
+                                width: widget.size.width,
+                                alignment: Alignment.center,
+                                child: CircularProgressIndicator(),
+                              ),
+                      ],
+                    ),
+                  ),
+                )
+              : Container(
+                  width: widget.size.width,
+                  height: height,
+                ),
+        ),
+      ),
     );
   }
 }

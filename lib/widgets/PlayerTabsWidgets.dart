@@ -17,6 +17,8 @@ import 'package:devotion/widgets/UserInfoWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+final titles = ['Details', 'Lyrics', 'Comments', 'Related'];
+
 class VideoDetailsWidget extends StatefulWidget {
   final dynamic video;
   final PlayedType playedType;
@@ -36,7 +38,7 @@ class _VideoDetailsWidgetState extends State<VideoDetailsWidget> {
         : '/audio-posts/';
     try {
       Map<ResponseKey, dynamic> liked =
-      await NetworkingClass().post(url + video.id.toString(), []);
+          await NetworkingClass().post(url + video.id.toString(), []);
       if (liked[ResponseKey.type] == ResponseType.data) {
         var res = liked[ResponseKey.data]['data'];
         if (res == 'true') {
@@ -47,8 +49,7 @@ class _VideoDetailsWidgetState extends State<VideoDetailsWidget> {
           //handle liking error
         }
       }
-    }
-    catch(_){}
+    } catch (_) {}
   }
 
   @override

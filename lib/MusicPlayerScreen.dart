@@ -4,16 +4,18 @@ import 'package:devotion/bloc/blocs/list.bloc.dart';
 import 'package:devotion/bloc/blocs/player.bloc.dart';
 import 'package:devotion/bloc/events/ListEvent.dart';
 import 'package:devotion/bloc/events/index.dart';
+import 'package:devotion/misc/StyleConstants.dart';
 import 'package:devotion/models/index.dart';
 import 'package:devotion/util/Constants.dart';
+import 'package:devotion/util/TimeHandler.dart';
 import 'package:devotion/widgets/AppScaffoldWidget.dart';
 import 'package:devotion/widgets/BottomSheetLine.dart';
 import 'package:devotion/widgets/DottedTabBarWidget.dart';
 import 'package:devotion/widgets/PlayerTabsWidgets.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:video_player/video_player.dart';
+import 'package:audio_service/audio_service.dart';
+import 'package:just_audio/just_audio.dart';
 
 class MusicPlayerScreen extends StatefulWidget {
   final AudioPost playable;
@@ -27,36 +29,48 @@ class _MusicPlayerScreenState extends State<MusicPlayerScreen>
   double playedRatio = 0;
 
   double sheetPositionTop = 280;
+  bool isDocked = false;
   int activeSlide = 0;
 
   TabController _tabController;
-VideoPlayerController _videoController;
-  Future<void> _initializeVideoPlayerFuture;
-
-  final titles = ['Details', 'Lyrics', 'Comments', 'Related'];
+  AudioPlayer audioPlayer = AudioPlayer();
 
   toggleSheet(DragEndDetails e) {
     log(e.velocity.pixelsPerSecond.dy.toString());
     if (e.velocity.pixelsPerSecond.dy > 330) {
       setState(() {
         sheetPositionTop = 280;
+        isDocked = false;
       });
     } else {
       setState(() {
         sheetPositionTop = 130;
+        isDocked = true;
       });
     }
   }
 
   @override
   void initState() {
-
-
-    _tabController = TabController(vsync: this, length: 4);
+    _tabController = TabController(vsync: this, length: titles.length);
 
     BlocProvider.of<PlayerBloc>(context)
         .add(PlayerFetched(id: 1, playedType: PlayedType.video));
+
+    playMusic(widget.playable);
     super.initState();
+  }
+
+  playMusic(AudioPost audio) async {
+    var duration = await audioPlayer.setUrl(rootURL + audio.srcUrl);
+//    var item = MediaItem(
+//      id: widget.playable.srcUrl,
+//      album: 'Devotion Albums',
+//      artist: widget.playable.author.name,
+//      title: widget.playable.name,
+//    );
+//    AudioService.playMediaItem(item);
+    audioPlayer.play();
   }
 
   @override
@@ -76,14 +90,27 @@ VideoPlayerController _videoController;
         height: size.height,
         child: Stack(
           children: [
-            VideoWidget(
+            isDocked
+                ? DockedCurrentlyPlaying(
+                    size: size,
+                    audio: widget.playable,
+                  )
+                : AudioWidget(
+                    audio: widget.playable,
+                    player: audioPlayer,
+                    size: size,
+                    height: sheetPositionTop,
+                  ),
+            AudioControls(
               size: size,
-              controller: _videoController,
-              initFunction: _initializeVideoPlayerFuture,
+              player: audioPlayer,
             ),
-            VideoControls(
-              size: size,
-              controller: _videoController,
+            Positioned(
+              top: sheetPositionTop - 5,
+              child: AudioSlider(
+                size: size,
+                player: audioPlayer,
+              ),
             ),
             Positioned(
               top: sheetPositionTop,
@@ -100,9 +127,10 @@ VideoPlayerController _videoController;
                     GestureDetector(
                       onVerticalDragEnd: toggleSheet,
                       child: SheetHeaderWidget(
-                          size: size,
-                          titles: titles,
-                          tabController: _tabController),
+                        size: size,
+                        titles: titles,
+                        tabController: _tabController,
+                      ),
                     ),
                     Container(
                       height: size.height - sheetPositionTop - 78,
@@ -167,7 +195,6 @@ class _SheetHeaderWidgetState extends State<SheetHeaderWidget> {
         activeSlide = i;
       });
     });
-    // TODO: implement initState
     super.initState();
   }
 
@@ -209,22 +236,23 @@ class _SheetHeaderWidgetState extends State<SheetHeaderWidget> {
   }
 }
 
-class VideoControls extends StatefulWidget {
-  VideoControls({
+class AudioControls extends StatefulWidget {
+  AudioControls({
     this.size,
-    this.controller,
+    this.player,
   });
-
-  final VideoPlayerController controller;
   final Size size;
+  final AudioPlayer player;
   @override
-  _VideoControlsState createState() => _VideoControlsState();
+  _AudioControlsState createState() => _AudioControlsState();
 }
 
-class _VideoControlsState extends State<VideoControls> {
-  bool isControlsVisible = false;
+class _AudioControlsState extends State<AudioControls> {
+  bool isControlsVisible = true;
   double height = 280;
-
+  bool isPlaying = false;
+  bool isLoaded = false;
+  bool isError = false;
   showControls() {
     setState(() {
       isControlsVisible = true;
@@ -238,13 +266,51 @@ class _VideoControlsState extends State<VideoControls> {
   }
 
   @override
+  void initState() {
+    AudioService.playbackStateStream.listen((PlaybackState state) {
+      if (state.playing)
+        isPlaying = true;
+      else {
+        isPlaying = false;
+        switch (state.processingState) {
+          case AudioProcessingState.none:
+          case AudioProcessingState.connecting:
+            isLoaded = false;
+            break;
+          case AudioProcessingState.error:
+            isError = true;
+            isLoaded = false;
+            break;
+          case AudioProcessingState.buffering:
+            isLoaded = false;
+            break;
+          case AudioProcessingState.ready:
+            isLoaded = true;
+            break;
+          case AudioProcessingState.fastForwarding:
+          case AudioProcessingState.rewinding:
+          case AudioProcessingState.skippingToPrevious:
+          case AudioProcessingState.skippingToNext:
+          case AudioProcessingState.skippingToQueueItem:
+          case AudioProcessingState.completed:
+            isLoaded = true;
+            break;
+          case AudioProcessingState.stopped:
+            isLoaded = true;
+            break;
+        }
+      }
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     log('video controls built again');
     return Positioned(
       top: 0,
       width: widget.size.width,
-      child: widget.controller.value.initialized
-          ? GestureDetector(
+      child: GestureDetector(
         onTap: showControls,
         child: Container(
           width: widget.size.width,
@@ -252,148 +318,150 @@ class _VideoControlsState extends State<VideoControls> {
           color: Colors.transparent,
           child: isControlsVisible
               ? GestureDetector(
-            onTap: hideControls,
-            child: Container(
-                height: height,
-                width: widget.size.width,
-                color: Colors.transparent,
-                padding: const EdgeInsets.only(top: 56),
-                child: Column(
-                  children: [
-                    Container(
-                      width: widget.size.width,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 24.0),
-                      child: Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween,
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Icon(
-                            Icons.arrow_back,
-                            color: Colors.white,
-                          ),
-                          Icon(
-                            Icons.filter,
-                            color: Colors.white,
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 60 / 540 * height),
-                    Container(
-                      width: widget.size.width,
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 50,
-                          vertical: 30 / 540 * height),
-                      child: Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween,
-                        children: [
-                          Icon(
-                            Icons.skip_previous,
-                            color: Colors.white,
-                            size: 34,
-                          ),
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                if (widget
-                                    .controller.value.isPlaying) {
-                                  widget.controller.pause();
-                                } else {
-                                  widget.controller.play();
-                                }
-                              });
-                            },
-                            child: Container(
-                              height: 50,
-                              width: 50,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                BorderRadius.circular(50),
-                                color: Color(0xffd47fa6),
+                  onTap: hideControls,
+                  child: Container(
+                    height: height,
+                    width: widget.size.width,
+                    color: Colors.transparent,
+                    padding: const EdgeInsets.only(top: 56),
+                    child: Column(
+                      children: [
+                        Container(
+                          width: widget.size.width,
+                          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              GestureDetector(
+                                onTap: () => Navigator.pop(context),
+                                child: Icon(
+                                  Icons.arrow_back,
+                                  color: Colors.white,
+                                ),
                               ),
-                              child:
-                              widget.controller.value.isPlaying
-                                  ? Icon(
-                                Icons.pause,
+                              Icon(
+                                Icons.filter,
                                 color: Colors.white,
-                                size: 34,
+                              ),
+                            ],
+                          ),
+                        ),
+                        isPlaying
+                            ? Container(
+                                width: widget.size.width,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 50,
+                                    vertical: 30 / 540 * height),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Icon(
+                                      Icons.skip_previous,
+                                      color: Colors.white,
+                                      size: 34,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          if (isPlaying) {
+                                            widget.player.pause();
+                                          } else {
+                                            widget.player.play();
+                                          }
+                                        });
+                                      },
+                                      child: Container(
+                                        height: 50,
+                                        width: 50,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          color: Color(0xffd47fa6),
+                                        ),
+                                        child: isPlaying
+                                            ? Icon(
+                                                Icons.pause,
+                                                color: Colors.white,
+                                                size: 34,
+                                              )
+                                            : Icon(
+                                                Icons.play_arrow,
+                                                color: Colors.white,
+                                                size: 34,
+                                              ),
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.skip_next,
+                                      color: Colors.white,
+                                      size: 34,
+                                    ),
+                                  ],
+                                ),
                               )
-                                  : Icon(
-                                Icons.play_arrow,
-                                color: Colors.white,
-                                size: 34,
-                              ),
-                            ),
-                          ),
-                          Icon(Icons.skip_next,
-                              color: Colors.white, size: 34),
-                        ],
-                      ),
+                            : isError
+                                ? Container(
+                                    height: height - 86,
+                                    width: widget.size.width,
+                                    alignment: Alignment.center,
+                                    child: CircularProgressIndicator(),
+                                  )
+                                : Container(
+                                    height: height - 86,
+                                    width: widget.size.width,
+                                    alignment: Alignment.center,
+                                    child: Icon(Icons.refresh,
+                                        color: trendingColors[0], size: 45),
+                                  ),
+                      ],
                     ),
-                    SizedBox(height: 20 / 540 * height),
-                    VideoSlider(
-                      controller: widget.controller,
-                      size: widget.size,
-                    )
-                  ],
-                )),
-          )
+                  ),
+                )
               : Container(
-            width: widget.size.width,
-            height: height,
-          ),
+                  width: widget.size.width,
+                  height: height,
+                ),
         ),
-      )
-          : Container(
-        height: height,
-        width: widget.size.width,
-        alignment: Alignment.center,
-        child: CircularProgressIndicator(),
       ),
     );
   }
 }
 
-class VideoSlider extends StatefulWidget {
-  const VideoSlider({
+class AudioSlider extends StatefulWidget {
+  const AudioSlider({
     Key key,
-    @required this.controller,
     @required this.size,
+    @required this.player,
   }) : super(key: key);
 
-  final VideoPlayerController controller;
   final Size size;
+  final AudioPlayer player;
 
   @override
-  _VideoSliderState createState() => _VideoSliderState();
+  _AudioSliderState createState() => _AudioSliderState();
 }
 
-class _VideoSliderState extends State<VideoSlider> {
+class _AudioSliderState extends State<AudioSlider> {
   double sliderPos = 0;
+  double duration = 0;
   void sliderChanged(val) {
     setState(() {
       sliderPos = val;
     });
-    widget.controller.seekTo(
-      Duration(
-        seconds: val.round(),
-      ),
-    );
+    AudioService.seekTo(Duration(seconds: val.round()));
   }
 
   @override
   void initState() {
-    sliderPos = widget.controller.value.position.inSeconds.toDouble();
-    widget.controller.addListener(() {
-      setState(() {
-        sliderPos = widget.controller.value.position.inSeconds.toDouble();
-      });
+    AudioService.positionStream.listen((Duration position) {
+      sliderPos = position.inSeconds.toDouble();
     });
-
+    AudioService.currentMediaItemStream.listen((MediaItem item) {
+      duration = item.duration.inSeconds.toDouble();
+    });
     super.initState();
   }
 
@@ -405,32 +473,37 @@ class _VideoSliderState extends State<VideoSlider> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: widget.size.width,
-        child: Slider(
-          value: sliderPos,
-          max: widget.controller.value.duration.inSeconds * 1.0,
-          onChanged: sliderChanged,
-          inactiveColor: Color(0x50d47fa6),
-          activeColor: Color(0xdfffffff),
-        ));
+      width: widget.size.width,
+      child: Slider(
+        value: sliderPos,
+        max: duration,
+        onChanged: sliderChanged,
+        inactiveColor: Color(0x50d47fa6),
+        activeColor: Color(0xdfffffff),
+      ),
+    );
   }
 }
 
 class DockedCurrentlyPlaying extends StatelessWidget {
   final Size size;
-  DockedCurrentlyPlaying({
-    this.size,
+  final AudioPost audio;
+  const DockedCurrentlyPlaying({
+    @required this.size,
+    @required this.audio,
   });
   @override
   Widget build(BuildContext context) {
     return Container(
       width: size.width,
       decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('images/photo.png'),
-              alignment: Alignment.center,
-              fit: BoxFit.fill),
-          color: Color(0x66ffffff)),
+        image: DecorationImage(
+          image: AssetImage('images/photo.png'),
+          alignment: Alignment.center,
+          fit: BoxFit.fill,
+        ),
+        color: Color(0x66ffffff),
+      ),
       padding: EdgeInsets.only(left: 24, right: 24, top: 36),
       child: Column(
         children: [
@@ -451,7 +524,7 @@ class DockedCurrentlyPlaying extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Highs and Lows',
+                    audio.name,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -461,7 +534,7 @@ class DockedCurrentlyPlaying extends StatelessWidget {
                   ),
                   SizedBox(height: 4),
                   Text(
-                    'Hillsong United',
+                    audio.author.name,
                     style: TextStyle(
                       fontSize: 12,
                       color: Color(0xff998FA2),
@@ -472,7 +545,7 @@ class DockedCurrentlyPlaying extends StatelessWidget {
               ),
               Spacer(),
               Text(
-                "4:30",
+                getAsMinutes(audio.length),
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -489,41 +562,21 @@ class DockedCurrentlyPlaying extends StatelessWidget {
   }
 }
 
-class VideoWidget extends StatelessWidget {
-  final VideoPlayerController controller;
-  final Future<void> initFunction;
+class AudioWidget extends StatelessWidget {
   final Size size;
-  VideoWidget({
-    @required this.controller,
-    @required this.initFunction,
-    this.size,
-  });
+  final double height;
+  final AudioPost audio;
+  final AudioPlayer player;
+  const AudioWidget({this.size, this.height, this.audio, this.player});
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: size.height,
+//      padding: EdgeInsets.only(top:22),
       width: size.width,
-      alignment: Alignment.topCenter,
-      color: Colors.black,
-      child: FutureBuilder(
-        future: initFunction,
-        builder: (context, snapshot) {
-          log('built video again');
-          if (snapshot.connectionState == ConnectionState.done) {
-            return Container(
-              width: size.width,
-              height: size.width / controller.value.aspectRatio + 60,
-              alignment: Alignment.center,
-              child: AspectRatio(
-                aspectRatio: controller.value.aspectRatio,
-                child: VideoPlayer(controller),
-              ),
-            );
-          } else {
-            return Container();
-          }
-        },
-      ),
+      height: height + 30,
+      child: audio.images != null
+          ? Image.network(audio.images[0].mediumUrl, fit: BoxFit.cover)
+          : Image.asset('images/music_thumb.png', fit: BoxFit.cover),
     );
   }
 }

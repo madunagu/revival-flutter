@@ -16,6 +16,7 @@ class User {
   @JsonKey(name: 'assigned_at') DateTime assignedAt;
   String phone;
   String gender;
+  @JsonKey(name: 'follower_count') int followerCount;
   @JsonKey(name: 'created_at') DateTime createdAt;
   @JsonKey(name: 'updated_at') DateTime updatedAt;
 

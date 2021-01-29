@@ -32,10 +32,10 @@ import 'package:devotion/SingleEventScreen.dart';
 import 'package:devotion/widgets/AppScaffoldWidget.dart';
 import 'package:devotion/widgets/TrendingWidget.dart';
 import 'package:devotion/misc/StyleConstants.dart';
-
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:devotion/util/AudioPlayerTask.dart';
 import 'package:animations/animations.dart';
 
 void main() {
@@ -70,7 +70,7 @@ class MyApp extends StatelessWidget {
             return SplashScreen();
           }
           if (state is AuthenticationSuccess) {
-            return MainScreen();
+            return AudioServiceWidget(child: MainScreen());
           }
           if (state is AuthenticationFailure) {
             return LoginScreen(userRepository: userRepository);
@@ -118,6 +118,7 @@ class MainScreen extends StatefulWidget {
   @override
   _MainScreenState createState() => _MainScreenState();
 }
+// Must be a top-level function
 
 class _MainScreenState extends State<MainScreen>
     with SingleTickerProviderStateMixin {
@@ -127,13 +128,23 @@ class _MainScreenState extends State<MainScreen>
   void initState() {
     this._tabController = TabController(vsync: this, length: 5);
     this._authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
+    startAudioService();
     super.initState();
   }
 
   @override
   void dispose() {
     _tabController.dispose();
+    endAudioService();
     super.dispose();
+  }
+
+  endAudioService() async {
+    await AudioService.stop();
+  }
+
+  startAudioService() async {
+    await AudioService.start(backgroundTaskEntrypoint: audioEntryPoint);
   }
 
   @override

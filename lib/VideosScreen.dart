@@ -1,9 +1,16 @@
+import 'package:devotion/PlayerScreen.dart';
+import 'package:devotion/bloc/blocs/list.bloc.dart';
+import 'package:devotion/bloc/events/ListEvent.dart';
+import 'package:devotion/bloc/states/ListState.dart';
+import 'package:devotion/models/VideoPost.dart';
 import 'package:devotion/widgets/AppBarWidget.dart';
 import 'package:devotion/widgets/ImageAvatarWidget.dart';
 import 'package:devotion/widgets/AppScaffoldWidget.dart';
 import 'package:devotion/misc/StyleConstants.dart';
 import 'package:devotion/widgets/InteractionButtonWidget.dart';
+import 'package:devotion/widgets/UserInfoWidget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class VideosScreen extends StatefulWidget {
   @override
@@ -11,6 +18,30 @@ class VideosScreen extends StatefulWidget {
 }
 
 class _VideosScreenState extends State<VideosScreen> {
+  final _scrollController = ScrollController();
+  final _scrollThreshold = 700.0;
+  ListBloc _listBloc;
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+    _listBloc = BlocProvider.of<ListBloc>(context);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.position.pixels;
+    if (maxScroll - currentScroll <= _scrollThreshold) {
+      _listBloc.add(ListFetched());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return AppScaffoldWidget(
@@ -19,34 +50,33 @@ class _VideosScreenState extends State<VideosScreen> {
         title: 'Videos',
         rightIcon: Icons.filter,
       ),
-      body: Container(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              VideoItem(),
-              VideoItem(),
-              VideoItem(),
-              VideoItem(),
-              VideoItem(),
-              VideoItem(),
-              VideoItem(),
-              VideoItem(),
-              VideoItem(),
-              VideoItem(),
-              VideoItem(),
-              VideoItem(),
-              VideoItem(),
-              VideoItem(),
-            ],
-          ),
-        ),
+      body: BlocBuilder<ListBloc, ListState>(
+        builder: (BuildContext context, ListState state) {
+          if (state is ListSuccess) {
+            return SingleChildScrollView(
+              controller: _scrollController,
+              child: Column(
+                children: state.models.map((e) => VideoItem(video: e)).toList(),
+              ),
+            );
+          } else if (state is ListInitial) {
+            return Center(child: CircularProgressIndicator());
+          } else {
+            return Center(child: Text('No Videos'));
+          }
+        },
       ),
     );
   }
 }
 
 class VideoItem extends StatelessWidget {
+  final VideoPost video;
+  final Size size;
+  const VideoItem({
+    this.video,
+    this.size,
+  });
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -55,30 +85,11 @@ class VideoItem extends StatelessWidget {
           Container(
             height: 72,
             padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-            width: MediaQuery.of(context).size.width,
-            child: Row(children: <Widget>[
-              ImageAvatarWidget(imageURL: 'images/avatar1.jpg'),
-              SizedBox(
-                width: 20,
-              ),
-              Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'John Brown',
-                      style: mediumTextStyle,
-                    ),
-                    Text(
-                      '8 Nov',
-                      style: smallTextStyle,
-                    ),
-                  ]),
-            ]),
+            width: size.width,
+            child: UserInfoWidget(user: video.user),
           ),
           Container(
-            width: MediaQuery.of(context).size.width,
+            width: size.width,
             height: 210,
             child: Stack(
               children: <Widget>[
@@ -92,18 +103,20 @@ class VideoItem extends StatelessWidget {
                     ),
                     child: Container(
                       height: 210,
-                      width: (MediaQuery.of(context).size.width - 24),
-                      child: Image.asset(
-                        'images/avatar1.jpg',
-                        fit: BoxFit.cover,
-                      ),
+                      width: size.width - 24,
+                      child: video.images != null
+                          ? Image.asset(
+                              video.images[0].mediumUrl,
+                              fit: BoxFit.cover,
+                            )
+                          : Container(),
                     ),
                   ),
                 ),
                 Positioned(
                   bottom: 0,
                   left: 0,
-                  width: MediaQuery.of(context).size.width - 24,
+                  width: size.width - 24,
                   height: 105,
                   child: ClipRRect(
                     borderRadius: BorderRadius.only(
@@ -134,24 +147,35 @@ class VideoItem extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        InteractionButtonWidget(icon: Icons.favorite,count: 255),
+                        InteractionButtonWidget(
+                            icon: Icons.favorite, count: 255),
                         SizedBox(
                           width: 22,
                         ),
-                        InteractionButtonWidget(icon: Icons.favorite,count: 255),
+                        InteractionButtonWidget(
+                            icon: Icons.favorite, count: 255),
                       ],
                     ),
                   ),
                 ),
                 Positioned(
                   bottom: 210 / 2, //- 50 / 2,
-                  left: (MediaQuery.of(context).size.width / 2) - 12 - 50 / 2,
+                  left: (size.width / 2) - 12 - 50 / 2,
                   width: 50,
                   height: 50,
-                  child: Icon(
-                    Icons.play_circle_filled,
-                    size: 50,
-                    color: Colors.white,
+                  child: InkWell(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            PlayerScreen(playable: this.video),
+                      ),
+                    ),
+                    child: Icon(
+                      Icons.play_circle_filled,
+                      size: 50,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
                 Positioned(
@@ -162,8 +186,7 @@ class VideoItem extends StatelessWidget {
                     child: RichText(
                       maxLines: 2,
                       text: TextSpan(
-                        text:
-                            'This is a caption for the image whateer the title',
+                        text: video.name,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 18,
@@ -182,5 +205,3 @@ class VideoItem extends StatelessWidget {
     );
   }
 }
-
-

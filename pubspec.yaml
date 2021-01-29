@@ -18,7 +18,8 @@ dependencies:
   json_serializable: ^3.3.0
   video_player:
   json_to_model: ^1.3.13
-  audioplayers: ^0.17.2
+  audio_service: ^0.16.1
+  just_audio:
   scoped_model: ^1.1.0
   animations: ^1.1.0
   http: ^0.12.1  
@@ -62,3 +63,4 @@ flutter:
     - images/avatar1.jpg
     - images/avatar2.jpg
     - images/photo.png
+    - images/music_thumb.png
