@@ -9,7 +9,7 @@ import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/widgets/AppScaffoldWidget.dart';
 import 'package:flutter/material.dart';
 
-import 'models/Event.dart';
+import 'package:devotion/models/Event.dart';
 
 var smallTextSyle = TextStyle(color: Colors.grey, fontSize: 12);
 var largeWhiteTextStyle = TextStyle(
@@ -103,7 +103,11 @@ class SingleEvent extends StatelessWidget {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(50),
                           child: Image.network(
-                            event.user.avatar,
+                            event.poster != null
+                                ? event.poster.profileMedia != null
+                                    ? event.poster.profileMedia.logoUrl
+                                    : 'defaultlogo'
+                                : event.user.avatar,
                             height: 35,
                             width: 35,
                           ),
@@ -117,21 +121,31 @@ class SingleEvent extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                event.user.name,
+                                event.poster != null
+                                    ? event.poster.name
+                                    : event.user.name,
                                 style: TextStyle(
                                   fontWeight: FontWeight.w700,
                                   letterSpacing: -0.14,
                                 ),
                               ),
-                              Text(
-                                'Montreal, QC Private Group',
-                                style: TextStyle(
-                                  color: Color(0x7A403249),
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  letterSpacing: -0.19,
-                                ),
-                              ),
+                              event.poster != null
+                                  ? Text(
+                                      event.poster.addresses != null
+                                          ? event.poster.addresses[0].city +
+                                              event.poster.addresses[0].state +
+                                              ' '
+                                          : '' +
+                                              'Montreal, QC' +
+                                              event.posterType,
+                                      style: TextStyle(
+                                        color: Color(0x7A403249),
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                        letterSpacing: -0.19,
+                                      ),
+                                    )
+                                  : Container(),
                             ],
                           ),
                         ),
@@ -140,7 +154,7 @@ class SingleEvent extends StatelessWidget {
                     SizedBox(
                       height: 25,
                     ),
-                    AreYouGoing(isGoing: event.attending == 1),
+                    AreYouGoing(isGoing: event.attending == 1, event: event),
                   ],
                 ),
               ),
@@ -352,6 +366,145 @@ class SingleEvent extends StatelessWidget {
   }
 }
 
+class AreYouGoing extends StatefulWidget {
+  final bool isGoing;
+  final Event event;
+  const AreYouGoing({Key key, this.isGoing, @required this.event})
+      : super(key: key);
+
+  @override
+  _AreYouGoingState createState() => _AreYouGoingState();
+}
+
+class _AreYouGoingState extends State<AreYouGoing> {
+  bool isGoing;
+  attendEvent() async {
+    setState(() {
+      this.isGoing = true;
+    });
+    Map<ResponseKey, dynamic> liked = await NetworkingClass()
+        .post('/events/' + widget.event.id.toString(), {'val': true});
+    if (liked[ResponseKey.type] == ResponseType.data) {
+      var res = liked[ResponseKey.data]['data'];
+      if (res == true) {
+        //already set
+      } else {
+        setState(() {
+          this.isGoing = false;
+        });
+        //handle liking error
+      }
+    }
+  }
+
+  absentEvent() async {
+    setState(() {
+      this.isGoing = false;
+    });
+    Map<ResponseKey, dynamic> liked = await NetworkingClass()
+        .post('/events/' + widget.event.id.toString(), {'value': false});
+    if (liked[ResponseKey.type] == ResponseType.data) {
+      var res = liked[ResponseKey.data]['data'];
+      if (res == true) {
+        //already done
+      } else {
+        setState(() {
+          this.isGoing = true;
+        });
+      }
+    }
+  }
+
+  @override
+  initState() {
+    isGoing = widget.isGoing;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.only(left: 27, top: 14, right: 5, bottom: 14),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(50),
+        border: isGoing ? null : Border.all(color: Color(0xffE7E4E9)),
+        color: isGoing ? Color(0xff352641) : Colors.white,
+      ),
+      child: Row(
+        children: <Widget>[
+          InkWell(
+            child: Icon(
+              Icons.open_in_browser,
+              size: 24,
+              color: isGoing ? Color(0xff998fa2) : Color(0xff757575),
+            ),
+          ),
+          SizedBox(
+            width: 16,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                isGoing ? 'You are going' : 'Are you going?',
+                style: TextStyle(
+                  color: isGoing ? Colors.white : Colors.black,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: -0.14,
+                ),
+              ),
+              SizedBox(
+                height: 3,
+              ),
+              Text(
+                'Edit',
+                style: smallTextSyle,
+              )
+            ],
+          ),
+          Spacer(),
+          isGoing
+              ? GestureDetector(
+                  onTap: absentEvent,
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    margin: EdgeInsets.symmetric(horizontal: 6),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Color(0xff594f62),
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: Icon(
+                      Icons.cancel,
+                      color: Colors.white,
+                    ),
+                  ),
+                )
+              : Container(),
+          GestureDetector(
+            onTap: attendEvent,
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 6),
+              width: 40,
+              height: 40,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: isGoing ? Color(0xff594f62) : Color(0xff58B2BE),
+                borderRadius: BorderRadius.circular(50),
+              ),
+              child: Icon(
+                Icons.check,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class EventAppBarWidget extends StatelessWidget {
   const EventAppBarWidget({
     Key key,
@@ -407,123 +560,6 @@ class EventAppBarWidget extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class AreYouGoing extends StatefulWidget {
-  final bool isGoing;
-  final Event event;
-  const AreYouGoing({Key key, this.isGoing, this.event}) : super(key: key);
-
-  @override
-  _AreYouGoingState createState() => _AreYouGoingState();
-}
-
-class _AreYouGoingState extends State<AreYouGoing> {
-  bool isGoing;
-  attendEvent() async {
-    Map<ResponseKey, dynamic> liked = await NetworkingClass()
-        .post('/events/' + widget.event.id.toString(), []);
-    if (liked[ResponseKey.type] == ResponseType.data) {
-      var res = liked[ResponseKey.data]['data'];
-      if (res == 'true') {
-        setState(() {
-          this.isGoing = true;
-        });
-      } else {
-        this.isGoing = false;
-        //handle liking error
-      }
-    }
-  }
-
-  @override
-  initState() {
-    isGoing = widget.isGoing;
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(left: 27, top: 14, right: 5, bottom: 14),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(50),
-        border: isGoing ? null : Border.all(color: Color(0xffE7E4E9)),
-        color: isGoing ? Color(0xff352641) : Colors.white,
-      ),
-      child: Row(
-        children: <Widget>[
-          InkWell(
-            child: Icon(
-              Icons.open_in_browser,
-              size: 24,
-              color: isGoing ? Color(0xff998fa2) : Color(0xff757575),
-            ),
-          ),
-          SizedBox(
-            width: 16,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-              isGoing ? 'You are going' : 'Are you going?',
-                style: TextStyle(
-                  color: isGoing ? Colors.white : Colors.black,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: -0.14,
-                ),
-              ),
-              SizedBox(
-                height: 3,
-              ),
-              Text(
-                'Edit',
-                style: smallTextSyle,
-              )
-            ],
-          ),
-          Spacer(),
-          isGoing
-              ? GestureDetector(
-                  onTap: attendEvent,
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    margin: EdgeInsets.symmetric(horizontal: 6),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: Color(0xff594f62),
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    child: Icon(
-                      Icons.cancel,
-                      color: Colors.white,
-                    ),
-                  ),
-                )
-              : Container(),
-          GestureDetector(
-            onTap: attendEvent,
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 6),
-              width: 40,
-              height: 40,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: isGoing ? Color(0xff594f62) : Color(0xff58B2BE),
-                borderRadius: BorderRadius.circular(50),
-              ),
-              child: Icon(
-                Icons.check,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

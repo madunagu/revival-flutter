@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'Comment.dart';
 import 'User.dart';
+import 'Comment.dart';
 import 'Church.dart';
 import 'Address.dart';
 import 'User.dart';
@@ -25,8 +25,10 @@ class Event {
   int attending;
   @JsonKey(name: 'views_count') int viewsCount;
   int viewed;
-  List<Comment> comments;
   User user;
+  @JsonKey(name: 'poster_type') String posterType;
+  @JsonKey(ignore: true) dynamic poster;
+  List<Comment> comments;
   List<Church> churches;
   List<Address> addresses;
   List<User> attendees;

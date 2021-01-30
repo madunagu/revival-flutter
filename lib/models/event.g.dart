@@ -29,13 +29,14 @@ Event _$EventFromJson(Map<String, dynamic> json) {
     ..attending = json['attending'] as int
     ..viewsCount = json['views_count'] as int
     ..viewed = json['viewed'] as int
+    ..user = json['user'] == null
+        ? null
+        : User.fromJson(json['user'] as Map<String, dynamic>)
+    ..posterType = json['poster_type'] as String
     ..comments = (json['comments'] as List)
         ?.map((e) =>
             e == null ? null : Comment.fromJson(e as Map<String, dynamic>))
         ?.toList()
-    ..user = json['user'] == null
-        ? null
-        : User.fromJson(json['user'] as Map<String, dynamic>)
     ..churches = (json['churches'] as List)
         ?.map((e) =>
             e == null ? null : Church.fromJson(e as Map<String, dynamic>))
@@ -68,8 +69,9 @@ Map<String, dynamic> _$EventToJson(Event instance) => <String, dynamic>{
       'attending': instance.attending,
       'views_count': instance.viewsCount,
       'viewed': instance.viewed,
-      'comments': instance.comments,
       'user': instance.user,
+      'poster_type': instance.posterType,
+      'comments': instance.comments,
       'churches': instance.churches,
       'addresses': instance.addresses,
       'attendees': instance.attendees,
