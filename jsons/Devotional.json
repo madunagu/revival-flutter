@@ -1,0 +1,19 @@
+{
+    "id": 3,
+    "user_id": 1,
+    "title": "Shayna Bauch",
+    "opening_prayer": "Shayna Bauch",
+    "closing_prayer": "Shayna Bauch",
+    "memory_verse": "Shayna Bauch",
+    "body": "Shayna Bauch",
+    "poster_type": "poster",
+    "day": "@datetime",
+    "@JsonKey(ignore:true) dynamic": "poster",
+    "devoted": 1,
+    "devotees_count": 1,
+    "devotees": "$[]User",
+    "user": "$User",
+    "images": "$[]ImageSource",
+    "created_at": "@datetime",
+    "updated_at": "@datetime"
+}

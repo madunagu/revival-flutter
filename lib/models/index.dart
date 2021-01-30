@@ -2,6 +2,7 @@ export 'Address.dart';
 export 'AudioPost.dart';
 export 'Church.dart';
 export 'Comment.dart';
+export 'Devotional.dart';
 export 'Event.dart';
 export 'Feed.dart';
 export 'Heirachy.dart';
