@@ -33,6 +33,7 @@ class AuthenticationBloc
     if (event is AuthenticationLoggedIn) {
       yield AuthenticationInProgress();
       await userRepository.persistToken(event.token);
+      await userRepository.saveUser(event.user.toString());
       yield AuthenticationSuccess();
     }
 

@@ -1,3 +1,4 @@
+import 'package:devotion/models/User.dart';
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
 
@@ -12,8 +13,9 @@ class AuthenticationStarted extends AuthenticationEvent {}
 
 class AuthenticationLoggedIn extends AuthenticationEvent {
   final String token;
+  final User user;
 
-  const AuthenticationLoggedIn({@required this.token});
+  const AuthenticationLoggedIn({@required this.token, @required this.user});
 
   @override
   List<Object> get props => [token];

@@ -20,10 +20,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 final titles = ['Details', 'Lyrics', 'Comments', 'Related'];
 
 class VideoDetailsWidget extends StatefulWidget {
-  final dynamic video;
+  final dynamic playable;
   final PlayedType playedType;
   const VideoDetailsWidget(
-      {Key key, @required this.video, @required this.playedType})
+      {Key key, @required this.playable, @required this.playedType})
       : super(key: key);
 
   @override
@@ -31,22 +31,26 @@ class VideoDetailsWidget extends StatefulWidget {
 }
 
 class _VideoDetailsWidgetState extends State<VideoDetailsWidget> {
-  dynamic video;
+  dynamic playable;
   likeVideo() async {
+    setState({
+      this.playable.liked = 1;
+    });
     String url = widget.playedType == PlayedType.video
         ? '/video-posts/'
         : '/audio-posts/';
     try {
       Map<ResponseKey, dynamic> liked =
-          await NetworkingClass().post(url + video.id.toString(), []);
+          await NetworkingClass().post(url + playable.id.toString(), []);
       if (liked[ResponseKey.type] == ResponseType.data) {
         var res = liked[ResponseKey.data]['data'];
-        if (res == 'true') {
-          setState(() {
-            this.video.liked = 1;
-          });
+        if (res == true) {
+     //already set to true
         } else {
           //handle liking error
+               setState(() {
+            this.playable.liked = 0;
+          });
         }
       }
     } catch (_) {}
@@ -54,7 +58,7 @@ class _VideoDetailsWidgetState extends State<VideoDetailsWidget> {
 
   @override
   initState() {
-    video = widget.video;
+    playable = widget.playable;
     super.initState();
   }
 
@@ -71,7 +75,7 @@ class _VideoDetailsWidgetState extends State<VideoDetailsWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  video.name,
+                  playable.name,
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -80,7 +84,7 @@ class _VideoDetailsWidgetState extends State<VideoDetailsWidget> {
                 ),
                 SizedBox(height: 3),
                 Text(
-                  '${video.viewsCount} views',
+                  '${playable.viewsCount} views',
                 ),
               ],
             ),
@@ -97,13 +101,13 @@ class _VideoDetailsWidgetState extends State<VideoDetailsWidget> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   VideoInteraction(
-                    active: video.liked == 1,
-                    counter: '${video.likesCount} likes',
+                    active: playable.liked == 1,
+                    counter: '${playable.likesCount} likes',
                     onTap: likeVideo,
                   ),
                   VideoInteraction(
                     icon: Icons.chat_bubble_outline,
-                    counter: '${widget.video.commentsCount} comments',
+                    counter: '${widget.playable.commentsCount} comments',
                   ),
                   VideoInteraction(
                     counter: '',
@@ -117,7 +121,7 @@ class _VideoDetailsWidgetState extends State<VideoDetailsWidget> {
             radius: 60,
             borderColor: Color(0xffE7E4E9),
             padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-            child: UserInfoWidget(user: widget.video.user),
+            child: UserInfoWidget(user: widget.playable.user),
           ),
           SizedBox(height: 10),
           Container(
@@ -126,7 +130,7 @@ class _VideoDetailsWidgetState extends State<VideoDetailsWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  " ${widget.video.createdAt.day.toString()} ${months[widget.video.createdAt.month - 1]},  ${widget.video.createdAt.year}",
+                  " ${widget.playable.createdAt.day.toString()} ${months[widget.playable.createdAt.month - 1]},  ${widget.playable.createdAt.year}",
                   style: TextStyle(
                     color: Color(0xff817889),
                     fontWeight: FontWeight.bold,
@@ -134,7 +138,7 @@ class _VideoDetailsWidgetState extends State<VideoDetailsWidget> {
                   ),
                 ),
                 Text(
-                  widget.video.description,
+                  widget.playable.description,
                   style: TextStyle(color: Color(0xff817889)),
                 ),
               ],

@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:devotion/bloc/blocs/authentication.bloc.dart';
 import 'package:devotion/bloc/events/index.dart';
 import 'package:devotion/bloc/states/index.dart';
+import 'package:devotion/models/index.dart';
 import 'package:devotion/repositories/UserRepository.dart';
 import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
@@ -27,12 +28,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield LoginInProgress();
 
       try {
-        final token = await userRepository.authenticate(
+        final LoginData data = await userRepository.authenticate(
           username: event.username,
           password: event.password,
         );
 
-        authenticationBloc.add(AuthenticationLoggedIn(token: token));
+        authenticationBloc.add(AuthenticationLoggedIn(token: data.token,user: data.user));
         yield LoginInitial();
       } catch (error) {
         log(error.toString());

@@ -1,8 +1,10 @@
+import 'package:devotion/DevotionalsScreen.dart';
+import 'package:devotion/FeedScreen.dart';
+import 'package:devotion/VideosScreen.dart';
 import 'package:devotion/widgets/ImageAvatarWidget.dart';
 import 'package:flutter/material.dart';
 
 class AppNavigationDrawer extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -74,8 +76,39 @@ class AppNavigationDrawer extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                DrawerLink(title: 'Home'),
-                DrawerLink(title: 'Meetups'),
+                DrawerLink(
+                  title: 'Home',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FeedScreen(),
+                      ),
+                    );
+                  },
+                ),
+                DrawerLink(
+                  title: 'Videos',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => VideosScreen(),
+                      ),
+                    );
+                  },
+                ),
+                DrawerLink(
+                  title: 'Devotionals',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DevotionalsScreen(),
+                      ),
+                    );
+                  },
+                ),
                 DrawerLink(title: 'Events', active: true),
                 DrawerLink(title: 'About Us'),
                 DrawerLink(title: 'Contact Us'),
@@ -91,9 +124,11 @@ class AppNavigationDrawer extends StatelessWidget {
 class DrawerLink extends StatelessWidget {
   final String title;
   final bool active;
+  final Function onTap;
   DrawerLink({
     this.title,
     this.active = false,
+    this.onTap,
   });
   @override
   Widget build(BuildContext context) {
@@ -102,9 +137,9 @@ class DrawerLink extends StatelessWidget {
       child: Container(
         decoration: active
             ? BoxDecoration(
-          color: Color(0xff8A56AC),
-          borderRadius: BorderRadius.circular(30),
-        )
+                color: Color(0xff8A56AC),
+                borderRadius: BorderRadius.circular(30),
+              )
             : null,
         margin: EdgeInsets.only(bottom: 8),
         padding: EdgeInsets.only(left: 13, top: 9, bottom: 9, right: 24),

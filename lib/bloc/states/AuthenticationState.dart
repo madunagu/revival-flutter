@@ -1,3 +1,4 @@
+import 'package:devotion/models/User.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class AuthenticationState extends Equatable {
@@ -12,5 +13,3 @@ class AuthenticationSuccess extends AuthenticationState {}
 class AuthenticationFailure extends AuthenticationState {}
 
 class AuthenticationInProgress extends AuthenticationState {}
-
-
