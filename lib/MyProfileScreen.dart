@@ -1,4 +1,8 @@
+import 'package:devotion/ChatScreen.dart';
+import 'package:devotion/MessagesScreen.dart';
+import 'package:devotion/NotificationScreen.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
+import 'package:devotion/sheets/ProfileMediaSheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -89,18 +93,25 @@ class MyProfileScreen extends StatelessWidget {
                                   color: Colors.white,
                                 ),
                               ),
-                              Container(
-                                width: 32,
-                                height: 32,
-                                padding: EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50),
-                                  color: Color(0xff352641),
+                              InkWell(
+                                onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ProfileSheet()),
                                 ),
-                                child: Icon(
-                                  Icons.edit,
-                                  color: Colors.white,
-                                  size: 18,
+                                child: Container(
+                                  width: 32,
+                                  height: 32,
+                                  padding: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50),
+                                    color: Color(0xff352641),
+                                  ),
+                                  child: Icon(
+                                    Icons.edit,
+                                    color: Colors.white,
+                                    size: 18,
+                                  ),
                                 ),
                               ),
                             ],
@@ -126,43 +137,49 @@ class MyProfileScreen extends StatelessWidget {
                     flex: 1,
                     child: Column(
                       children: [
-                        Container(
-                          width: 55,
-                          height: 50,
-                          child: Stack(
-                            alignment: Alignment.topCenter,
-                            children: [
-                              Positioned(
-                                top: 12,
-                                left: 0,
-                                child: Icon(
-                                  Icons.email,
-                                  color: Colors.white,
-                                  size: 40,
-                                ),
-                              ),
-                              Positioned(
-                                right: 0,
-                                top: 0,
-                                child: Container(
-                                  width: 27,
-                                  height: 27,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(50),
-                                    color: Color(0xff8a56ac),
+                        InkWell(
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MessagesScreen()),
+                          ),
+                          child: Container(
+                            width: 55,
+                            height: 50,
+                            child: Stack(
+                              alignment: Alignment.topCenter,
+                              children: [
+                                Positioned(
+                                  top: 10,
+                                  child: Icon(
+                                    Icons.email,
+                                    color: Colors.white,
+                                    size: 40,
                                   ),
-                                  child: Text(
-                                    '7',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold,
+                                ),
+                                Positioned(
+                                  right: 0,
+                                  top: 0,
+                                  child: Container(
+                                    width: 27,
+                                    height: 27,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(50),
+                                      color: Color(0xff8a56ac),
+                                    ),
+                                    child: Text(
+                                      '7',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              )
-                            ],
+                                )
+                              ],
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -186,49 +203,56 @@ class MyProfileScreen extends StatelessWidget {
                     flex: 1,
                     child: Column(
                       children: [
-                        Container(
-                          width: 55,
-                          height: 50,
-                          child: Stack(
-                            alignment: Alignment.topCenter,
-                            children: [
-                              Positioned(
-                                top: 10,
-                                child: Icon(
-                                  Icons.notifications_none,
-                                  color: Colors.white,
-                                  size: 40,
-                                ),
-                              ),
-                              Positioned(
-                                right: 0,
-                                top: 0,
-                                child: Container(
-                                  width: 27,
-                                  height: 27,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(50),
-                                    color: Color(0xffd47fa6),
+                        InkWell(
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => NotificationScreen()),
+                          ),
+                          child: Container(
+                            width: 55,
+                            height: 50,
+                            child: Stack(
+                              alignment: Alignment.topCenter,
+                              children: [
+                                Positioned(
+                                  top: 10,
+                                  child: Icon(
+                                    Icons.notifications_none,
+                                    color: Colors.white,
+                                    size: 40,
                                   ),
-                                  child: Text(
-                                    '7',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold,
+                                ),
+                                Positioned(
+                                  right: 0,
+                                  top: 0,
+                                  child: Container(
+                                    width: 27,
+                                    height: 27,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(50),
+                                      color: Color(0xffd47fa6),
+                                    ),
+                                    child: Text(
+                                      '7',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              )
-                            ],
+                                )
+                              ],
+                            ),
                           ),
                         ),
                         SizedBox(
                           height: 12,
                         ),
                         Text(
-                          'Messages',
+                          'Notifications',
                           style: TextStyle(
                             color: Color(0xff998fa2),
                             fontSize: 12,
