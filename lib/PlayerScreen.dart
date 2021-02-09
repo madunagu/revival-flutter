@@ -18,6 +18,8 @@ import 'package:video_player/video_player.dart';
 
 class PlayerScreen extends StatefulWidget {
   final VideoPost playable;
+
+  final List<double> ratios = [1.77, 3.5];
   PlayerScreen({this.playable});
   @override
   _PlayerScreenState createState() => _PlayerScreenState();
@@ -25,54 +27,52 @@ class PlayerScreen extends StatefulWidget {
 
 class _PlayerScreenState extends State<PlayerScreen>
     with TickerProviderStateMixin {
-  double videoScreenRatio = 1.77;
-  double playedRatio = 0;
+  double videoScreenRatio;
 
-  double sheetPositionTop = 280;
-  int activeSlide = 0;
+  Size size;
 
   TabController _tabController;
   VideoPlayerController _videoController;
 
   Future<void> _initializeVideoPlayerFuture;
 
-
   toggleSheet(DragEndDetails e) {
     log(e.velocity.pixelsPerSecond.dy.toString());
     if (e.velocity.pixelsPerSecond.dy > 330) {
       setState(() {
         log(videoScreenRatio.toString());
-        Size size = MediaQuery.of(context).size;
-        sheetPositionTop = size.width / videoScreenRatio + 36;
+        videoScreenRatio = widget.ratios[0];
       });
     } else {
       setState(() {
-        sheetPositionTop = 130;
+        videoScreenRatio = widget.ratios[1];
       });
     }
   }
 
+  double getHeight() {
+    return size.width / videoScreenRatio;
+  }
+
   @override
   void initState() {
+    videoScreenRatio = widget.ratios[0];
     _videoController =
         VideoPlayerController.network(rootURL + widget.playable.srcUrl);
-//    _initializeVideoPlayerFuture = _videoController.initialize()
-//      .then((_) {
-//        log('VIDEO LOADED FROM NET');
-//        _videoController.play();
-//        setState(() {
-//          videoScreenRatio = _videoController.value.aspectRatio;
-//          Size size = MediaQuery.of(context).size;
+    _initializeVideoPlayerFuture = _videoController.initialize().then((_) {
+      log('VIDEO LOADED FROM NET');
+      _videoController.play();
+      setState(() {
+        videoScreenRatio = _videoController.value.aspectRatio;
 //          sheetPositionTop = size.width / videoScreenRatio + 36;
-//        });
-//      }, onError: (_) {
-//        log('error initializing video');
-//      });
+      });
+    }, onError: (_) {
+      log('error initializing video');
+    });
 
     _videoController.setLooping(true);
 
     _tabController = TabController(vsync: this, length: 4);
-
     BlocProvider.of<PlayerBloc>(context)
         .add(PlayerFetched(id: 1, playedType: PlayedType.video));
     super.initState();
@@ -87,7 +87,7 @@ class _PlayerScreenState extends State<PlayerScreen>
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    size = MediaQuery.of(context).size;
 
     return AppScaffoldWidget(
       paddingTop: 0,
@@ -103,24 +103,28 @@ class _PlayerScreenState extends State<PlayerScreen>
             ),
             VideoControls(
               size: size,
+              height: getHeight() + 16,
               controller: _videoController,
             ),
             Positioned(
-              top: sheetPositionTop - 25,
+              top: getHeight() - 6,
               child: VideoSlider(
                 controller: _videoController,
                 size: size,
               ),
             ),
             Positioned(
-              top: sheetPositionTop,
-              height: size.height - sheetPositionTop + 20,
+              top: getHeight() + 30,
+              height: size.height - getHeight(),
               child: Container(
                 padding: EdgeInsets.only(top: 12),
                 width: size.width,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(40),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40),
+                  ),
                 ),
                 child: Column(
                   children: [
@@ -133,13 +137,13 @@ class _PlayerScreenState extends State<PlayerScreen>
                       ),
                     ),
                     Container(
-                      height: size.height - sheetPositionTop - 78,
+                      height: size.height - getHeight() - 108,
                       child: TabBarView(
                         controller: _tabController,
                         children: [
                           SingleChildScrollView(
                             child: VideoDetailsWidget(
-                              video: widget.playable,
+                              playable: widget.playable,
                               playedType: PlayedType.video,
                             ),
                           ),
@@ -240,18 +244,19 @@ class _SheetHeaderWidgetState extends State<SheetHeaderWidget> {
 class VideoControls extends StatefulWidget {
   VideoControls({
     this.size,
+    this.height,
     this.controller,
   });
 
   final VideoPlayerController controller;
   final Size size;
+  final double height;
   @override
   _VideoControlsState createState() => _VideoControlsState();
 }
 
 class _VideoControlsState extends State<VideoControls> {
   bool isControlsVisible = false;
-  double height = 280;
 
   showControls() {
     setState(() {
@@ -275,13 +280,13 @@ class _VideoControlsState extends State<VideoControls> {
         onTap: showControls,
         child: Container(
           width: widget.size.width,
-          height: height,
+          height: widget.height,
           color: Colors.transparent,
           child: isControlsVisible
               ? GestureDetector(
                   onTap: hideControls,
                   child: Container(
-                    height: height,
+                    height: widget.height,
                     width: widget.size.width,
                     color: Colors.transparent,
                     padding: const EdgeInsets.only(top: 56),
@@ -313,9 +318,9 @@ class _VideoControlsState extends State<VideoControls> {
                         widget.controller.value.initialized
                             ? Container(
                                 width: widget.size.width,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 50,
-                                    vertical: 30 / 540 * height),
+                                height: widget.height - 80,
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.symmetric(horizontal: 50),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -364,7 +369,7 @@ class _VideoControlsState extends State<VideoControls> {
                                 ),
                               )
                             : Container(
-                                height: height-105,
+                                height: widget.height - 80,
                                 width: widget.size.width,
                                 alignment: Alignment.center,
                                 child: CircularProgressIndicator(),
@@ -375,7 +380,7 @@ class _VideoControlsState extends State<VideoControls> {
                 )
               : Container(
                   width: widget.size.width,
-                  height: height,
+                  height: widget.height,
                 ),
         ),
       ),
@@ -412,7 +417,9 @@ class _VideoSliderState extends State<VideoSlider> {
 
   @override
   void initState() {
-    sliderPos = widget.controller.value.position.inSeconds.toDouble();
+    sliderPos = widget.controller.value.position != null
+        ? widget.controller.value.position.inSeconds.toDouble()
+        : 0;
     widget.controller.addListener(() {
       setState(() {
         sliderPos = widget.controller.value.position.inSeconds.toDouble();
@@ -433,7 +440,9 @@ class _VideoSliderState extends State<VideoSlider> {
         width: widget.size.width,
         child: Slider(
           value: sliderPos,
-          max: widget.controller.value.duration.inSeconds * 1.0,
+          max: widget.controller.value.duration != null
+              ? widget.controller.value.duration.inSeconds * 1.0
+              : 1,
           onChanged: sliderChanged,
           inactiveColor: Color(0x50d47fa6),
           activeColor: Color(0xdfffffff),

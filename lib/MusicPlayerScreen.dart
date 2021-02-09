@@ -106,7 +106,7 @@ class _MusicPlayerScreenState extends State<MusicPlayerScreen>
               player: audioPlayer,
             ),
             Positioned(
-              top: sheetPositionTop - 5,
+              top: sheetPositionTop - 35,
               child: AudioSlider(
                 size: size,
                 player: audioPlayer,
@@ -139,7 +139,7 @@ class _MusicPlayerScreenState extends State<MusicPlayerScreen>
                         children: [
                           SingleChildScrollView(
                             child: VideoDetailsWidget(
-                              video: widget.playable,
+                              playable: widget.playable,
                               playedType: PlayedType.audio,
                             ),
                           ),
@@ -576,7 +576,10 @@ class AudioWidget extends StatelessWidget {
       height: height + 30,
       child: audio.images != null
           ? Image.network(audio.images[0].mediumUrl, fit: BoxFit.cover)
-          : Image.asset('images/music_thumb.png', fit: BoxFit.cover),
+          : Container(
+              color: trendingColors[0],
+              child: Image.asset('images/music_thumb.png', fit: BoxFit.cover),
+            ),
     );
   }
 }
