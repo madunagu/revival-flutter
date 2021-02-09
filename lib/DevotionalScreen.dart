@@ -35,13 +35,15 @@ class _DevotionalScreenState extends State<DevotionalScreen> {
   @override
   void initState() {
     devotional = widget.devotional;
+    getDevotional();
     super.initState();
   }
 
-  Future<Map<ResponseKey, dynamic>> getEvent() {
+  Future<void> getDevotional() async {
     try {
-      return NetworkingClass()
+      Map<ResponseKey, dynamic> res = await NetworkingClass()
           .get('/devotionals/' + widget.devotional.id.toString());
+      devotional = Devotional.fromJson(res[ResponseKey.data]);
     } catch (_) {
       log(_.toString());
     }
@@ -236,9 +238,7 @@ class DevotionalWidget extends StatelessWidget {
                   height: 30,
                 ),
                 Text(
-                  devotional.memoryVerse != null
-                      ? devotional.memoryVerse
-                      : '',
+                  devotional.memoryVerse != null ? devotional.memoryVerse : '',
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     color: Color(0xff998fa2),
@@ -269,9 +269,7 @@ class DevotionalWidget extends StatelessWidget {
                   height: 30,
                 ),
                 Text(
-                  devotional.body != null
-                      ? devotional.body
-                      : '',
+                  devotional.body != null ? devotional.body : '',
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     color: Color(0xff998fa2),
