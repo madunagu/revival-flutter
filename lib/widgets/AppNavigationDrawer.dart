@@ -1,10 +1,16 @@
-import 'package:devotion/DevotionalsScreen.dart';
+import 'package:devotion/DevotionalListScreen.dart';
 import 'package:devotion/FeedScreen.dart';
 import 'package:devotion/VideosScreen.dart';
+import 'package:devotion/main.dart';
 import 'package:devotion/widgets/ImageAvatarWidget.dart';
 import 'package:flutter/material.dart';
 
-class AppNavigationDrawer extends StatelessWidget {
+class AppNavigationDrawer extends StatefulWidget {
+  @override
+  _AppNavigationDrawerState createState() => _AppNavigationDrawerState();
+}
+
+class _AppNavigationDrawerState extends State<AppNavigationDrawer> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -82,7 +88,7 @@ class AppNavigationDrawer extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => FeedScreen(),
+                        builder: (context) => MainScreen(),
                       ),
                     );
                   },
@@ -104,7 +110,7 @@ class AppNavigationDrawer extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => DevotionalsScreen(),
+                        builder: (context) => DevotionalListScreen(),
                       ),
                     );
                   },
@@ -132,31 +138,35 @@ class DrawerLink extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.topLeft,
+    return InkWell(
+      onTap: onTap,
       child: Container(
-        decoration: active
-            ? BoxDecoration(
-                color: Color(0xff8A56AC),
-                borderRadius: BorderRadius.circular(30),
+        alignment: Alignment.topLeft,
+        child: Container(
+          decoration: active
+              ? BoxDecoration(
+                  color: Color(0xff8A56AC),
+                  borderRadius: BorderRadius.circular(30),
+                )
+              : null,
+          margin: EdgeInsets.only(bottom: 8),
+          padding: EdgeInsets.only(left: 13, top: 9, bottom: 9, right: 24),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Icon(Icons.home,
+                  color: active ? Colors.white : Color(0xff817889)),
+              SizedBox(width: 20),
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 18,
+                  color: active ? Colors.white : Color(0xff241332),
+                ),
               )
-            : null,
-        margin: EdgeInsets.only(bottom: 8),
-        padding: EdgeInsets.only(left: 13, top: 9, bottom: 9, right: 24),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Icon(Icons.home, color: active ? Colors.white : Color(0xff817889)),
-            SizedBox(width: 20),
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 18,
-                color: active ? Colors.white : Color(0xff241332),
-              ),
-            )
-          ],
+            ],
+          ),
         ),
       ),
     );

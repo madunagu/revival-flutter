@@ -3,21 +3,45 @@ import 'package:devotion/MessagesScreen.dart';
 import 'package:devotion/NotificationScreen.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/sheets/ProfileMediaSheet.dart';
+import 'package:devotion/util/NetworkingClass.dart';
+import 'package:devotion/models/User.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class MyProfileScreen extends StatelessWidget {
+class MyProfileScreen extends StatefulWidget {
+  @override
+  _MyProfileScreenState createState() => _MyProfileScreenState();
+}
+
+class _MyProfileScreenState extends State<MyProfileScreen> {
+  User user = User();
+
+  Future<void> getUser() async {
+    var res = await NetworkingClass().get('/user');
+    user =  User.fromJson(res[ResponseKey.data]);
+    setState(() {
+      
+    });
+  }
+
+  @override
+  initState() {
+    getUser();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Container(
-      width: MediaQuery.of(context).size.width,
+      width: size.width,
       color: Color(0xff241332),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           Container(
-            width: MediaQuery.of(context).size.width,
+            width: size.width,
             margin: EdgeInsets.only(top: 83),
             height: 287,
             child: ClipRRect(
@@ -29,11 +53,11 @@ class MyProfileScreen extends StatelessWidget {
                   Positioned(
                     top: 0,
                     left: 0,
-                    width: MediaQuery.of(context).size.width,
+                    width: size.width,
                     height: 287,
                     child: Container(
                       height: 287,
-                      width: MediaQuery.of(context).size.width,
+                      width: size.width,
                       child: Image.asset(
                         'images/avatar1.jpg',
                         fit: BoxFit.cover,
@@ -43,10 +67,10 @@ class MyProfileScreen extends StatelessWidget {
                   Positioned(
                     bottom: 0,
                     left: 0,
-                    width: MediaQuery.of(context).size.width,
+                    width: size.width,
                     height: 87,
                     child: Container(
-                      width: MediaQuery.of(context).size.width,
+                      width: size.width,
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
@@ -63,7 +87,7 @@ class MyProfileScreen extends StatelessWidget {
                     bottom: 30,
                     left: 0,
                     child: Container(
-                      width: MediaQuery.of(context).size.width,
+                      width: size.width,
                       padding: const EdgeInsets.only(left: 52.0, right: 16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

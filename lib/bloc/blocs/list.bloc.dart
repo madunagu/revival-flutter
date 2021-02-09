@@ -66,8 +66,8 @@ class ListBloc extends Bloc<ListEvent, ListState> {
       state is ListSuccess && state.hasReachedMax;
 
   Future<List<dynamic>> _fetchList(int startIndex, int limit) async {
-    final Map<ResponseKey, dynamic> res = await NetworkingClass().get(resource +
-        "?_start=$startIndex&_limit=$limit");
+    final Map<ResponseKey, dynamic> res = await NetworkingClass()
+        .get(resource + "?_start=$startIndex&_limit=$limit");
     final List<dynamic> items = [];
     List<dynamic> rawFeeds = res[ResponseKey.data]['data'];
     currentPage = res[ResponseKey.data]['current_page'];
@@ -96,6 +96,10 @@ class ListBloc extends Bloc<ListEvent, ListState> {
         break;
       case 'comment':
         return Comment.fromJson(parentable);
+        break;
+      case 'devotional':
+        return Devotional.fromJson(parentable);
+        break;
       default:
         return;
     }

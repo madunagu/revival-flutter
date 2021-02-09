@@ -12,12 +12,31 @@ import 'package:devotion/widgets/UserInfoWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class VideosScreen extends StatefulWidget {
+class VideosScreen extends StatelessWidget {
   @override
-  _VideosScreenState createState() => _VideosScreenState();
+  Widget build(BuildContext context) {
+    return AppScaffoldWidget(
+      appBar: AppBarWidget(
+        color: Colors.white,
+        title: 'Videos',
+        rightIcon: Icons.filter,
+      ),
+      body: BlocProvider(
+          create: (BuildContext context) => ListBloc(
+                feedType: 'videos',
+                resource: '/videos',
+              )..add(ListFetched()),
+          child: VideosList()),
+    );
+  }
 }
 
-class _VideosScreenState extends State<VideosScreen> {
+class VideosList extends StatefulWidget {
+  @override
+  _VideosListState createState() => _VideosListState();
+}
+
+class _VideosListState extends State<VideosList> {
   final _scrollController = ScrollController();
   final _scrollThreshold = 700.0;
   ListBloc _listBloc;
@@ -44,28 +63,21 @@ class _VideosScreenState extends State<VideosScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AppScaffoldWidget(
-      appBar: AppBarWidget(
-        color: Colors.white,
-        title: 'Videos',
-        rightIcon: Icons.filter,
-      ),
-      body: BlocBuilder<ListBloc, ListState>(
-        builder: (BuildContext context, ListState state) {
-          if (state is ListSuccess) {
-            return SingleChildScrollView(
-              controller: _scrollController,
-              child: Column(
-                children: state.models.map((e) => VideoItem(video: e)).toList(),
-              ),
-            );
-          } else if (state is ListInitial) {
-            return Center(child: CircularProgressIndicator());
-          } else {
-            return Center(child: Text('No Videos'));
-          }
-        },
-      ),
+    return BlocBuilder<ListBloc, ListState>(
+      builder: (BuildContext context, ListState state) {
+        if (state is ListSuccess) {
+          return SingleChildScrollView(
+            controller: _scrollController,
+            child: Column(
+              children: state.models.map((e) => VideoItem(video: e)).toList(),
+            ),
+          );
+        } else if (state is ListInitial) {
+          return Center(child: CircularProgressIndicator());
+        } else {
+          return Center(child: Text('No Videos'));
+        }
+      },
     );
   }
 }

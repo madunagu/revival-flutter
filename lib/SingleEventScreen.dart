@@ -107,7 +107,9 @@ class SingleEvent extends StatelessWidget {
                                 ? event.poster.profileMedia != null
                                     ? event.poster.profileMedia.logoUrl
                                     : 'defaultlogo'
-                                : event.user.avatar,
+                                : event.user.avatar != null
+                                    ? event.user.avatar
+                                    : 'images/avatar1.jpg',
                             height: 35,
                             width: 35,
                           ),
@@ -135,9 +137,7 @@ class SingleEvent extends StatelessWidget {
                                           ? event.poster.addresses[0].city +
                                               event.poster.addresses[0].state +
                                               ' '
-                                          : '' +
-                                              'Montreal, QC' +
-                                              event.posterType,
+                                          : 'Montreal, QC' + event.posterType,
                                       style: TextStyle(
                                         color: Color(0x7A403249),
                                         fontSize: 12,
@@ -274,7 +274,7 @@ class SingleEvent extends StatelessWidget {
                   ],
                 ),
                 SizedBox(
-                  height: 30,
+                  height:event.description !=null? 30:0,
                 ),
                 Text(
                   event.description != null ? event.description : '',
