@@ -25,6 +25,7 @@ class Event {
   int attending;
   @JsonKey(name: 'views_count') int viewsCount;
   int viewed;
+  @JsonKey(name: 'address_id') int addressId;
   User user;
   @JsonKey(name: 'poster_type') String posterType;
   @JsonKey(ignore: true) dynamic poster;

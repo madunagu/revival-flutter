@@ -12,6 +12,7 @@
     "attending": 0,
     "views_count": 0,
     "viewed": 0,
+    "address_id": 0,
     "user": "$User",
     "poster_type": "poster",
     "@JsonKey(ignore:true) dynamic": "poster",

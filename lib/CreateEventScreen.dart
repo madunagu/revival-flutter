@@ -3,10 +3,14 @@ import 'package:devotion/models/Address.dart';
 import 'package:devotion/models/Event.dart';
 import 'package:devotion/sheets/AdressSheet.dart';
 import 'package:devotion/util/NetworkingClass.dart';
+import 'package:devotion/util/TimeHandler.dart';
+import 'package:devotion/widgets/AppButtonWidget.dart';
 import 'package:devotion/widgets/BottomSheetWidget.dart';
 import 'package:devotion/widgets/AppBarWidget.dart';
 import 'package:devotion/widgets/AppScaffoldWidget.dart';
+import 'package:devotion/widgets/ImageAvatarWidget.dart';
 import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
 
 class CreateEventScreen extends StatefulWidget {
   @override
@@ -17,6 +21,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   Event myEvent = Event();
   TextEditingController nameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  bool isLoading = false;
 
   void _showLocationAndReturn(BuildContext context) async {
     Address eventAddress = await Navigator.push(
@@ -36,7 +41,21 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   }
 
   postEvent() async {
-    var res = await NetworkingClass().post('/events', myEvent);
+    isLoading = true;
+    myEvent.name = nameController.value.text;
+    myEvent.description = descriptionController.value.text;
+    myEvent.addressId = myEvent.addresses[0].id;
+    Map<ResponseKey, dynamic> res =
+        await NetworkingClass().post('/events', myEvent);
+    //show response
+    if (res[ResponseKey.type] == ResponseType.data) {
+      if (res[ResponseKey.data]['data'] == true) {
+        //set state here or go back
+        //event has been created successfully
+        Navigator.pop(context);
+      }
+    }
+    isLoading = false;
   }
 
   @override
@@ -45,6 +64,38 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
       appBar: AppBarWidget(
         title: 'Create Event',
         color: Colors.white,
+      ),
+      fixedWidget: Positioned(
+        top: 0,
+        child: Container(
+          color: Color(0xff000000),
+          child: Column(
+            children: [
+              Text('Event Created'),
+              Row(
+                children: [
+                  ImageAvatarWidget(
+                    imageURL: 'images/avatar1.jpg',
+                    size: 68,
+                    borderColor: Colors.white,
+                  ),
+                  SizedBox(width: 16),
+                  Column(
+                    children: [
+                      Text(myEvent.name),
+                      SizedBox(height: 7),
+                      Text(getRelativeTime(myEvent.startingAt)),
+                    ],
+                  )
+                ],
+              ),
+              SizedBox(height: 40),
+              AppButtonWidget(
+                text: 'Done',
+              )
+            ],
+          ),
+        ),
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
