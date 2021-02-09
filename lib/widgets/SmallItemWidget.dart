@@ -1,3 +1,4 @@
+import 'package:devotion/models/AudioPost.dart';
 import 'package:flutter/material.dart';
 
 class SmallItemWidget extends StatelessWidget {
@@ -15,6 +16,14 @@ class SmallItemWidget extends StatelessWidget {
     this.isActive = false,
   });
 
+  factory SmallItemWidget.fromSong(AudioPost song) {
+    return SmallItemWidget(
+      title: song.name,
+      amount: song.length.toString(),
+      subTitle: song.author != null ? song.author.name : '',
+      image: song.images != null ? song.images[0] : 'images/avatar1.jpg',
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -74,7 +83,7 @@ class SmallItemWidget extends StatelessWidget {
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                   height: 19 / 16,
-                  color: isActive? Colors.white:Colors.black,
+                  color: isActive ? Colors.white : Colors.black,
                 ),
               ),
             ],

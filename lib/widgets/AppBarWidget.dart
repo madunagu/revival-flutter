@@ -83,12 +83,14 @@ class _AppBarWidgetState extends State<AppBarWidget>
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                 ( widget.imageURL!=null)?ImageAvatarWidget(
-                    imageURL: 'images/avatar1.jpg',
-                    size: 50,
-                    borderColor: Color(0xff8A56AC),
-                    borderWidth: 2,
-                  ):Container(width: 16),
+                  (widget.imageURL != null)
+                      ? ImageAvatarWidget(
+                          imageURL: 'images/avatar1.jpg',
+                          size: 50,
+                          borderColor: Color(0xff8A56AC),
+                          borderWidth: 2,
+                        )
+                      : Container(width: 16),
                   SizedBox(
                     width: 16,
                   ),
@@ -118,25 +120,20 @@ class _AppBarWidgetState extends State<AppBarWidget>
                               ),
                             )
                           : Container(),
-                      // Container(
-                      //   height: 48,
-                      //   child: TabBar(
-                      //     // labelPadding: EdgeInsets.all(10),
-                      //     controller: _tabController,
-                      //     tabs: [
-                      //       ButtonWidget(
-                      //         text: 'TODAY',
-                      //         active: true,
-                      //       ),
-                      //       ButtonWidget(
-                      //         text: 'WEEK',
-                      //       ),
-                      //       ButtonWidget(
-                      //         text: 'MONTH',
-                      //       ),
-                      //     ],
-                      //   ),
-                      // )
+//                      Row(
+//                        children: [
+//                          ButtonWidget(
+//                            text: 'TODAY',
+//                            active: true,
+//                          ),
+//                          ButtonWidget(
+//                            text: 'WEEK',
+//                          ),
+//                          ButtonWidget(
+//                            text: 'MONTH',
+//                          ),
+//                        ],
+//                      ),
                     ],
                   ),
                 ],
@@ -161,6 +158,7 @@ class ButtonWidget extends StatelessWidget {
       height: 32,
       width: 81,
       padding: EdgeInsets.symmetric(horizontal: 22, vertical: 8),
+      margin: EdgeInsets.only(left: 10),
       decoration: BoxDecoration(
         color: Color(0xff8A56AC),
         borderRadius: BorderRadius.circular(30),

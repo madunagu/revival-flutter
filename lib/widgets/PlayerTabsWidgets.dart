@@ -1,12 +1,9 @@
 import 'dart:convert';
 
-import 'package:devotion/bloc/blocs/player.bloc.dart';
 import 'package:devotion/bloc/blocs/list.bloc.dart';
 import 'package:devotion/bloc/events/PlayerEvent.dart';
 import 'package:devotion/bloc/events/ListEvent.dart';
 import 'package:devotion/bloc/states/ListState.dart';
-import 'package:devotion/models/Comment.dart';
-import 'package:devotion/models/VideoPost.dart';
 import 'package:devotion/util/Constants.dart';
 import 'package:devotion/util/NetworkingClass.dart';
 import 'package:devotion/widgets/CommentItemWidget.dart';
@@ -33,7 +30,7 @@ class VideoDetailsWidget extends StatefulWidget {
 class _VideoDetailsWidgetState extends State<VideoDetailsWidget> {
   dynamic playable;
   likeVideo() async {
-    setState({
+    setState(() {
       this.playable.liked = 1;
     });
     String url = widget.playedType == PlayedType.video
@@ -45,10 +42,10 @@ class _VideoDetailsWidgetState extends State<VideoDetailsWidget> {
       if (liked[ResponseKey.type] == ResponseType.data) {
         var res = liked[ResponseKey.data]['data'];
         if (res == true) {
-     //already set to true
+          //already set to true
         } else {
           //handle liking error
-               setState(() {
+          setState(() {
             this.playable.liked = 0;
           });
         }
@@ -182,23 +179,40 @@ class _CommentsSectionWidgetState extends State<CommentsSectionWidget> {
     }
   }
 
+  createComment() {}
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ListBloc, ListState>(
       builder: (BuildContext context, ListState state) {
         if (state is ListSuccess) {
-          return SingleChildScrollView(
-            controller: _scrollController,
-            child: Column(
-              children: state.models
-                  .map((e) => CommentItemWidget(comment: e))
-                  .toList(),
-            ),
+          return Stack(
+            children: [
+              SingleChildScrollView(
+                controller: _scrollController,
+                child: Column(
+                  children: state.models
+                      .map((e) => CommentItemWidget(comment: e))
+                      .toList(),
+                ),
+              ),
+            ],
           );
         } else if (state is ListInitial) {
           return Center(child: CircularProgressIndicator());
         } else {
-          return Center(child: Text('No Comments'));
+          return Stack(
+            children: [
+              Center(child: Text('No Comments')),
+//              FABWidget(icon: Icons.add, onTap: createComment),
+              Positioned(
+                bottom: 4,
+                child: CreateCommentWidget(
+                  image: Image.asset('images/avatar1.jpg'),
+                ),
+              )
+            ],
+          );
         }
       },
     );
@@ -215,73 +229,72 @@ class CreateCommentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CurvedCornerWidget(
-      // padding: EdgeInsets.only(top: this.radius),
-      radius: this.radius,
-      borderColor: Color(0xffE7E4E9),
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.only(left: 18, top: 30, right: 12, bottom: 16),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            ImageAvatarWidget(
-              imageURL: 'images/avatar1.jpg',
-              borderWidth: 2,
-              borderColor: Color(0xff8A56AC),
-            ),
-            SizedBox(
-              width: 12,
-            ),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  TextField(
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.w500,
-                      height: 1.42,
-                      letterSpacing: -0.14,
-                    ),
-                    minLines: 1,
-                    maxLines: 5,
-                    decoration: InputDecoration(
-                      hintText: 'Comment here...',
-                      border: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xffE7E4E9)),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                  )
-                ],
+    Size size = MediaQuery.of(context).size;
+    return Row(
+      children: [
+        Container(
+          width: size.width - 58,
+          height: 52,
+          decoration: BoxDecoration(
+            color: Color(0x22000000),
+            borderRadius: BorderRadius.circular(40),
+          ),
+          padding: EdgeInsets.symmetric(
+            horizontal: 5,
+            vertical: 6,
+          ),
+          margin: EdgeInsets.only(left: 2),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ImageAvatarWidget(
+                imageURL: 'images/avatar1.jpg',
+                borderWidth: 2,
+                borderColor: Color(0xff8A56AC),
               ),
-            ),
-            Container(
-              width: 69,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(height: 30),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(35),
-                      color: Color(0xff8A56AC),
-                    ),
-                    padding: EdgeInsets.all(20),
-                    child: Icon(
-                      Icons.send,
-                      size: 16,
-                      color: Colors.white,
-                    ),
+              Icon(Icons.reply, color: Color(0xff8A56AC)),
+              SizedBox(
+                width: 10,
+              ),
+              Container(
+                width: size.width - 156,
+                child: TextField(
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w500,
+                    height: 1.42,
+                    letterSpacing: -0.14,
                   ),
-                ],
+                  minLines: 1,
+                  maxLines: 5,
+                  decoration: InputDecoration(
+                    hintText: 'Comment here...',
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                  ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
+        SizedBox(width: 2),
+        Container(
+          width: 52,
+          height: 52,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(35),
+            color: Color(0xff8A56AC),
+          ),
+          child: Icon(
+            Icons.send,
+            size: 16,
+            color: Colors.white,
+          ),
+        ),
+      ],
     );
   }
 }
@@ -324,90 +337,59 @@ class VideoInteraction extends StatelessWidget {
   }
 }
 
-class MusicListWidget extends StatelessWidget {
+class MusicListWidget extends StatefulWidget {
   const MusicListWidget({
     Key key,
   }) : super(key: key);
 
   @override
+  _MusicListWidgetState createState() => _MusicListWidgetState();
+}
+
+class _MusicListWidgetState extends State<MusicListWidget> {
+  List<CommentItemWidget> comments = [];
+  final _scrollController = ScrollController();
+  final _scrollThreshold = 200.0;
+  ListBloc _listBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+    _listBloc = BlocProvider.of<ListBloc>(context);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.position.pixels;
+    if (maxScroll - currentScroll <= _scrollThreshold) {
+      _listBloc.add(ListFetched());
+    }
+  }
+
+  createComment() {}
+
+  @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SmallItemWidget(
-          image: 'images/avatar1.jpg',
-          title: 'I surrender',
-          subTitle: 'Hillsong United',
-          amount: '4:30',
-        ),
-        SmallItemWidget(
-          isActive: true,
-          image: 'images/avatar1.jpg',
-          title: 'I surrender',
-          subTitle: 'Hillsong United',
-          amount: '4:30',
-        ),
-        SmallItemWidget(
-          image: 'images/avatar1.jpg',
-          title: 'I surrender',
-          subTitle: 'Hillsong United',
-          amount: '4:30',
-        ),
-        SmallItemWidget(
-          image: 'images/avatar1.jpg',
-          title: 'I surrender',
-          subTitle: 'Hillsong United',
-          amount: '4:30',
-        ),
-        SmallItemWidget(
-          image: 'images/avatar1.jpg',
-          title: 'I surrender',
-          subTitle: 'Hillsong United',
-          amount: '4:30',
-        ),
-        SmallItemWidget(
-          image: 'images/avatar1.jpg',
-          title: 'I surrender',
-          subTitle: 'Hillsong United',
-          amount: '4:30',
-        ),
-        SmallItemWidget(
-          image: 'images/avatar1.jpg',
-          title: 'I surrender',
-          subTitle: 'Hillsong United',
-          amount: '4:30',
-        ),
-        SmallItemWidget(
-          image: 'images/avatar1.jpg',
-          title: 'I surrender',
-          subTitle: 'Hillsong United',
-          amount: '4:30',
-        ),
-        SmallItemWidget(
-          image: 'images/avatar1.jpg',
-          title: 'I surrender',
-          subTitle: 'Hillsong United',
-          amount: '4:30',
-        ),
-        SmallItemWidget(
-          image: 'images/avatar1.jpg',
-          title: 'I surrender',
-          subTitle: 'Hillsong United',
-          amount: '4:30',
-        ),
-        SmallItemWidget(
-          image: 'images/avatar1.jpg',
-          title: 'I surrender',
-          subTitle: 'Hillsong United',
-          amount: '4:30',
-        ),
-        SmallItemWidget(
-          image: 'images/avatar1.jpg',
-          title: 'I surrender',
-          subTitle: 'Hillsong United',
-          amount: '4:30',
-        ),
-      ],
-    );
+    return BlocBuilder<ListBloc, ListState>(
+        builder: (BuildContext context, ListState state) {
+      if (state is ListSuccess) {
+        return Column(
+          children:
+              state.models.map((e) => SmallItemWidget.fromSong(e)).toList(),
+        );
+      } else if (state is ListInitial) {
+        return Center(child: CircularProgressIndicator());
+      } else {
+        return Container(child: Text('unknown error'));
+      }
+    });
   }
 }
 

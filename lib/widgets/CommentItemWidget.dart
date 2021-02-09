@@ -99,8 +99,15 @@ class CommentItemWidget extends StatelessWidget {
                       letterSpacing: -0.14,
                     ),
                   ),
-                  SizedBox(height: 10),
-                  GestureDetector(child: Text('Reply'))
+                  SizedBox(height: 15),
+                  InkWell(child: Container(
+                    child: Row(
+                      children: [
+                        Icon(Icons.reply_outlined , size:21),
+                        Text('Reply', style:TextStyle(fontSize: 12,fontWeight: FontWeight.w500)),
+                      ],
+                    ),
+                  ))
                 ],
               ),
             ),

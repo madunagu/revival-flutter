@@ -1,6 +1,7 @@
 import 'package:devotion/CreateEventScreen.dart';
 import 'package:devotion/widgets/AppButtonWidget.dart';
 import 'package:devotion/widgets/AppNavigationDrawer.dart';
+import 'package:devotion/widgets/FABWidget.dart';
 import 'package:devotion/widgets/ImageAvatarWidget.dart';
 import 'package:flutter/material.dart';
 
@@ -60,30 +61,9 @@ class AppScaffoldWidget extends StatelessWidget {
             width: size.width,
             child: (appBar != null) ? appBar : Container(),
           ),
-          Positioned(
-            bottom: 56,
-            right: 16,
-            width: 56,
-            height: 56,
-            child: this.floatingButtonIcon != null
-                ? InkWell(
-                    onTap: floatingButtonTap,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color.fromARGB(25, 0, 0, 0),
-                            blurRadius: 4,
-                          )
-                        ],
-                        borderRadius: BorderRadius.circular(30),
-                        color: Colors.white,
-                      ),
-                      padding: EdgeInsets.all(10),
-                      child: Icon(floatingButtonIcon),
-                    ),
-                  )
-                : Container(),
+          FABWidget(
+            icon: floatingButtonIcon,
+            onTap: floatingButtonTap,
           ),
           (fixedWidget != null) ? fixedWidget : Container(),
           Positioned(
