@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'User.dart';
 import 'Church.dart';
-import 'ImageSource.dart';
+import 'ResizedImage.dart';
 import 'Address.dart';
 
 part 'Post.g.dart';
@@ -24,7 +24,7 @@ class Post {
   List<dynamic> comments;
   User user;
   List<Church> churches;
-  List<ImageSource> images;
+  List<ResizedImage> images;
   List<Address> addresses;
 
   factory Post.fromJson(Map<String,dynamic> json) => _$PostFromJson(json);

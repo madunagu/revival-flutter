@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:devotion/bloc/events/index.dart';
 import 'package:devotion/bloc/states/FormSheetState.dart';
+import 'package:devotion/util/Exceptions.dart';
 import 'package:devotion/util/NetworkingClass.dart';
 import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
@@ -16,24 +17,20 @@ class FormBloc extends Bloc<FormEvent, FormSheetState> {
   Stream<FormSheetState> mapEventToState(FormEvent event) async* {
     if (event is CreateButtonPressed) {
       yield FormInProgress();
-
       log('posting data object to $event.url');
       log(event.object.toString());
       try {
-        final Map<ResponseKey, dynamic> response = await myNetwork.post(
+        final Map<String, dynamic> response = await myNetwork.post(
           event.url,
           event.object,
         );
-        if (response[ResponseKey.type] == ResponseType.data) {
-          yield FormSuccess(object: response[ResponseKey.data]);
-        }
-        if (response[ResponseKey.type] == ResponseType.invalidated) {
-          yield FormInvalidated(errors: response[ResponseKey.error]);
-        }
+        yield FormSuccess(object: response);
         log('successfully uploaded');
       } catch (error) {
         log(error.toString());
-        yield FormFailure(error: error.toString());
+        if (error is ValidationErrorException) {
+          yield FormInvalidated(errors: error.errors);
+        }
       }
     }
   }

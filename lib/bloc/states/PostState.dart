@@ -1,5 +1,6 @@
 import 'package:devotion/models/Event.dart';
 import 'package:devotion/models/Feed.dart';
+import 'package:devotion/models/Pagination.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class PostState extends Equatable {
@@ -15,11 +16,11 @@ class PostFailure extends PostState {}
 
 class PostSuccess extends PostState {
   final List<Feed> posts;
-  final bool hasReachedMax;
+  final Pagination pagination;
 
   const PostSuccess({
     this.posts,
-    this.hasReachedMax,
+    this.pagination,
   });
 
   PostSuccess copyWith({
@@ -28,14 +29,14 @@ class PostSuccess extends PostState {
   }) {
     return PostSuccess(
       posts: posts ?? this.posts,
-      hasReachedMax: hasReachedMax ?? this.hasReachedMax,
+      pagination: pagination ?? this.pagination,
     );
   }
 
   @override
-  List<Object> get props => [posts, hasReachedMax];
+  List<Object> get props => [posts, pagination];
 
   @override
   String toString() =>
-      'PostSuccess { posts: ${posts.length}, hasReachedMax: $hasReachedMax }';
+      'PostSuccess { posts: ${posts.length}, pagination: ${pagination.toString()}';
 }

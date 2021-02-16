@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'User.dart';
 import 'User.dart';
 import 'Church.dart';
-import 'ImageSource.dart';
+import 'ResizedImage.dart';
 import 'Address.dart';
 
 part 'AudioPost.g.dart';
@@ -32,7 +32,7 @@ class AudioPost {
   User author;
   User user;
   List<Church> churches;
-  List<ImageSource> images;
+  List<ResizedImage> images;
   List<Address> addresses;
 
   factory AudioPost.fromJson(Map<String,dynamic> json) => _$AudioPostFromJson(json);

@@ -28,7 +28,7 @@ Devotional _$DevotionalFromJson(Map<String, dynamic> json) {
         : User.fromJson(json['user'] as Map<String, dynamic>)
     ..images = (json['images'] as List)
         ?.map((e) =>
-            e == null ? null : ImageSource.fromJson(e as Map<String, dynamic>))
+            e == null ? null : ResizedImage.fromJson(e as Map<String, dynamic>))
         ?.toList()
     ..createdAt = json['created_at'] == null
         ? null

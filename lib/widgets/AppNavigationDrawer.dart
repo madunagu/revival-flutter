@@ -1,4 +1,5 @@
 import 'package:devotion/DevotionalListScreen.dart';
+import 'package:devotion/EventListScreen.dart';
 import 'package:devotion/FeedScreen.dart';
 import 'package:devotion/VideosScreen.dart';
 import 'package:devotion/main.dart';
@@ -115,9 +116,17 @@ class _AppNavigationDrawerState extends State<AppNavigationDrawer> {
                     );
                   },
                 ),
-                DrawerLink(title: 'Events', active: true),
-                DrawerLink(title: 'About Us'),
-                DrawerLink(title: 'Contact Us'),
+                DrawerLink(
+                  title: 'Events',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EventListScreen(),
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
           ),

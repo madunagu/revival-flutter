@@ -156,7 +156,10 @@ class _PlayerScreenState extends State<PlayerScreen>
                               ..add(ListFetched()),
                             child: CommentsSectionWidget(),
                           ),
-                          SingleChildScrollView(
+                          BlocProvider(
+                            create: (BuildContext context) => ListBloc(
+                                feedType: 'audio', resource: '/comments')
+                              ..add(ListFetched()),
                             child: MusicListWidget(),
                           ),
                         ],

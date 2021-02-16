@@ -10,7 +10,6 @@ User _$UserFromJson(Map<String, dynamic> json) {
   return User()
     ..id = json['id'] as int
     ..name = json['name'] as String
-    ..apiToken = json['api_token']
     ..avatar = json['avatar'] as String
     ..email = json['email'] as String
     ..emailVerifiedAt = json['email_verified_at'] == null
@@ -22,6 +21,10 @@ User _$UserFromJson(Map<String, dynamic> json) {
     ..phone = json['phone'] as String
     ..gender = json['gender'] as String
     ..followerCount = json['follower_count'] as int
+    ..isFollowing = json['is_following'] as int
+    ..profileMedia = json['profile_media'] == null
+        ? null
+        : ProfileMedia.fromJson(json['profile_media'] as Map<String, dynamic>)
     ..createdAt = json['created_at'] == null
         ? null
         : DateTime.parse(json['created_at'] as String)
@@ -33,7 +36,6 @@ User _$UserFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'api_token': instance.apiToken,
       'avatar': instance.avatar,
       'email': instance.email,
       'email_verified_at': instance.emailVerifiedAt?.toIso8601String(),
@@ -41,6 +43,8 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'phone': instance.phone,
       'gender': instance.gender,
       'follower_count': instance.followerCount,
+      'is_following': instance.isFollowing,
+      'profile_media': instance.profileMedia,
       'created_at': instance.createdAt?.toIso8601String(),
       'updated_at': instance.updatedAt?.toIso8601String(),
     };

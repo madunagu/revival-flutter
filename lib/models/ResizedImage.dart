@@ -1,11 +1,11 @@
 import 'package:json_annotation/json_annotation.dart';
 
 
-part 'ImageSource.g.dart';
+part 'ResizedImage.g.dart';
 
 @JsonSerializable()
-class ImageSource {
-      ImageSource();
+class ResizedImage {
+      ResizedImage();
 
   int id;
   @JsonKey(name: 'large_url') String largeUrl;
@@ -19,6 +19,6 @@ class ImageSource {
   @JsonKey(name: 'created_at') String createdAt;
   @JsonKey(name: 'updated_at') String updatedAt;
 
-  factory ImageSource.fromJson(Map<String,dynamic> json) => _$ImageSourceFromJson(json);
-  Map<String, dynamic> toJson() => _$ImageSourceToJson(this);
+  factory ResizedImage.fromJson(Map<String,dynamic> json) => _$ResizedImageFromJson(json);
+  Map<String, dynamic> toJson() => _$ResizedImageToJson(this);
 }

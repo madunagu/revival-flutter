@@ -41,9 +41,9 @@ class _DevotionalScreenState extends State<DevotionalScreen> {
 
   Future<void> getDevotional() async {
     try {
-      Map<ResponseKey, dynamic> res = await NetworkingClass()
+      Map<String, dynamic> res = await NetworkingClass()
           .get('/devotionals/' + widget.devotional.id.toString());
-      devotional = Devotional.fromJson(res[ResponseKey.data]);
+      devotional = Devotional.fromJson(res);
     } catch (_) {
       log(_.toString());
     }
@@ -406,18 +406,17 @@ class _AreYouGoingState extends State<AreYouGoing> {
     setState(() {
       this.isDevoted = true;
     });
-    Map<ResponseKey, dynamic> liked = await NetworkingClass()
+    Map<String, dynamic> liked = await NetworkingClass()
         .post('/devotionals/' + widget.devotional.id.toString(), {'val': true});
-    if (liked[ResponseKey.type] == ResponseType.data) {
-      var res = liked[ResponseKey.data]['data'];
-      if (res == true) {
-        //already set
-      } else {
-        setState(() {
-          this.isDevoted = false;
-        });
-        //handle liking error
-      }
+    var res = liked['data'];
+    if (res == true) {
+      //already set
+    } else {
+      setState(() {
+        this.isDevoted = false;
+      });
+      //handle liking error
+
     }
   }
 
@@ -425,17 +424,15 @@ class _AreYouGoingState extends State<AreYouGoing> {
     setState(() {
       this.isDevoted = false;
     });
-    Map<ResponseKey, dynamic> liked = await NetworkingClass().post(
+    Map<String, dynamic> liked = await NetworkingClass().post(
         '/devotionals/' + widget.devotional.id.toString(), {'value': false});
-    if (liked[ResponseKey.type] == ResponseType.data) {
-      var res = liked[ResponseKey.data]['data'];
-      if (res == true) {
-        //already done
-      } else {
-        setState(() {
-          this.isDevoted = true;
-        });
-      }
+    var res = liked['data'];
+    if (res == true) {
+      //already done
+    } else {
+      setState(() {
+        this.isDevoted = true;
+      });
     }
   }
 

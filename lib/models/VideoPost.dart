@@ -3,7 +3,7 @@ import 'Comment.dart';
 import 'User.dart';
 import 'User.dart';
 import 'Church.dart';
-import 'ImageSource.dart';
+import 'ResizedImage.dart';
 import 'Address.dart';
 
 part 'VideoPost.g.dart';
@@ -33,7 +33,7 @@ class VideoPost {
   User author;
   User user;
   List<Church> churches;
-  List<ImageSource> images;
+  List<ResizedImage> images;
   List<Address> addresses;
 
   factory VideoPost.fromJson(Map<String,dynamic> json) => _$VideoPostFromJson(json);

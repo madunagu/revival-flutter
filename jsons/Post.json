@@ -13,6 +13,6 @@
   "comments": [],
   "user": "$User",
   "churches": "$[]Church",
-  "images": "$[]ImageSource",
+  "images": "$[]ResizedImage",
   "addresses": "$[]Address"
 }

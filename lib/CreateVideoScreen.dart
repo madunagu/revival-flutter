@@ -17,12 +17,12 @@ import 'package:devotion/widgets/MapWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
-class CreateEventScreen extends StatefulWidget {
+class CreateVideoScreen extends StatefulWidget {
   @override
-  _CreateEventScreenState createState() => _CreateEventScreenState();
+  _CreateVideoScreenState createState() => _CreateVideoScreenState();
 }
 
-class _CreateEventScreenState extends State<CreateEventScreen> {
+class _CreateVideoScreenState extends State<CreateVideoScreen> {
   Event myEvent = Event();
   Address myAddress = Address();
   bool isLoading = false;
@@ -81,6 +81,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         eventCreated = true;
       });
 //        Navigator.pop(context);
+
     }
     isLoading = false;
   }
@@ -210,17 +211,17 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
               height: 40,
             ),
             CreateModelRowWidget(
-              icon: Icons.favorite_border,
-              title: 'Images',
+              icon: Icons.videocam_outlined,
+              title: 'Select Video',
               description: 'Select A few Pics',
-              tapped: (context) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          BottomSheetWidget(child: ProfileMediaSheet())),
-                );
-              },
+//              tapped: (context) {
+//                Navigator.push(
+//                  context,
+//                  MaterialPageRoute(
+//                      builder: (context) =>
+//                          BottomSheetWidget(child: ProfileMediaSheet())),
+//                );
+//              },
             ),
             SizedBox(
               height: 32,

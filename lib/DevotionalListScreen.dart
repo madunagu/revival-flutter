@@ -18,7 +18,7 @@ class DevotionalListScreen extends StatelessWidget {
       ),
       body: BlocProvider(
           create: (BuildContext context) => ListBloc(
-                resource: '/devotional',
+                resource: '/devotionals',
                 feedType: 'devotional',
               )..add(ListFetched()),
           child: DevotionalListWidget()),
@@ -42,12 +42,13 @@ class _DevotionalListWidgetState extends State<DevotionalListWidget> {
 
   Widget organiseStack(List<dynamic> items, BuildContext context) {
     List<Widget> output = [];
+    Size size = MediaQuery.of(context).size;
     for (var i = 0; i < items.length; i++) {
       output.insert(
         0,
         Positioned(
           top: 195.0 * i,
-          child: DevotionalItemWidget(devotional: items[i]),
+          child: DevotionalItemWidget(devotional: items[i], size: size),
         ),
       );
     }
@@ -86,21 +87,31 @@ class _DevotionalListWidgetState extends State<DevotionalListWidget> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return BlocBuilder<ListBloc, ListState>(
       builder: (context, state) {
         if (state is ListInitial) {
-          return Center(
+          return Container(
+            width: size.width,
+            height: size.height,
+            alignment: Alignment.center,
             child: CircularProgressIndicator(),
           );
         }
         if (state is ListFailure) {
-          return Center(
+          return Container(
+            width: size.width,
+            height: size.height,
+            alignment: Alignment.center,
             child: Text('failed to fetch devotionals'),
           );
         }
         if (state is ListSuccess) {
           if (state.models.isEmpty) {
-            return Center(
+            Size size = MediaQuery.of(context).size;
+            return Container(
+              width: size.width,
+              height: size.height,
               child: Text('no devotionals'),
             );
           }
@@ -135,10 +146,11 @@ class DevotionalItemWidget extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-              image: devotional.images != null
-                  ? NetworkImage(devotional.images[0].mediumUrl)
-                  : AssetImage('images/devotional.jpg'),
-              fit: BoxFit.cover),
+            image: devotional.images != null
+                ? NetworkImage(devotional.images[0].mediumUrl)
+                : AssetImage('images/devotional.jpg'),
+            fit: BoxFit.cover,
+          ),
           borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(70),
           ),
@@ -146,16 +158,17 @@ class DevotionalItemWidget extends StatelessWidget {
         height: 270,
         width: size.width,
         child: Container(
-          padding:const EdgeInsets.only(top: 140),
+          padding: const EdgeInsets.only(top: 140,left: 24),
           width: size.width,
           child: Column(
             children: [
               Text(
-                'Technology',
+                devotional.title,
                 style: TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
               SizedBox(height: 7),
               Text(

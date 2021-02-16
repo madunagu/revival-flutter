@@ -7,9 +7,12 @@ import 'package:devotion/widgets/ErrorNotification.dart';
 import 'package:devotion/widgets/ImageAvatarListWidget.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/widgets/AppScaffoldWidget.dart';
+import 'package:devotion/widgets/MapWidget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:devotion/models/Event.dart';
+
+import 'models/User.dart';
 
 var smallTextSyle = TextStyle(color: Colors.grey, fontSize: 12);
 var largeWhiteTextStyle = TextStyle(
@@ -40,7 +43,7 @@ class _SingleEventScreenState extends State<SingleEventScreen> {
     super.initState();
   }
 
-  Future<Map<ResponseKey, dynamic>> getEvent() {
+  Future<Map<String, dynamic>> getEvent() {
     try {
       return NetworkingClass().get('/events/' + widget.event.id.toString());
     } catch (_) {
@@ -234,18 +237,10 @@ class SingleEvent extends StatelessWidget {
                                 SizedBox(
                                   height: 18,
                                 ),
-                                ClipRRect(
-                                  borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(40),
-                                      bottomLeft: Radius.circular(40)),
-                                  child: Container(
-                                    height: 116,
-                                    width: double.infinity,
-                                    child: Image.asset(
-                                      'images/avatar1.jpg',
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
+                                MapWidget(
+                                  address: event.addresses != null
+                                      ? event.addresses[0]
+                                      : null,
                                 ),
                               ],
                             ),
@@ -267,14 +262,16 @@ class SingleEvent extends StatelessWidget {
                     SizedBox(
                       width: 20,
                     ),
-                    Text(
-                      'Hosted By ${event.user.name}',
-                      style: largeWhiteTextStyle,
+                    Flexible(
+                      child: Text(
+                        'Hosted By ${event.user.name}',
+                        style: largeWhiteTextStyle,
+                      ),
                     )
                   ],
                 ),
                 SizedBox(
-                  height:event.description !=null? 30:0,
+                  height: event.description != null ? 30 : 0,
                 ),
                 Text(
                   event.description != null ? event.description : '',
@@ -309,7 +306,7 @@ class SingleEvent extends StatelessWidget {
                           SizedBox(
                             height: 9,
                           ),
-                          event.attendeesCount > 0
+                          event.attendees != null
                               ? Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -320,8 +317,9 @@ class SingleEvent extends StatelessWidget {
 //                                    width: 200,
                                         child: ImageAvatarListWidget(
                                           images: event.attendees
-                                              .getRange(0, 7)
-                                              .map((e) => e.avatar),
+                                              .take(7)
+                                              .map((User e) => e.avatar)
+                                              .toList(),
                                           size: 30,
                                         ),
                                       ),
@@ -382,18 +380,16 @@ class _AreYouGoingState extends State<AreYouGoing> {
     setState(() {
       this.isGoing = true;
     });
-    Map<ResponseKey, dynamic> liked = await NetworkingClass()
+    Map<String, dynamic> liked = await NetworkingClass()
         .post('/events/' + widget.event.id.toString(), {'val': true});
-    if (liked[ResponseKey.type] == ResponseType.data) {
-      var res = liked[ResponseKey.data]['data'];
-      if (res == true) {
-        //already set
-      } else {
-        setState(() {
-          this.isGoing = false;
-        });
-        //handle liking error
-      }
+    var res = liked['data'];
+    if (res == true) {
+      //already set
+    } else {
+      setState(() {
+        this.isGoing = false;
+      });
+      //handle liking error
     }
   }
 
@@ -401,17 +397,15 @@ class _AreYouGoingState extends State<AreYouGoing> {
     setState(() {
       this.isGoing = false;
     });
-    Map<ResponseKey, dynamic> liked = await NetworkingClass()
+    Map<String, dynamic> liked = await NetworkingClass()
         .post('/events/' + widget.event.id.toString(), {'value': false});
-    if (liked[ResponseKey.type] == ResponseType.data) {
-      var res = liked[ResponseKey.data]['data'];
-      if (res == true) {
-        //already done
-      } else {
-        setState(() {
-          this.isGoing = true;
-        });
-      }
+    var res = liked['data'];
+    if (res == true) {
+      //already done
+    } else {
+      setState(() {
+        this.isGoing = true;
+      });
     }
   }
 

@@ -6,6 +6,8 @@ import 'package:devotion/util/Constants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer' as developer;
 
+import 'Exceptions.dart';
+
 enum ResponseType {
   data,
   invalidated,
@@ -14,12 +16,12 @@ enum ResponseType {
   notFound,
   unrecognized
 }
-
-enum ResponseKey {
-  type,
-  data,
-  error,
-}
+//
+//enum ResponseKey {
+//  type,
+//  data,
+//  error,
+//}
 
 class NetworkingClass {
   String _rootURL = 'https://devotion.wakabout.com.ng/api';
@@ -49,37 +51,23 @@ class NetworkingClass {
     }
   }
 
-  Map<ResponseKey, dynamic> prepareResponse(http.Response httpResponse) {
+  Map<String, dynamic> prepareResponse(http.Response httpResponse) {
     log(httpResponse.body.toString());
     if (httpResponse.statusCode == 200 || httpResponse.statusCode == 201) {
-      return {
-        ResponseKey.type: ResponseType.data,
-        ResponseKey.data: jsonDecode(httpResponse.body)
-      };
+      return jsonDecode(httpResponse.body);
     } else if (httpResponse.statusCode == 422) {
-      return {
-        ResponseKey.type: ResponseType.invalidated,
-        ResponseKey.error: jsonDecode(httpResponse.body)
-      };
-    } else if (httpResponse.statusCode == 401) {
-      return {
-        ResponseKey.type: ResponseType.unrecognized,
-        ResponseKey.error: jsonDecode(httpResponse.body)
-      };
-    } else if (httpResponse.statusCode == 404) {
-      return {
-        ResponseKey.type: ResponseType.notFound,
-        ResponseKey.error: jsonDecode(httpResponse.body)
-      };
+      throw ValidationErrorException(errors: jsonDecode(httpResponse.body));
+    } else if (httpResponse.statusCode >= 400 &&
+        httpResponse.statusCode < 500) {
+      throw ClientErrorException();
+    } else if (httpResponse.statusCode >= 500 &&
+        httpResponse.statusCode < 600) {
+      throw ServerErrorException();
     }
-
-    return {
-      ResponseKey.type: ResponseType.unrecognized,
-      ResponseKey.data: jsonDecode(httpResponse.body)
-    };
+    throw UnknownException();
   }
 
-  Future<Map<ResponseKey, dynamic>> get(String url) async {
+  Future<Map<String, dynamic>> get(String url) async {
     if (!isTokenGotten) await getToken();
     http.Response response =
         await http.get(_rootURL + url, headers: this.headers());
@@ -87,7 +75,7 @@ class NetworkingClass {
     return prepareResponse(response);
   }
 
-  Future<dynamic> post(String url, dynamic data) async {
+  Future<Map<String, dynamic>> post(String url, dynamic data) async {
     if (!isTokenGotten) await getToken();
     String jsonData = jsonEncode(data);
     Map<String, String> headers = this.headers();
@@ -100,7 +88,7 @@ class NetworkingClass {
     return prepareResponse(response);
   }
 
-  Future<dynamic> put(String url, dynamic data) async {
+  Future<Map<String, dynamic>> put(String url, dynamic data) async {
     if (!isTokenGotten) await getToken();
     http.Response response = await http.put(
       _rootURL + url,
@@ -110,7 +98,7 @@ class NetworkingClass {
     return prepareResponse(response);
   }
 
-  Future<dynamic> delete(String url) async {
+  Future<Map<String, dynamic>> delete(String url) async {
     if (!isTokenGotten) await getToken();
     http.Response response =
         await http.delete(_rootURL + url, headers: this.headers());

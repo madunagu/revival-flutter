@@ -13,7 +13,7 @@
     "devotees_count": 1,
     "devotees": "$[]User",
     "user": "$User",
-    "images": "$[]ImageSource",
+    "images": "$[]ResizedImage",
     "created_at": "@datetime",
     "updated_at": "@datetime"
 }

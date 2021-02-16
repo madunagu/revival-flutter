@@ -44,14 +44,12 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
       String url = event.playedType == PlayedType.video
           ? '/video-posts/'
           : '/audio-posts/';
-      Map<ResponseKey, dynamic> play =
-          await server.get(url + event.id.toString());
-      if (play[ResponseKey.type] == ResponseType.data) {
-        var res = play[ResponseKey.data]['data'];
-        playable = event.playedType == PlayedType.video
-            ? VideoPost.fromJson(res)
-            : AudioPost.fromJson(res);
-      }
+      Map<String, dynamic> play = await server.get(url + event.id.toString());
+      var res = play['data'];
+      playable = event.playedType == PlayedType.video
+          ? VideoPost.fromJson(res)
+          : AudioPost.fromJson(res);
+
       yield PlayerLoaded(playable: playable);
     } catch (error) {
       log(error.toString());
@@ -66,21 +64,19 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
       String url = event.playedType == PlayedType.video
           ? '/video-posts/'
           : '/audio-posts/';
-      Map<ResponseKey, dynamic> liked =
+      Map<String, dynamic> liked =
           await server.post(url + event.id.toString(), []);
-      if (liked[ResponseKey.type] == ResponseType.data) {
-        var res = liked[ResponseKey.data]['data'];
-        if (res == 'true') {
-          yield PlayerLiking();
-        } else {
-          yield PlayerUnLiking();
-        }
+      var res = liked['data'];
+      if (res == 'true') {
+        yield PlayerLiking();
+      } else {
+        yield PlayerUnLiking();
       }
+
       yield PlayerUnLiking();
     } catch (error) {
       log(error.toString());
       yield PlayerFailure(error: error.toString());
     }
   }
-
 }

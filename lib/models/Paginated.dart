@@ -8,7 +8,7 @@ part 'Paginated.g.dart';
 class Paginated {
       Paginated();
 
-  List<Event> data;
+  List<dynamic> data;
   Pagination pagination;
 
   factory Paginated.fromJson(Map<String,dynamic> json) => _$PaginatedFromJson(json);

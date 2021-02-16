@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'ImageSource.dart';
+part of 'ResizedImage.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-ImageSource _$ImageSourceFromJson(Map<String, dynamic> json) {
-  return ImageSource()
+ResizedImage _$ResizedImageFromJson(Map<String, dynamic> json) {
+  return ResizedImage()
     ..id = json['id'] as int
     ..largeUrl = json['large_url'] as String
     ..mediumUrl = json['medium_url'] as String
@@ -21,7 +21,7 @@ ImageSource _$ImageSourceFromJson(Map<String, dynamic> json) {
     ..updatedAt = json['updated_at'] as String;
 }
 
-Map<String, dynamic> _$ImageSourceToJson(ImageSource instance) =>
+Map<String, dynamic> _$ResizedImageToJson(ResizedImage instance) =>
     <String, dynamic>{
       'id': instance.id,
       'large_url': instance.largeUrl,

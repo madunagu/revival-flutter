@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-
+import 'ProfileMedia.dart';
 
 part 'User.g.dart';
 
@@ -9,7 +9,6 @@ class User {
 
   int id;
   String name;
-  @JsonKey(name: 'api_token') dynamic apiToken;
   String avatar;
   String email;
   @JsonKey(name: 'email_verified_at') DateTime emailVerifiedAt;
@@ -17,6 +16,8 @@ class User {
   String phone;
   String gender;
   @JsonKey(name: 'follower_count') int followerCount;
+  @JsonKey(name: 'is_following') int isFollowing;
+  @JsonKey(name: 'profile_media') ProfileMedia profileMedia;
   @JsonKey(name: 'created_at') DateTime createdAt;
   @JsonKey(name: 'updated_at') DateTime updatedAt;
 

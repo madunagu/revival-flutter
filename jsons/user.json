@@ -1,7 +1,6 @@
 {
   "id": 1,
   "name": "Dr. Maria Rolfson MD",
-  "api_token": null,
   "avatar": "this/url",
   "email": "gwolff@example.com",
   "email_verified_at": "@datetime",
@@ -9,6 +8,8 @@
   "phone": "+2348065708630",
   "gender": "String",
   "follower_count": 0,
+  "is_following": 1,
+  "profile_media": "$ProfileMedia",
   "created_at": "@datetime",
   "updated_at": "@datetime"
 }

@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:devotion/SingleEventScreen.dart';
 import 'package:devotion/misc/StyleConstants.dart';
 import 'package:devotion/models/Event.dart';
+import 'package:devotion/models/User.dart';
 import 'package:devotion/util/Constants.dart';
 import 'package:devotion/util/TimeHandler.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
@@ -88,14 +90,19 @@ class CurvedEventItemWidget extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               ImageAvatarListWidget(
-                                images: event.attendees
-                                    .getRange(0, 7)
-                                    .map((e) => e.avatar),
+                                images: event.attendees != null
+                                    ? event.attendees
+                                        .take(7)
+                                        .map((User e) => e.avatar)
+                                        .toList()
+                                    : [],
                                 size: 24,
                               ),
                               SizedBox(width: 10),
                               Text(
-                                'Join ${event.attendees.getRange(0, 2).map((e) => e.name).join(", ")} and ${event.attendeesCount} others',
+                                event.attendees != null
+                                    ? 'Join ${event.attendees.take(2).map((e) => e.name).join(", ")} and ${event.attendeesCount} others'
+                                    : '..Be the first to join',
                                 style: italicStyle,
                               ),
                             ],

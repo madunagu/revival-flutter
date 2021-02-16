@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'User.dart';
 import 'User.dart';
-import 'ImageSource.dart';
+import 'ResizedImage.dart';
 
 part 'Devotional.g.dart';
 
@@ -23,7 +23,7 @@ class Devotional {
   @JsonKey(name: 'devotees_count') int devoteesCount;
   List<User> devotees;
   User user;
-  List<ImageSource> images;
+  List<ResizedImage> images;
   @JsonKey(name: 'created_at') DateTime createdAt;
   @JsonKey(name: 'updated_at') DateTime updatedAt;
 

@@ -1,3 +1,4 @@
+import 'package:devotion/models/Pagination.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class ListState extends Equatable {
@@ -13,13 +14,11 @@ class ListFailure extends ListState {}
 
 class ListSuccess extends ListState {
   final List<dynamic> models;
-  final bool hasReachedMax;
-  final int currentPage;
+  final Pagination pagination;
 
   const ListSuccess({
     this.models,
-    this.hasReachedMax,
-    this.currentPage,
+    this.pagination,
   });
 
   ListSuccess copyWith({
@@ -29,15 +28,17 @@ class ListSuccess extends ListState {
   }) {
     return ListSuccess(
       models: models ?? this.models,
-      hasReachedMax: hasReachedMax ?? this.hasReachedMax,
-      currentPage: currentPage ?? this.currentPage,
+      pagination: hasReachedMax ?? this.pagination,
     );
   }
 
   @override
-  List<Object> get props => [models, hasReachedMax, currentPage];
+  List<Object> get props => [
+        models,
+        pagination,
+      ];
 
   @override
   String toString() =>
-      'ListSuccess { Lists: ${models.length}, hasReachedMax: $hasReachedMax, currentPage: $currentPage }';
+      'ListSuccess { Lists: ${models.length}, pagination: $pagination.currentPage }';
 }

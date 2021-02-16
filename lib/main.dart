@@ -40,26 +40,23 @@ import 'package:animations/animations.dart';
 
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
-  final userRepository = UserRepository();
   runApp(
     MultiBlocProvider(
       providers: [
         BlocProvider<AuthenticationBloc>(
           create: (context) =>
-              AuthenticationBloc(userRepository: userRepository)
-                ..add(AuthenticationStarted()),
+              AuthenticationBloc()..add(AuthenticationStarted()),
         ),
+        BlocProvider<PostBloc>(create: (BuildContext context) => PostBloc()),
         BlocProvider<PlayerBloc>(create: (context) => PlayerBloc())
       ],
-      child: MyApp(userRepository: userRepository),
+      child: MyApp(),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  final UserRepository userRepository;
-
-  MyApp({Key key, @required this.userRepository}) : super(key: key);
+  MyApp({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +70,7 @@ class MyApp extends StatelessWidget {
             return AudioServiceWidget(child: MainScreen());
           }
           if (state is AuthenticationFailure) {
-            return LoginScreen(userRepository: userRepository);
+            return LoginScreen();
           }
           if (state is AuthenticationInProgress) {
             return LoadingIndicator();
@@ -157,18 +154,8 @@ class _MainScreenState extends State<MainScreen>
         width: MediaQuery.of(context).size.width,
         child: TabBarView(controller: _tabController, children: [
           SingleChildScrollView(child: MyProfileScreen()),
-          BlocProvider(
-            create: (BuildContext context) => PostBloc(
-              authenticationBloc: _authenticationBloc,
-            )..add(PostFetched()),
-            child: FeedScreen(colors: trendingColors),
-          ),
-          BlocProvider(
-            create: (BuildContext context) => PostBloc(
-              authenticationBloc: _authenticationBloc,
-            )..add(PostFetched()),
-            child: FeedScreen(colors: healthColors),
-          ),
+          FeedScreen(colors: trendingColors),
+          FeedScreen(colors: healthColors),
           FeedScreen(colors: trendingColors),
           FeedScreen(colors: trendingColors),
         ]),

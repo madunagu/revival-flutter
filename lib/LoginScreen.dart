@@ -30,10 +30,8 @@ final TextStyle hintStyle = const TextStyle(
 );
 
 class LoginScreen extends StatefulWidget {
-  final UserRepository userRepository;
 
-  LoginScreen({Key key, @required this.userRepository})
-      : assert(userRepository != null),
+  LoginScreen({Key key}):
         super(key: key);
 
   @override
@@ -65,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen>
         create: (context) {
           return LoginBloc(
             authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
-            userRepository: widget.userRepository,
+            userRepository: UserRepository(),
           );
         },
         child: Stack(

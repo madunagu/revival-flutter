@@ -15,15 +15,11 @@ class UserRepository {
     @required String password,
   }) async {
     NetworkingClass server = NetworkingClass();
-    final Map<ResponseKey, dynamic> res =
+    final Map<String, dynamic> res =
         await server.post('/login', {'email': username, 'password': password});
 
-    if (res[ResponseKey.type] == ResponseType.data) {
-      LoginData data = LoginData.fromJson(res[ResponseKey.data]);
-      return data;
-    } else {
-      throw (res[ResponseKey.error]);
-    }
+    LoginData data = LoginData.fromJson(res);
+    return data;
   }
 
   Future<void> deleteToken() async {

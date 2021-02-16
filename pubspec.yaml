@@ -21,6 +21,7 @@ dependencies:
   audio_service: ^0.16.1
   just_audio: ^0.6.9
   scoped_model: ^1.1.0
+  image_picker: ^0.6.6+5
   animations: ^1.1.0
   http: ^0.12.1  
   flutter_secure_storage: ^3.3.5
@@ -64,3 +65,5 @@ flutter:
     - images/avatar2.jpg
     - images/photo.png
     - images/music_thumb.png
+    - images/map.png
+    - images/devotional.jpg

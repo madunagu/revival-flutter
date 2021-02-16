@@ -45,7 +45,7 @@ VideoPost _$VideoPostFromJson(Map<String, dynamic> json) {
         ?.toList()
     ..images = (json['images'] as List)
         ?.map((e) =>
-            e == null ? null : ImageSource.fromJson(e as Map<String, dynamic>))
+            e == null ? null : ResizedImage.fromJson(e as Map<String, dynamic>))
         ?.toList()
     ..addresses = (json['addresses'] as List)
         ?.map((e) =>

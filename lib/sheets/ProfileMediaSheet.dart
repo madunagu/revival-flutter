@@ -1,34 +1,34 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:devotion/bloc/blocs/form.bloc.dart';
 import 'package:devotion/bloc/events/FormEvent.dart';
 import 'package:devotion/bloc/states/FormSheetState.dart';
 import 'package:devotion/models/Address.dart';
+import 'package:devotion/models/ProfileMedia.dart';
 import 'package:devotion/util/NetworkingClass.dart';
 import 'package:devotion/widgets/MapWidget.dart';
+import 'package:devotion/widgets/SelectImageWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
-class ProfileSheet extends StatefulWidget {
-  ProfileSheet({Key key}) : super(key: key);
+class ProfileMediaSheet extends StatefulWidget {
+  ProfileMediaSheet({Key key}) : super(key: key);
   @override
   _ProfileSheetState createState() => _ProfileSheetState();
 }
 
-class _ProfileSheetState extends State<ProfileSheet> {
-  final Address myAddress = Address();
+class _ProfileSheetState extends State<ProfileMediaSheet> {
+  final ProfileMedia myProfile = ProfileMedia();
   final NetworkingClass myNetwork = NetworkingClass();
   final _formKey = GlobalKey<FormState>();
-  String countryValue;
-  String stateValue;
-  List<String> countries = ['Nigeria', 'Ghana', 'Kenya', 'Uganda'];
-  List<String> states = ['Imo', 'Enugu', 'Anambara', 'Lagos'];
-  TextEditingController line1Controller = TextEditingController();
-  TextEditingController line2Controller = TextEditingController();
-  TextEditingController cityController = TextEditingController();
-  TextEditingController nameController = TextEditingController();
+  File _avatarImage;
+  File _profileImage;
+  File _backgroundImage;
+
   final TextStyle inputStyle = const TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.w500,
@@ -60,6 +60,22 @@ class _ProfileSheetState extends State<ProfileSheet> {
     hintText: 'Address line 1',
   );
 
+  String validationMessage(FormSheetState state, String inputName) {
+    if (state is FormInvalidated) {
+      if (state.errors.containsKey(inputName)) {
+        return state.errors[inputName][0];
+      }
+    }
+    return null;
+  }
+
+  Future<File> _imgFromGallery() async {
+    PickedFile image = await ImagePicker()
+        .getImage(source: ImageSource.gallery, imageQuality: 50);
+
+    return File(image.path);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -73,16 +89,11 @@ class _ProfileSheetState extends State<ProfileSheet> {
                 print(state);
                 if (state is FormSuccess) {
                   log(state.toString());
-                  Navigator.of(context)
-                      .pop(Address.fromJson(state.object['data']));
+                  Navigator.of(context).pop(
+                    Address.fromJson(state.object['data']),
+                  );
                 }
               },
-              // condition: (state, state2) {
-              //   if (state is FormSuccess) {
-              //     return true;
-              //   } n
-              //   return false;
-              // },
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -92,110 +103,52 @@ class _ProfileSheetState extends State<ProfileSheet> {
                       height: 44,
                     ),
                     Text(
-                      'Create Address',
+                      'Object Media',
                       style:
                           TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
                     ),
                     SizedBox(
                       height: 21,
                     ),
-                    TextFormField(
-                      controller: line1Controller,
-                      style: inputStyle.copyWith(color: Color(0xff241332)),
-                      decoration: inputDecoration.copyWith(
-                          errorText: validationMessage(state, 'address1'),
-                          hintText: 'Address line 1',
-                          hintStyle: inputStyle),
+                    SelectImageWidget(
+                      title: 'Logo',
+                      state: state,
+                      input: 'logo_url',
+                      file: _avatarImage,
+                      onTap: () async {
+                        _avatarImage = await _imgFromGallery();
+                        setState(() {});
+                      },
                     ),
                     SizedBox(
                       height: 21,
                     ),
-                    TextFormField(
-                      style: inputStyle.copyWith(color: Color(0xff241332)),
-                      controller: line2Controller,
-                      decoration: inputDecoration.copyWith(
-                          errorText: validationMessage(state, 'address2'),
-                          hintText: 'Address line 2',
-                          hintStyle: inputStyle),
+                    SelectImageWidget(
+                      title: 'Profile Image',
+                      state: state,
+                      input: 'profile_image_url',
+                      file: _profileImage,
+                      onTap: () async {
+                        _profileImage = await _imgFromGallery();
+                        setState(() {});
+                      },
                     ),
                     SizedBox(
                       height: 21,
                     ),
-                    TextFormField(
-                      controller: cityController,
-                      style: inputStyle.copyWith(color: Color(0xff241332)),
-                      decoration: inputDecoration.copyWith(
-                          errorText: validationMessage(state, 'city'),
-                          hintText: 'City',
-                          hintStyle: inputStyle),
-                    ),
-                    SizedBox(height: 21),
-//                    Text(
-//                      'Country',
-//                      style: TextStyle(
-//                        letterSpacing: -0.22,
-//                        fontWeight: FontWeight.w600,
-//                        fontSize: 11,
-//                      ),
-//                    ),
-                    Container(
-                      width: double.infinity,
-                      child: DropdownButton<String>(
-                        value: countryValue,
-                        hint: Text('Country', style: inputStyle),
-                        elevation: 16,
-                        style: inputStyle.copyWith(color: Color(0xff241332)),
-                        underline: Container(
-                          padding: EdgeInsets.only(top:8),
-                          height: 1,
-                          color: Color(0xffdddddd),
-                        ),
-                        onChanged: (String newValue) {
-                          setState(() {
-                            countryValue = newValue;
-                          });
-                        },
-                        items: countries
-                            .map((String value) => DropdownMenuItem(
-                                  value: value,
-                                  child: Text(value),
-                                ))
-                            .toList(),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 18,
-                    ),
-
-                    Container(
-                      width: double.infinity,
-                      child: DropdownButton<String>(
-                        value: stateValue,
-                        hint: Text('State', style: inputStyle),
-                        elevation: 16,
-                        style: inputStyle.copyWith(color: Color(0xff241332)),
-                        underline: Container(
-                          height: 1,
-                          color: Color(0xffdddddd),
-                        ),
-                        onChanged: (String newValue) {
-                          setState(() {
-                            stateValue = newValue;
-                          });
-                        },
-                        items: states
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
+                    SelectImageWidget(
+                      title: 'Cover Image',
+                      file: _backgroundImage,
+                      state: state,
+                      input: 'background_image_url',
+                      onTap: () async {
+                        _backgroundImage = await _imgFromGallery();
+                        setState(() {});
+                      },
                     ),
                     SizedBox(
                       height: 21,
                     ),
-                    MapWidget(),
                     SizedBox(height: 20),
                     GestureDetector(
                       onTap:
@@ -231,15 +184,6 @@ class _ProfileSheetState extends State<ProfileSheet> {
     );
   }
 
-  String validationMessage(FormSheetState state, String inputName) {
-    if (state is FormInvalidated) {
-      if (state.errors.containsKey(inputName)) {
-        return state.errors[inputName][0];
-      }
-    }
-    return null;
-  }
-
   @override
   void initState() {
     super.initState();
@@ -248,21 +192,13 @@ class _ProfileSheetState extends State<ProfileSheet> {
   @override
   void dispose() {
     super.dispose();
-    line1Controller.dispose();
-    line2Controller.dispose();
-    cityController.dispose();
   }
 
   void submitButtonPressed() {
-    this.myAddress.address1 = line1Controller.value.text;
-    this.myAddress.address2 = line2Controller.value.text;
-    this.myAddress.city = cityController.value.text;
-    this.myAddress.country = countryValue;
-    this.myAddress.state = countryValue;
     BlocProvider.of<FormBloc>(context).add(
       CreateButtonPressed(
-        object: myAddress.toJson(),
-        url: '/addresses',
+        object: myProfile.toJson(),
+        url: '/profile-media',
       ),
     );
   }

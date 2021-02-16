@@ -1,6 +1,9 @@
+import 'package:devotion/models/Address.dart';
 import 'package:flutter/material.dart';
 
 class MapWidget extends StatelessWidget {
+  final Address address;
+  MapWidget({@required this.address});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -11,7 +14,7 @@ class MapWidget extends StatelessWidget {
           bottomLeft: Radius.circular(60),
         ),
         child: Image.asset(
-          'images/avatar1.jpg',
+          'images/map.png',
           width: double.infinity,
           height: 116,
           fit: BoxFit.cover,

@@ -1,0 +1,7 @@
+{
+  "data": [
+    "a value",
+    "another one"
+  ],
+  "pagination": "$Pagination"
+}

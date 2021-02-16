@@ -23,8 +23,8 @@ class VideosScreen extends StatelessWidget {
       ),
       body: BlocProvider(
           create: (BuildContext context) => ListBloc(
-                feedType: 'videos',
-                resource: '/videos',
+                feedType: 'video',
+                resource: '/video-posts',
               )..add(ListFetched()),
           child: VideosList()),
     );
@@ -63,19 +63,35 @@ class _VideosListState extends State<VideosList> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return BlocBuilder<ListBloc, ListState>(
       builder: (BuildContext context, ListState state) {
         if (state is ListSuccess) {
           return SingleChildScrollView(
             controller: _scrollController,
             child: Column(
-              children: state.models.map((e) => VideoItem(video: e)).toList(),
+              children: state.models
+                  .map((e) => VideoItem(
+                        video: e,
+                        size: size,
+                      ))
+                  .toList(),
             ),
           );
         } else if (state is ListInitial) {
-          return Center(child: CircularProgressIndicator());
+          return Container(
+            width: size.width,
+            height: size.height,
+            alignment: Alignment.center,
+            child: CircularProgressIndicator(),
+          );
         } else {
-          return Center(child: Text('No Videos'));
+          return Container(
+            width: size.width,
+            height: size.height,
+            alignment: Alignment.center,
+            child: Text('No Videos'),
+          );
         }
       },
     );
@@ -117,7 +133,7 @@ class VideoItem extends StatelessWidget {
                       height: 210,
                       width: size.width - 24,
                       child: video.images != null
-                          ? Image.asset(
+                          ? Image.network(
                               video.images[0].mediumUrl,
                               fit: BoxFit.cover,
                             )
@@ -160,12 +176,16 @@ class VideoItem extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         InteractionButtonWidget(
-                            icon: Icons.favorite, count: 255),
+                          icon: Icons.favorite,
+                          count: video.likesCount,
+                        ),
                         SizedBox(
                           width: 22,
                         ),
                         InteractionButtonWidget(
-                            icon: Icons.favorite, count: 255),
+                          icon: Icons.comment,
+                          count: video.commentsCount,
+                        ),
                       ],
                     ),
                   ),
