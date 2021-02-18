@@ -1,13 +1,13 @@
 {
-    "id": 1,
-    "parent_id": 1,
-    "comment": "what is it",
-    "user_id": 1,
-    "likes": 20,
-    "liked": 1,
-    "commentable_id": 1,
-    "commentable_type": "thetype",
-    "created_at": "@datetime",
-    "updated_at": "@datetime",
-    "user": "$User"
+  "id": 1,
+  "parent_id": null,
+  "comment": "In voluptas deserunt occaecati qui.",
+  "user_id": 1,
+  "liked": 1,
+  "user": "$User",
+  "commentable_id": 1,
+  "commentable_type": "video",
+  "deleted_at": null,
+  "created_at": "@datetime",
+  "updated_at": "@datetime"
 }

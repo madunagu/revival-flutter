@@ -1,13 +1,13 @@
 {
   "id": 1,
-  "large_url": "images/large/rUXlePp8dqdfqGkV7iIEQu1JQgilSbMdPxkq7fNk.jpeg",
-  "medium_url": "images/medium/rUXlePp8dqdfqGkV7iIEQu1JQgilSbMdPxkq7fNk.jpeg",
-  "small_url": "images/small/rUXlePp8dqdfqGkV7iIEQu1JQgilSbMdPxkq7fNk.jpeg",
-  "avatar_url": "images/avatar/rUXlePp8dqdfqGkV7iIEQu1JQgilSbMdPxkq7fNk.jpeg",
+  "large_url": "https://lorempixel.com/500,500/480/?86984",
+  "medium_url": "https://lorempixel.com/200,200/480/?87914",
+  "small_url": "https://lorempixel.com/100,100/480/?25999",
+  "avatar_url": "https://lorempixel.com/50/50/?10996",
   "full_url": "",
   "user_id": "1",
-  "imageable_id": 0,
-  "imageable_type": "",
-  "created_at": "2021-01-02 10:42:21",
-  "updated_at": "2021-01-02 10:42:24"
+  "imageable_id": 8,
+  "imageable_type": "video",
+  "created_at": "2021-02-18T19:31:18.000000Z",
+  "updated_at": "2021-02-18T19:31:18.000000Z"
 }
