@@ -20,7 +20,6 @@ class ListBloc extends Bloc<ListEvent, ListState> {
   }) : assert(resource != null);
   final String feedType;
   final String resource;
-  Pagination pagination;
   @override
   ListState get initialState => ListInitial();
   //TODO: work on navigation in infinite list
@@ -30,15 +29,20 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     if (event is ListFetched && !_hasReachedMax(currentState)) {
       try {
         if (currentState is ListInitial) {
-          final posts = await _fetchList(0, 20);
-          yield ListSuccess(models: posts, pagination: pagination);
+          final ServerResponse serverResponse = await _fetchList(0, 20);
+          yield ListSuccess(
+            models: serverResponse.data,
+            totalPages: serverResponse.totalPages,
+            currentPage: serverResponse.currentPage,
+          );
           return;
         }
         if (currentState is ListSuccess) {
-          final posts = await _fetchList(pagination.currentPage + 1, 20);
+          final ServerResponse serverResponse = await _fetchList(currentState.currentPage + 1, 20);
           yield ListSuccess(
-            models: currentState.models + posts,
-            pagination: pagination,
+            models: currentState.models + serverResponse.data,
+            totalPages: serverResponse.totalPages,
+            currentPage: serverResponse.currentPage,
           );
         }
       } catch (_) {
@@ -61,19 +65,18 @@ class ListBloc extends Bloc<ListEvent, ListState> {
 
   bool _hasReachedMax(ListState state) =>
       state is ListSuccess &&
-      state.pagination.currentPage >= state.pagination.totalPages;
+      state.currentPage >= state.totalPages;
 
-  Future<List<dynamic>> _fetchList(int page, int limit) async {
+  Future<ServerResponse> _fetchList(int page, int limit) async {
     final Map<String, dynamic> res =
         await NetworkingClass().get(resource + "?page=$page&perPage=$limit");
     ServerResponse response = ServerResponse.fromJson(res);
-    pagination = response.pagination;
     final List<dynamic> items = [];
     for (var i = 0; i < response.data.length; i++) {
       items.add(getParentable(response.data[i]));
     }
-
-    return items;
+    response.data = items;
+    return response;
   }
 
   getParentable(Map<String, dynamic> parentable) {
