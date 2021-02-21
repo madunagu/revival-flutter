@@ -13,8 +13,9 @@ class ProfileMedia {
   @JsonKey(name: 'background_image_url') String backgroundImageUrl;
   @JsonKey(name: 'color_choice') String colorChoice;
   @JsonKey(name: 'user_id') int userId;
-  @JsonKey(name: 'profile_mediable_id') dynamic profileMediableId;
-  @JsonKey(name: 'profile_mediable_type') dynamic profileMediableType;
+  @JsonKey(name: 'profile_mediable_id') int profileMediableId;
+  @JsonKey(name: 'profile_mediable_type') String profileMediableType;
+  @JsonKey(name: 'deleted_at') DateTime deletedAt;
   @JsonKey(name: 'created_at') DateTime createdAt;
   @JsonKey(name: 'updated_at') DateTime updatedAt;
 

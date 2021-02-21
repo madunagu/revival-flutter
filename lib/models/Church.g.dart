@@ -11,12 +11,13 @@ Church _$ChurchFromJson(Map<String, dynamic> json) {
     ..id = json['id'] as int
     ..name = json['name'] as String
     ..alternateName = json['alternate_name'] as String
-    ..parentId = json['parent_id'] as String
+    ..parentId = json['parent_id'] as int
     ..userId = json['user_id'] as int
     ..leaderId = json['leader_id'] as int
     ..slogan = json['slogan'] as String
     ..description = json['description'] as String
     ..verified = json['verified'] as int
+    ..deletedAt = json['deleted_at']
     ..createdAt = json['created_at'] == null
         ? null
         : DateTime.parse(json['created_at'] as String)
@@ -28,24 +29,17 @@ Church _$ChurchFromJson(Map<String, dynamic> json) {
     ..liked = json['liked'] as int
     ..viewsCount = json['views_count'] as int
     ..viewed = json['viewed'] as int
-    ..comments = (json['comments'] as List)
-        ?.map((e) =>
-            e == null ? null : Comment.fromJson(e as Map<String, dynamic>))
-        ?.toList()
+    ..comments = json['comments'] as List
     ..leader = json['leader'] == null
         ? null
         : User.fromJson(json['leader'] as Map<String, dynamic>)
     ..user = json['user'] == null
         ? null
         : User.fromJson(json['user'] as Map<String, dynamic>)
-    ..addresses = (json['addresses'] as List)
-        ?.map((e) =>
-            e == null ? null : Address.fromJson(e as Map<String, dynamic>))
-        ?.toList()
-    ..profileMedia = (json['profile_media'] as List)
-        ?.map((e) =>
-            e == null ? null : ProfileMedia.fromJson(e as Map<String, dynamic>))
-        ?.toList();
+    ..addresses = json['addresses'] as List
+    ..profileMedia = json['profile_media'] == null
+        ? null
+        : ProfileMedia.fromJson(json['profile_media'] as Map<String, dynamic>);
 }
 
 Map<String, dynamic> _$ChurchToJson(Church instance) => <String, dynamic>{
@@ -58,6 +52,7 @@ Map<String, dynamic> _$ChurchToJson(Church instance) => <String, dynamic>{
       'slogan': instance.slogan,
       'description': instance.description,
       'verified': instance.verified,
+      'deleted_at': instance.deletedAt,
       'created_at': instance.createdAt?.toIso8601String(),
       'updated_at': instance.updatedAt?.toIso8601String(),
       'comments_count': instance.commentsCount,

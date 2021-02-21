@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:devotion/PlayerScreen.dart';
 import 'package:devotion/bloc/blocs/list.bloc.dart';
 import 'package:devotion/bloc/events/ListEvent.dart';
@@ -22,11 +24,16 @@ class VideosScreen extends StatelessWidget {
         rightIcon: Icons.filter,
       ),
       body: BlocProvider(
-          create: (BuildContext context) => ListBloc(
-                feedType: 'video',
-                resource: '/video-posts',
-              )..add(ListFetched()),
-          child: VideosList()),
+        create: (BuildContext context) => ListBloc(
+          feedType: 'video',
+          resource: '/video-posts',
+        )..add(ListFetched()),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: VideosList(),
+        ),
+      ),
     );
   }
 }
@@ -79,17 +86,12 @@ class _VideosListState extends State<VideosList> {
             ),
           );
         } else if (state is ListInitial) {
-          return Container(
-            width: size.width,
-            height: size.height,
-            alignment: Alignment.center,
+          return Center(
+
             child: CircularProgressIndicator(),
           );
         } else {
-          return Container(
-            width: size.width,
-            height: size.height,
-            alignment: Alignment.center,
+          return Center(
             child: Text('No Videos'),
           );
         }
@@ -132,7 +134,7 @@ class VideoItem extends StatelessWidget {
                     child: Container(
                       height: 210,
                       width: size.width - 24,
-                      child: video.images != null
+                      child: video.images != null && video.images.isNotEmpty
                           ? Image.network(
                               video.images[0].mediumUrl,
                               fit: BoxFit.cover,
