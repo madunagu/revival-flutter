@@ -16,27 +16,35 @@ class PostFailure extends PostState {}
 
 class PostSuccess extends PostState {
   final List<Feed> posts;
-  final Pagination pagination;
+  final int currentPage;
+  final int totalPages;
 
   const PostSuccess({
     this.posts,
-    this.pagination,
+    this.currentPage,
+    this.totalPages,
   });
 
   PostSuccess copyWith({
     List<dynamic> posts,
-    bool hasReachedMax,
+    int totalPages,
+    int currentPage,
   }) {
     return PostSuccess(
       posts: posts ?? this.posts,
-      pagination: pagination ?? this.pagination,
+      currentPage: currentPage ?? this.currentPage,
+      totalPages: totalPages ?? this.totalPages,
     );
   }
 
   @override
-  List<Object> get props => [posts, pagination];
+  List<Object> get props => [
+        posts,
+        currentPage,
+        totalPages,
+      ];
 
   @override
   String toString() =>
-      'PostSuccess { posts: ${posts.length}, pagination: ${pagination.toString()}';
+      'PostSuccess { posts: ${posts.length}, total Pages: $totalPages ,Current Pages $currentPage}';
 }

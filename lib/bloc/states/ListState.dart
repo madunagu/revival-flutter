@@ -14,31 +14,35 @@ class ListFailure extends ListState {}
 
 class ListSuccess extends ListState {
   final List<dynamic> models;
-  final Pagination pagination;
+  final int currentPage;
+  final int totalPages;
 
   const ListSuccess({
     this.models,
-    this.pagination,
+    this.currentPage,
+    this.totalPages,
   });
 
   ListSuccess copyWith({
     List<dynamic> models,
-    bool hasReachedMax,
+    int totalPages,
     int currentPage,
   }) {
     return ListSuccess(
       models: models ?? this.models,
-      pagination: hasReachedMax ?? this.pagination,
+      currentPage: currentPage ?? this.currentPage,
+      totalPages: totalPages ?? this.totalPages,
     );
   }
 
   @override
   List<Object> get props => [
         models,
-        pagination,
+        currentPage,
+        totalPages,
       ];
 
   @override
   String toString() =>
-      'ListSuccess { Lists: ${models.length}, pagination: $pagination.currentPage }';
+      'ListSuccess { Lists: ${models.length}, total Pages: $totalPages ,Current Pages $currentPage }';
 }

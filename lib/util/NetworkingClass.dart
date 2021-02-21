@@ -57,6 +57,8 @@ class NetworkingClass {
       return jsonDecode(httpResponse.body);
     } else if (httpResponse.statusCode == 422) {
       throw ValidationErrorException(errors: jsonDecode(httpResponse.body));
+    } else if (httpResponse.statusCode == 401) {
+      throw AuthenticationException();
     } else if (httpResponse.statusCode >= 400 &&
         httpResponse.statusCode < 500) {
       throw ClientErrorException();

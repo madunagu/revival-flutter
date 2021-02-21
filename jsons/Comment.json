@@ -1,13 +1,13 @@
 {
   "id": 1,
-  "parent_id": null,
+  "parent_id": 0,
   "comment": "In voluptas deserunt occaecati qui.",
   "user_id": 1,
   "liked": 1,
   "user": "$User",
   "commentable_id": 1,
   "commentable_type": "video",
-  "deleted_at": null,
+  "deleted_at": "@datetime",
   "created_at": "@datetime",
   "updated_at": "@datetime"
 }
