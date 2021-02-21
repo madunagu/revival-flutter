@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:devotion/SingleEventScreen.dart';
 import 'package:devotion/bloc/blocs/list.bloc.dart';
 import 'package:devotion/bloc/blocs/post.bloc.dart';
@@ -38,9 +40,13 @@ class EventListScreen extends StatelessWidget {
           feedType: 'event',
           resource: '/events',
         )..add(ListFetched()),
-        child: EventList(
-          colors: colors,
-          tag: tag,
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: EventList(
+            colors: colors,
+            tag: tag,
+          ),
         ),
       ),
     );
@@ -72,7 +78,8 @@ class _EventListState extends State<EventList> {
           top: 195.0 * i,
           child: Hero(
             tag: 'mainTitle' + i.toString(),
-            child: this.getEventWidget(items[i], trendingColors[i % 3]),
+            child: CurvedEventItemWidget.fromEvent(
+                items[i], trendingColors[i % 3]),
           ),
         ),
       );
@@ -89,16 +96,11 @@ class _EventListState extends State<EventList> {
     );
   }
 
-  Widget getEventWidget(Event item, color) {
-    return CurvedEventItemWidget.fromEvent(item, color);
-  }
-
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
     _listBloc = BlocProvider.of<ListBloc>(context);
-//    _postBloc.add(PostFetched());
   }
 
   @override
@@ -112,6 +114,7 @@ class _EventListState extends State<EventList> {
     final currentScroll = _scrollController.position.pixels;
     if (maxScroll - currentScroll <= _scrollThreshold) {
       _listBloc.add(ListFetched());
+      log('scroll: tried getting list again');
     }
   }
 
@@ -121,25 +124,18 @@ class _EventListState extends State<EventList> {
     return BlocBuilder<ListBloc, ListState>(
       builder: (context, state) {
         if (state is ListInitial) {
-          return Container(
-            width: size.width,
-            height: size.height,
-            alignment: Alignment.center,
+          return Center(
             child: CircularProgressIndicator(),
           );
         }
         if (state is ListFailure) {
-          return Container(
-            width: size.width,
-            height: size.height,
+          return Center(
             child: Text('failed to fetch posts'),
           );
         }
         if (state is ListSuccess) {
           if (state.models.isEmpty) {
-            return Container(
-              width: size.width,
-              height: size.height,
+            return Center(
               child: Text('no posts'),
             );
           }

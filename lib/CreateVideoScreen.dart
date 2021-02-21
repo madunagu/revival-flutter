@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:devotion/misc/CustomIcons.dart';
 import 'package:devotion/models/Address.dart';
+import 'package:devotion/models/VideoPost.dart';
 import 'package:devotion/models/Event.dart';
 import 'package:devotion/sheets/AdressSheet.dart';
 import 'package:devotion/sheets/ProfileMediaSheet.dart';
@@ -23,7 +24,7 @@ class CreateVideoScreen extends StatefulWidget {
 }
 
 class _CreateVideoScreenState extends State<CreateVideoScreen> {
-  Event myEvent = Event();
+  VideoPost myVideo = VideoPost();
   Address myAddress = Address();
   bool isLoading = false;
   bool eventCreated = false;
@@ -65,13 +66,14 @@ class _CreateVideoScreenState extends State<CreateVideoScreen> {
 //        });
   }
 
-  postEvent() async {
+  postVideo() async {
     isLoading = true;
-    myEvent.name = nameController.value.text;
-    myEvent.description = descriptionController.value.text;
-    myEvent.addressId = myAddress.id;
-    Map<String, dynamic> dataVal = myEvent.toJson();
-    Map<String, dynamic> res = await NetworkingClass().post('/events', dataVal);
+    myVideo.name = nameController.value.text;
+    myVideo.description = descriptionController.value.text;
+//    myVideo.addressId = myAddress.id;
+    Map<String, dynamic> dataVal = myVideo.toJson();
+    Map<String, dynamic> res =
+        await NetworkingClass().post('/video-posts', dataVal);
     log(res.toString());
     //show response
     if (res['data'] == true) {
@@ -86,30 +88,6 @@ class _CreateVideoScreenState extends State<CreateVideoScreen> {
     isLoading = false;
   }
 
-  selectStartingDate(BuildContext context) async {
-    selectedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now().subtract(Duration(days: 365)),
-      lastDate: DateTime.now().add(Duration(days: 365)),
-    );
-    if (selectedDate != null && selectedDate != selectedDate)
-      setState(() {
-        myEvent.startingAt = selectedDate;
-      });
-  }
-
-  selectStartingTime(BuildContext context) async {
-    TimeOfDay time = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    );
-//    if (time != null && time != selectedDate)
-//      setState(() {
-//        myEvent.startingAt = selectedDate.add(time.);
-//      });
-  }
-
   @override
   Widget build(BuildContext context) {
     return AppScaffoldWidget(
@@ -118,7 +96,7 @@ class _CreateVideoScreenState extends State<CreateVideoScreen> {
         color: Colors.white,
       ),
       fixedWidget:
-          eventCreated ? EventCreatedWidget(myEvent: myEvent) : Container(),
+          eventCreated ? VideoCreatedWidget(myVideo: myVideo) : Container(),
       body: Container(
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.only(top: 100, left: 24, right: 24),
@@ -184,20 +162,6 @@ class _CreateVideoScreenState extends State<CreateVideoScreen> {
               height: 40,
             ),
             CreateModelRowWidget(
-              icon: Icons.calendar_today,
-              title: 'Starting Date',
-              description: 'What Date does the event start',
-              tapped: selectStartingDate,
-            ),
-            SizedBox(height: 40),
-            CreateModelRowWidget(
-              icon: Icons.timer,
-              title: 'Starting At',
-              description: 'When does the event start',
-              tapped: selectStartingTime,
-            ),
-            SizedBox(height: 40),
-            CreateModelRowWidget(
               icon: Icons.location_on,
               title:
                   myAddress.address1 != null ? myAddress.address1 : 'Location',
@@ -213,7 +177,7 @@ class _CreateVideoScreenState extends State<CreateVideoScreen> {
             CreateModelRowWidget(
               icon: Icons.videocam_outlined,
               title: 'Select Video',
-              description: 'Select A few Pics',
+              description: 'Select the file to be uploaded',
 //              tapped: (context) {
 //                Navigator.push(
 //                  context,
@@ -227,7 +191,7 @@ class _CreateVideoScreenState extends State<CreateVideoScreen> {
               height: 32,
             ),
             GestureDetector(
-              onTap: postEvent,
+              onTap: postVideo,
               child: Container(
                 width: double.infinity,
                 alignment: Alignment.center,
@@ -255,13 +219,13 @@ class _CreateVideoScreenState extends State<CreateVideoScreen> {
   }
 }
 
-class EventCreatedWidget extends StatelessWidget {
-  const EventCreatedWidget({
+class VideoCreatedWidget extends StatelessWidget {
+  const VideoCreatedWidget({
     Key key,
-    @required this.myEvent,
+    @required this.myVideo,
   }) : super(key: key);
 
-  final Event myEvent;
+  final VideoPost myVideo;
 
   @override
   Widget build(BuildContext context) {
@@ -303,14 +267,14 @@ class EventCreatedWidget extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              getRelativeTime(myEvent.startingAt),
+                              getRelativeTime(myVideo.createdAt),
                               style: TextStyle(
                                   fontSize: 11,
                                   fontWeight: FontWeight.w500,
                                   color: Color(0x99ffffff)),
                             ),
                             SizedBox(height: 7),
-                            Text(myEvent.name,
+                            Text(myVideo.name,
                                 style: TextStyle(
                                   fontSize: 14,
                                   color: Colors.white,

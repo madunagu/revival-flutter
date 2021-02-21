@@ -17,11 +17,16 @@ class DevotionalListScreen extends StatelessWidget {
         rightIcon: Icons.filter,
       ),
       body: BlocProvider(
-          create: (BuildContext context) => ListBloc(
-                resource: '/devotionals',
-                feedType: 'devotional',
-              )..add(ListFetched()),
-          child: DevotionalListWidget()),
+        create: (BuildContext context) => ListBloc(
+          resource: '/devotionals',
+          feedType: 'devotional',
+        )..add(ListFetched()),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: DevotionalListWidget(),
+        ),
+      ),
     );
   }
 }
@@ -91,27 +96,19 @@ class _DevotionalListWidgetState extends State<DevotionalListWidget> {
     return BlocBuilder<ListBloc, ListState>(
       builder: (context, state) {
         if (state is ListInitial) {
-          return Container(
-            width: size.width,
-            height: size.height,
-            alignment: Alignment.center,
+          return Center(
             child: CircularProgressIndicator(),
           );
         }
         if (state is ListFailure) {
-          return Container(
-            width: size.width,
-            height: size.height,
-            alignment: Alignment.center,
+          return Center(
             child: Text('failed to fetch devotionals'),
           );
         }
         if (state is ListSuccess) {
           if (state.models.isEmpty) {
             Size size = MediaQuery.of(context).size;
-            return Container(
-              width: size.width,
-              height: size.height,
+            return Center(
               child: Text('no devotionals'),
             );
           }
@@ -158,7 +155,7 @@ class DevotionalItemWidget extends StatelessWidget {
         height: 270,
         width: size.width,
         child: Container(
-          padding: const EdgeInsets.only(top: 140,left: 24),
+          padding: const EdgeInsets.only(top: 140, left: 24),
           width: size.width,
           child: Column(
             children: [

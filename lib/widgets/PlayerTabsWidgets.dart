@@ -30,7 +30,6 @@ class VideoDetailsWidget extends StatefulWidget {
 class _VideoDetailsWidgetState extends State<VideoDetailsWidget> {
   dynamic playable;
   likeVideo() async {
-    _toggleLike();
     String url = widget.playedType == PlayedType.video
         ? '/video-posts/'
         : '/audio-posts/';
@@ -41,27 +40,20 @@ class _VideoDetailsWidgetState extends State<VideoDetailsWidget> {
       var res = liked['data'];
       if (res == true) {
         playable.liked = 1;
-        playable.likesCount = widget.playable.liked != playable.liked
-            ? playable.likesCount + 1
-            : playable.likesCount;
+        playable.likesCount = widget.playable.likesCount + 1;
+        setState(() {});
       } else {
         playable.liked = 0;
-        playable.likesCount = widget.playable.liked != playable.liked
-            ? playable.likesCount - 1
-            : playable.likesCount;
+        playable.likesCount = widget.playable.likesCount - 1 >= 0
+            ? widget.playable.likesCount - 1
+            : 0;
       }
+      setState(() {});
     } catch (_) {
       playable = widget.playable;
+      setState(() {});
     }
   }
-
-  _toggleLike() {
-    this.playable.liked = widget.playable.liked == 1 ? 0 : 1;
-    this.playable.likesCount = widget.playable.liked == 1
-        ? this.playable.likesCount - 1
-        : this.playable.likesCount + 1;
-  }
-
 
   @override
   initState() {

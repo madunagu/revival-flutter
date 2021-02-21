@@ -123,7 +123,7 @@ class _MainScreenState extends State<MainScreen>
   AuthenticationBloc _authenticationBloc;
   @override
   void initState() {
-    this._tabController = TabController(vsync: this, length: 5);
+    this._tabController = TabController(vsync: this, length: 5,initialIndex: 1);
     this._authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
     startAudioService();
     super.initState();

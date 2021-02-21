@@ -1,4 +1,3 @@
-import 'package:devotion/ChatScreen.dart';
 import 'package:devotion/MessagesScreen.dart';
 import 'package:devotion/NotificationScreen.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';

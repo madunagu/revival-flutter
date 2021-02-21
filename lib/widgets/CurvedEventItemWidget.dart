@@ -26,7 +26,7 @@ class CurvedEventItemWidget extends StatelessWidget {
       color: color,
     );
   }
-  TextStyle italicStyle = const TextStyle(
+  final TextStyle italicStyle = const TextStyle(
     color: Color(0x70ffffff),
     letterSpacing: -0.24,
     fontSize: 12,
@@ -40,7 +40,8 @@ class CurvedEventItemWidget extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => SingleEventScreen(this.event)),
+            builder: (context) => SingleEventScreen(this.event),
+          ),
         );
       },
       child: CurvedCornerWidget(
@@ -99,11 +100,13 @@ class CurvedEventItemWidget extends StatelessWidget {
                                 size: 24,
                               ),
                               SizedBox(width: 10),
-                              Text(
-                                event.attendees != null
-                                    ? 'Join ${event.attendees.take(2).map((e) => e.name).join(", ")} and ${event.attendeesCount} others'
-                                    : '..Be the first to join',
-                                style: italicStyle,
+                              Flexible(
+                                child: Text(
+                                  event.attendees != null
+                                      ? 'Join ${event.attendees.take(2).map((e) => e.name).join(", ")} and ${event.attendeesCount} others'
+                                      : '..Be the first to join',
+                                  style: italicStyle,
+                                ),
                               ),
                             ],
                           )

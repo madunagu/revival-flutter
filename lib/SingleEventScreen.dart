@@ -3,28 +3,43 @@ import 'dart:developer';
 import 'package:devotion/misc/StyleConstants.dart';
 import 'package:devotion/util/NetworkingClass.dart';
 import 'package:devotion/util/TimeHandler.dart';
+import 'package:devotion/widgets/ChurchWidget.dart';
+import 'package:devotion/widgets/DottedTabBarWidget.dart';
 import 'package:devotion/widgets/ErrorNotification.dart';
 import 'package:devotion/widgets/ImageAvatarListWidget.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/widgets/AppScaffoldWidget.dart';
+import 'package:devotion/widgets/ImageAvatarWidget.dart';
+import 'package:devotion/widgets/LinearProgressWidget.dart';
 import 'package:devotion/widgets/MapWidget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:devotion/models/Event.dart';
 
+import 'models/Address.dart';
 import 'models/User.dart';
 
 var smallTextSyle = TextStyle(color: Colors.grey, fontSize: 12);
 var largeWhiteTextStyle = TextStyle(
-    color: Colors.white,
-    fontSize: 14,
-    fontWeight: FontWeight.bold,
-    letterSpacing: -0.14);
+  color: Colors.white,
+  fontSize: 14,
+  fontWeight: FontWeight.bold,
+  letterSpacing: -0.14,
+);
 var smallWhiteTextStyle = TextStyle(
-    color: Color(0xff998fa2),
-    fontSize: 12,
-    fontWeight: FontWeight.w500,
-    letterSpacing: -0.19);
+  color: Color(0xff998fa2),
+  fontSize: 12,
+  fontWeight: FontWeight.w500,
+  letterSpacing: -0.19,
+);
+TextStyle italicStyle = const TextStyle(
+  color: Color(0x70ffffff),
+  letterSpacing: -0.24,
+  fontSize: 12,
+  fontWeight: FontWeight.w500,
+  fontStyle: FontStyle.italic,
+);
 
 class SingleEventScreen extends StatefulWidget {
   @required
@@ -36,16 +51,22 @@ class SingleEventScreen extends StatefulWidget {
 
 class _SingleEventScreenState extends State<SingleEventScreen> {
   Event event;
-
+  bool isLoading = true;
   @override
   void initState() {
     event = widget.event;
     super.initState();
+    getEvent();
   }
 
-  Future<Map<String, dynamic>> getEvent() {
+  void getEvent() async {
     try {
-      return NetworkingClass().get('/events/' + widget.event.id.toString());
+      Map<String, dynamic> eventResponse =
+          await NetworkingClass().get('/events/' + widget.event.id.toString());
+      event = Event.fromJson(eventResponse['data']);
+      setState(() {
+        isLoading = false;
+      });
     } catch (_) {
       log(_.toString());
     }
@@ -54,9 +75,10 @@ class _SingleEventScreenState extends State<SingleEventScreen> {
   @override
   Widget build(BuildContext context) {
     return AppScaffoldWidget(
-      appBar: EventAppBarWidget(event: event),
+      appBar: EventAppBarWidget(event: event, isLoading: isLoading),
       paddingTop: 55,
       body: SingleEvent(event: event),
+      bodyColor: trendingColors[2],
     );
   }
 }
@@ -89,77 +111,85 @@ class SingleEvent extends StatelessWidget {
     return Container(
       child: Column(
         children: <Widget>[
-          Container(
-            color: trendingColors[2],
-            child: CurvedCornerWidget(
-              padding: EdgeInsets.only(top: 214),
-              color: Colors.white,
-              child: Container(
-                width: size.width,
-                padding: EdgeInsets.symmetric(horizontal: 35, vertical: 22),
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        SizedBox(width: 18),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(50),
-                          child: Image.network(
-                            event.poster != null
-                                ? event.poster.profileMedia != null
-                                    ? event.poster.profileMedia.logoUrl
-                                    : 'defaultlogo'
-                                : event.user.avatar != null
-                                    ? event.user.avatar
-                                    : 'images/avatar1.jpg',
-                            height: 35,
-                            width: 35,
-                          ),
+          CurvedCornerWidget(
+            padding: EdgeInsets.only(top: 214),
+            color: Colors.white,
+            child: Container(
+              width: size.width,
+              padding: EdgeInsets.symmetric(horizontal: 35, vertical: 22),
+              child: Column(
+                children: <Widget>[
+                  ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(60),
+                      topRight: Radius.circular(60),
+                    ),
+                    child: Container(
+                      height: 240,
+                      width: size.width,
+                      child: Image.asset(
+                        'images/avatar1.jpg',
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 21),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(width: 18),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(50),
+                        child: Image.network(
+                          event.poster != null
+                              ? event.poster.profileMedia != null
+                                  ? event.poster.profileMedia.logoUrl
+                                  : 'defaultlogo'
+                              : event.user.avatar != null
+                                  ? event.user.avatar
+                                  : 'images/avatar1.jpg',
+                          height: 35,
+                          width: 35,
                         ),
-                        SizedBox(
-                          width: 14,
-                        ),
-                        Container(
-                          width: size.width - 70 - 67,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                event.poster != null
-                                    ? event.poster.name
-                                    : event.user.name,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  letterSpacing: -0.14,
-                                ),
-                              ),
+                      ),
+                      SizedBox(
+                        width: 14,
+                      ),
+                      Container(
+                        width: size.width - 70 - 67,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
                               event.poster != null
-                                  ? Text(
-                                      event.poster.addresses != null
-                                          ? event.poster.addresses[0].city +
-                                              event.poster.addresses[0].state +
-                                              ' '
-                                          : 'Montreal, QC' + event.posterType,
-                                      style: TextStyle(
-                                        color: Color(0x7A403249),
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500,
-                                        letterSpacing: -0.19,
-                                      ),
-                                    )
-                                  : Container(),
-                            ],
-                          ),
+                                  ? event.poster.name
+                                  : event.user.name,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: -0.14,
+                              ),
+                            ),
+                            event.poster != null
+                                ? Text(
+                                    event.posterType.toUpperCase(),
+                                    style: TextStyle(
+                                      color: Color(0x7A403249),
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      letterSpacing: -0.19,
+                                    ),
+                                  )
+                                : Container(),
+                          ],
                         ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 25,
-                    ),
-                    AreYouGoing(isGoing: event.attending == 1, event: event),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  AreYouGoing(isGoing: event.attending, event: event),
+                ],
               ),
             ),
           ),
@@ -207,50 +237,10 @@ class SingleEvent extends StatelessWidget {
                 SizedBox(
                   height: 29,
                 ),
-                (event.addresses != null)
-                    ? Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Icon(
-                            Icons.location_on,
-                            color: Colors.white,
-                            size: 20,
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Flexible(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  event.addresses[0].address1,
-                                  style: largeWhiteTextStyle,
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Text(
-                                  '${event.addresses[0].address2} ${event.addresses[0].city}, ${event.addresses[0].state} ${event.addresses[0].country}',
-                                  style: smallWhiteTextStyle,
-                                ),
-                                SizedBox(
-                                  height: 18,
-                                ),
-                                MapWidget(
-                                  address: event.addresses != null
-                                      ? event.addresses[0]
-                                      : null,
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      )
-                    : Container(),
-                SizedBox(
-                  height: 29,
-                ),
+                for (var address in event.addresses ?? [])
+                  AddressWidget(address: address),
+                for (var church in event.churches ?? [])
+                  ChurchWidget(church: church),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -364,8 +354,59 @@ class SingleEvent extends StatelessWidget {
   }
 }
 
+class AddressWidget extends StatelessWidget {
+  const AddressWidget({
+    Key key,
+    @required this.address,
+  }) : super(key: key);
+
+  final Address address;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Icon(
+          Icons.location_on,
+          color: Colors.white,
+          size: 20,
+        ),
+        SizedBox(
+          width: 20,
+        ),
+        Flexible(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                address.address1,
+                style: largeWhiteTextStyle,
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Text(
+                '${address.address2} ${address.city}, ${address.state} ${address.country}',
+                style: smallWhiteTextStyle,
+              ),
+              SizedBox(
+                height: 18,
+              ),
+              MapWidget(
+                address: address != null ? address : null,
+              ),
+              SizedBox(height: 29),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class AreYouGoing extends StatefulWidget {
-  final bool isGoing;
+  final int isGoing;
   final Event event;
   const AreYouGoing({Key key, this.isGoing, @required this.event})
       : super(key: key);
@@ -400,7 +441,7 @@ class _AreYouGoingState extends State<AreYouGoing> {
     Map<String, dynamic> liked = await NetworkingClass()
         .post('/events/' + widget.event.id.toString(), {'value': false});
     var res = liked['data'];
-    if (res == true) {
+    if (res == false) {
       //already done
     } else {
       setState(() {
@@ -411,7 +452,7 @@ class _AreYouGoingState extends State<AreYouGoing> {
 
   @override
   initState() {
-    isGoing = widget.isGoing;
+    isGoing = widget.isGoing == 1;
     super.initState();
   }
 
@@ -503,57 +544,97 @@ class EventAppBarWidget extends StatelessWidget {
   const EventAppBarWidget({
     Key key,
     @required this.event,
+    @required this.isLoading,
   }) : super(key: key);
 
   final Event event;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
     return CurvedCornerWidget(
+      height: 248,
       color: trendingColors[0],
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 32, horizontal: 16),
-        child: Column(
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                InkWell(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                  ),
-                ),
-                InkWell(
-                  onTap: () {},
-                  child: Icon(
-                    Icons.file_upload,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0, left: 56, right: 4),
-              child: Text(
-                (event.name != null) ? event.name : '',
-                style: TextStyle(
+      padding: EdgeInsets.symmetric(vertical: 32, horizontal: 16),
+      child: Column(
+        children: <Widget>[
+          isLoading ? LinearProgressWidget() : Container(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                child: Icon(
+                  Icons.arrow_back,
                   color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: -0.39,
                 ),
               ),
+              InkWell(
+                onTap: () {},
+                child: Icon(
+                  Icons.file_upload,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0, left: 56, right: 4),
+            child: Column(
+              children: [
+                Text(
+                  (event.name != null) ? event.name : '',
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: -0.39,
+                  ),
+                ),
+                SizedBox(height: 21),
+                event.attendees != null
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          ImageAvatarListWidget(
+                            images: event.attendees
+                                .take(7)
+                                .map((User e) => e.avatar)
+                                .toList(),
+                            size: 24,
+                          ),
+                          SizedBox(width: 10),
+                          Flexible(
+                            child: Text(
+                              'Join ${event.attendees.take(2).map((e) => e.name).join(", ")} and ${event.attendeesCount} others',
+                              style: italicStyle,
+                            ),
+                          ),
+                        ],
+                      )
+                    : Row(
+                        children: [
+                          ImageAvatarWidget(
+                              imageURL: event.user.avatar, size: 24),
+                          SizedBox(width: 10),
+                          Text(
+                            '...Be the first to join?',
+                            style: italicStyle,
+                          ),
+                        ],
+                      ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
