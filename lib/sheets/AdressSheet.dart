@@ -77,12 +77,6 @@ class _AddressSheetState extends State<AddressSheet> {
                       .pop(Address.fromJson(state.object['data']));
                 }
               },
-              // condition: (state, state2) {
-              //   if (state is FormSuccess) {
-              //     return true;
-              //   } n
-              //   return false;
-              // },
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -195,7 +189,7 @@ class _AddressSheetState extends State<AddressSheet> {
                     SizedBox(
                       height: 21,
                     ),
-                    MapWidget(),
+                    MapWidget(address:myAddress),
                     SizedBox(height: 20),
                     GestureDetector(
                       onTap:

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:devotion/bloc/states/FormSheetState.dart';
+import 'package:devotion/widgets/SearchDetailWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -32,14 +33,14 @@ class SelectImageWidget extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Icon(Icons.attach_file),
-                Text(title),
-              ],
+            decoration: BoxDecoration(
+              color: Color(0xff352641),
+              borderRadius: BorderRadius.circular(52),
+              border: Border.all(
+                color: Color(0xff261835),
+              ),
             ),
+            child: SearchDetailWidget(icon: Icons.attach_file, text: title),
           ),
           Container(
             padding: EdgeInsets.only(top: 17),
@@ -49,12 +50,7 @@ class SelectImageWidget extends StatelessWidget {
                 bottomLeft: Radius.circular(60),
               ),
               child: file == null
-                  ? Image.asset(
-                      'images/map.png',
-                      width: double.infinity,
-                      height: 116,
-                      fit: BoxFit.cover,
-                    )
+                  ? Container()
                   : Image.file(
                       file,
                       fit: BoxFit.cover,

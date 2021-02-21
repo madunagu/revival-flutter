@@ -7,6 +7,7 @@ import 'package:devotion/bloc/states/FormSheetState.dart';
 import 'package:devotion/models/VideoPost.dart';
 import 'package:devotion/util/NetworkingClass.dart';
 import 'package:devotion/widgets/MapWidget.dart';
+import 'package:devotion/widgets/SelectImageWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -76,12 +77,6 @@ class _VideoSheetState extends State<VideoSheet> {
                       .pop(VideoPost.fromJson(state.object['data']));
                 }
               },
-              // condition: (state, state2) {
-              //   if (state is FormSuccess) {
-              //     return true;
-              //   } n
-              //   return false;
-              // },
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -115,7 +110,7 @@ class _VideoSheetState extends State<VideoSheet> {
                       controller: descriptionController,
                       decoration: inputDecoration.copyWith(
                         errorText: validationMessage(state, 'description'),
-                        hintText: 'Address line 2',
+                        hintText: 'Video Description',
                         hintStyle: inputStyle,
                       ),
                     ),
@@ -132,73 +127,8 @@ class _VideoSheetState extends State<VideoSheet> {
                       ),
                     ),
                     SizedBox(height: 21),
-//                    Text(
-//                      'Country',
-//                      style: TextStyle(
-//                        letterSpacing: -0.22,
-//                        fontWeight: FontWeight.w600,
-//                        fontSize: 11,
-//                      ),
-//                    ),
-                    Container(
-                      width: double.infinity,
-                      child: DropdownButton<String>(
-                        value: countryValue,
-                        hint: Text('Country', style: inputStyle),
-                        elevation: 16,
-                        style: inputStyle.copyWith(color: Color(0xff241332)),
-                        underline: Container(
-                          padding: EdgeInsets.only(top: 8),
-                          height: 1,
-                          color: Color(0xffdddddd),
-                        ),
-                        onChanged: (String newValue) {
-                          setState(() {
-                            countryValue = newValue;
-                          });
-                        },
-                        items: countries
-                            .map((String value) => DropdownMenuItem(
-                                  value: value,
-                                  child: Text(value),
-                                ))
-                            .toList(),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 18,
-                    ),
-
-                    Container(
-                      width: double.infinity,
-                      child: DropdownButton<String>(
-                        value: stateValue,
-                        hint: Text('State', style: inputStyle),
-                        elevation: 16,
-                        style: inputStyle.copyWith(color: Color(0xff241332)),
-                        underline: Container(
-                          height: 1,
-                          color: Color(0xffdddddd),
-                        ),
-                        onChanged: (String newValue) {
-                          setState(() {
-                            stateValue = newValue;
-                          });
-                        },
-                        items: states
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 21,
-                    ),
-                    MapWidget(),
-                    SizedBox(height: 20),
+                    SelectImageWidget(title: 'Select Video', state: state),
+                    SizedBox(height: 21),
                     GestureDetector(
                       onTap:
                           state is FormInProgress ? null : submitButtonPressed,
@@ -264,7 +194,7 @@ class _VideoSheetState extends State<VideoSheet> {
     BlocProvider.of<FormBloc>(context).add(
       CreateButtonPressed(
         object: myVideo.toJson(),
-        url: '/videos',
+        url: '/video-posts',
       ),
     );
   }
@@ -273,21 +203,5 @@ class _VideoSheetState extends State<VideoSheet> {
     setState(() {
       // this.myVideo.property
     });
-  }
-}
-
-class AttachFile extends StatelessWidget {
-  final String fileType;
-  final IconData fileIcon;
-  const AttachFile({this.fileType= 'File', this.fileIcon=Icons.attach_file });
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Row(children:[
-        Icon(fileIcon),
-        Spacer(),
-        Text('attach a $fileType'),
-      ]),
-    );
   }
 }

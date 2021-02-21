@@ -22,49 +22,14 @@ class ProfileMediaSheet extends StatefulWidget {
 }
 
 class _ProfileSheetState extends State<ProfileMediaSheet> {
-  final ProfileMedia myProfile = ProfileMedia();
-  final NetworkingClass myNetwork = NetworkingClass();
   final _formKey = GlobalKey<FormState>();
-  File _avatarImage;
+  File _logoImage;
   File _profileImage;
   File _backgroundImage;
 
-  final TextStyle inputStyle = const TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.w500,
-    color: Color(0x52241332),
-    height: 20 / 16,
-    fontFamily: 'Montserrat',
-    letterSpacing: -0.1,
-  );
-  final InputDecoration inputDecoration = const InputDecoration(
-    enabledBorder: UnderlineInputBorder(
-      borderSide: BorderSide(
-        style: BorderStyle.solid,
-        color: Color(0xffdddddd),
-      ),
-    ),
-    focusedBorder: UnderlineInputBorder(
-      borderSide: BorderSide(
-        style: BorderStyle.solid,
-        color: Color(0xff352641),
-        width: 2,
-      ),
-    ),
-    border: UnderlineInputBorder(
-      borderSide: BorderSide(
-        style: BorderStyle.solid,
-        color: Color(0xffdddddd),
-      ),
-    ),
-    hintText: 'Address line 1',
-  );
-
-  String validationMessage(FormSheetState state, String inputName) {
-    if (state is FormInvalidated) {
-      if (state.errors.containsKey(inputName)) {
-        return state.errors[inputName][0];
-      }
+  getRawImage(File pic) {
+    if (pic != null) {
+      return base64Encode(pic.readAsBytesSync());
     }
     return null;
   }
@@ -90,7 +55,7 @@ class _ProfileSheetState extends State<ProfileMediaSheet> {
                 if (state is FormSuccess) {
                   log(state.toString());
                   Navigator.of(context).pop(
-                    Address.fromJson(state.object['data']),
+                    ProfileMedia.fromJson(state.object['data']),
                   );
                 }
               },
@@ -114,9 +79,9 @@ class _ProfileSheetState extends State<ProfileMediaSheet> {
                       title: 'Logo',
                       state: state,
                       input: 'logo_url',
-                      file: _avatarImage,
+                      file: _logoImage,
                       onTap: () async {
-                        _avatarImage = await _imgFromGallery();
+                        _logoImage = await _imgFromGallery();
                         setState(() {});
                       },
                     ),
@@ -195,17 +160,16 @@ class _ProfileSheetState extends State<ProfileMediaSheet> {
   }
 
   void submitButtonPressed() {
+    Map<String, dynamic> obj = {
+      'logo_url': getRawImage(_logoImage),
+      'profile_image_url': getRawImage(_profileImage),
+      'background_image_url': getRawImage(_backgroundImage)
+    };
     BlocProvider.of<FormBloc>(context).add(
       CreateButtonPressed(
-        object: myProfile.toJson(),
+        object: obj,
         url: '/profile-media',
       ),
     );
-  }
-
-  void editAddress(String value, String property) {
-    setState(() {
-      // this.myAddress.property
-    });
   }
 }
