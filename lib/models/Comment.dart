@@ -8,14 +8,14 @@ class Comment {
       Comment();
 
   int id;
-  @JsonKey(name: 'parent_id') dynamic parentId;
+  @JsonKey(name: 'parent_id') int parentId;
   String comment;
   @JsonKey(name: 'user_id') int userId;
   int liked;
   User user;
   @JsonKey(name: 'commentable_id') int commentableId;
   @JsonKey(name: 'commentable_type') String commentableType;
-  @JsonKey(name: 'deleted_at') dynamic deletedAt;
+  @JsonKey(name: 'deleted_at') DateTime deletedAt;
   @JsonKey(name: 'created_at') DateTime createdAt;
   @JsonKey(name: 'updated_at') DateTime updatedAt;
 

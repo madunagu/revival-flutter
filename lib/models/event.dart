@@ -1,10 +1,11 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'User.dart';
+import 'Poster.dart';
 import 'Comment.dart';
 import 'Church.dart';
 import 'Address.dart';
 import 'User.dart';
-import 'ProfileMedia.dart';
+import 'ResizedImage.dart';
 
 part 'Event.g.dart';
 
@@ -28,12 +29,12 @@ class Event {
   @JsonKey(name: 'address_id') int addressId;
   User user;
   @JsonKey(name: 'poster_type') String posterType;
-  @JsonKey(ignore: true) dynamic poster;
+  Poster poster;
   List<Comment> comments;
   List<Church> churches;
   List<Address> addresses;
   List<User> attendees;
-  @JsonKey(name: 'profile_media') List<ProfileMedia> profileMedia;
+  List<ResizedImage> images;
 
   factory Event.fromJson(Map<String,dynamic> json) => _$EventFromJson(json);
   Map<String, dynamic> toJson() => _$EventToJson(this);

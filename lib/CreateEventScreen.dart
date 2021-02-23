@@ -4,8 +4,9 @@ import 'dart:developer';
 import 'package:devotion/misc/CustomIcons.dart';
 import 'package:devotion/models/Address.dart';
 import 'package:devotion/models/Event.dart';
+import 'package:devotion/models/index.dart';
 import 'package:devotion/sheets/AdressSheet.dart';
-import 'package:devotion/sheets/ProfileMediaSheet.dart';
+import 'package:devotion/sheets/ImageSheet.dart';
 import 'package:devotion/util/NetworkingClass.dart';
 import 'package:devotion/util/TimeHandler.dart';
 import 'package:devotion/widgets/AppButtonWidget.dart';
@@ -65,22 +66,35 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 //        });
   }
 
+  void _getProfileMedia(BuildContext context) async {
+    List<ResizedImage> images = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BottomSheetWidget(
+          child: ImageSheet(),
+        ),
+      ),
+    );
+
+    setState(() {
+      if (images == null) return;
+      myEvent.images = images;
+    });
+  }
+
   postEvent() async {
     isLoading = true;
     myEvent.name = nameController.value.text;
     myEvent.description = descriptionController.value.text;
     myEvent.addressId = myAddress.id;
+
     Map<String, dynamic> dataVal = myEvent.toJson();
     Map<String, dynamic> res = await NetworkingClass().post('/events', dataVal);
     log(res.toString());
-    //show response
     if (res['data'] == true) {
-      //set state here or go back
-      //event has been created successfully
       setState(() {
         eventCreated = true;
       });
-//        Navigator.pop(context);
     }
     isLoading = false;
   }
@@ -213,14 +227,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
               icon: Icons.favorite_border,
               title: 'Images',
               description: 'Select A few Pics',
-              tapped: (context) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          BottomSheetWidget(child: ProfileMediaSheet())),
-                );
-              },
+              tapped: _getProfileMedia,
             ),
             SizedBox(
               height: 32,
@@ -284,16 +291,17 @@ class EventCreatedWidget extends StatelessWidget {
                     Text(
                       'Event Created',
                       style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: -16 / 24,
-                          color: Colors.white),
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: -16 / 24,
+                        color: Colors.white,
+                      ),
                     ),
                     SizedBox(height: 24),
                     Row(
                       children: [
                         ImageAvatarWidget(
-                          imageURL: 'images/avatar1.jpg',
+                          imageURL: myEvent,
                           size: 68,
                           borderColor: Colors.white,
                         ),
@@ -304,16 +312,19 @@ class EventCreatedWidget extends StatelessWidget {
                             Text(
                               getRelativeTime(myEvent.startingAt),
                               style: TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0x99ffffff)),
+                                fontSize: 11,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0x99ffffff),
+                              ),
                             ),
                             SizedBox(height: 7),
-                            Text(myEvent.name,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.white,
-                                )),
+                            Text(
+                              myEvent.name,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.white,
+                              ),
+                            ),
                           ],
                         )
                       ],

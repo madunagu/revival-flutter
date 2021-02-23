@@ -56,8 +56,8 @@ class ChurchWidget extends StatelessWidget {
                     topRight: Radius.circular(60),
                     bottomLeft: Radius.circular(60),
                   ),
-                  child: church.profileMedia != null
-                      ? Image.network(church.profileMedia.profileImageUrl,
+                  child: church.images != null && church.images.isNotEmpty
+                      ? Image.network(church.images[0].medium,
                           fit: BoxFit.cover)
                       : Image.asset('images/church.jpg', fit: BoxFit.cover),
                 ),

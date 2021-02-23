@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'ProfileMedia.dart';
+import 'ResizedImage.dart';
 
 part 'User.g.dart';
 
@@ -17,7 +17,7 @@ class User {
   String gender;
   @JsonKey(name: 'follower_count') int followerCount;
   @JsonKey(name: 'is_following') int isFollowing;
-  @JsonKey(name: 'profile_media') ProfileMedia profileMedia;
+  List<ResizedImage> images;
   @JsonKey(name: 'created_at') DateTime createdAt;
   @JsonKey(name: 'updated_at') DateTime updatedAt;
 

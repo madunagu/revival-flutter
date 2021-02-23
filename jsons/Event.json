@@ -15,10 +15,10 @@
     "address_id": 0,
     "user": "$User",
     "poster_type": "poster",
-    "@JsonKey(ignore:true) dynamic": "poster",
+    "poster": "$Poster",
     "comments": "$[]Comment",
     "churches": "$[]Church",
     "addresses": "$[]Address",
     "attendees": "$[]User",
-    "profile_media": "$[]ProfileMedia"
+    "images": "$[]ResizedImage"
 }

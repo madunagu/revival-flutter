@@ -7,12 +7,11 @@
     "memory_verse": "Shayna Bauch",
     "body": "Shayna Bauch",
     "poster_type": "poster",
+    "poster": "$Poster",
     "day": "@datetime",
-    "@JsonKey(ignore:true) dynamic": "poster",
     "devoted": 1,
     "devotees_count": 1,
     "devotees": "$[]User",
-    "user": "$User",
     "images": "$[]ResizedImage",
     "created_at": "@datetime",
     "updated_at": "@datetime"

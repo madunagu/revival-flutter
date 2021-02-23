@@ -6,7 +6,6 @@ import 'package:devotion/models/Address.dart';
 import 'package:devotion/models/VideoPost.dart';
 import 'package:devotion/models/Event.dart';
 import 'package:devotion/sheets/AdressSheet.dart';
-import 'package:devotion/sheets/ProfileMediaSheet.dart';
 import 'package:devotion/util/NetworkingClass.dart';
 import 'package:devotion/util/TimeHandler.dart';
 import 'package:devotion/widgets/AppButtonWidget.dart';

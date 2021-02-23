@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:devotion/misc/StyleConstants.dart';
+import 'package:devotion/models/Devotional.dart';
 import 'package:devotion/util/NetworkingClass.dart';
 import 'package:devotion/util/TimeHandler.dart';
 import 'package:devotion/widgets/ChurchWidget.dart';
@@ -141,13 +142,10 @@ class SingleEvent extends StatelessWidget {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(50),
                         child: Image.network(
-                          event.poster != null
-                              ? event.poster.profileMedia != null
-                                  ? event.poster.profileMedia.logoUrl
-                                  : 'defaultlogo'
-                              : event.user.avatar != null
-                                  ? event.user.avatar
-                                  : 'images/avatar1.jpg',
+                          event.poster?.images != null &&
+                                  event.poster.images.isNotEmpty
+                              ? event.poster.images[0].medium
+                              : 'images/avatar1.jpg',
                           height: 35,
                           width: 35,
                         ),
@@ -550,6 +548,15 @@ class EventAppBarWidget extends StatelessWidget {
   final Event event;
   final bool isLoading;
 
+  factory EventAppBarWidget.fromDevotional(
+      {Devotional devotional, bool isLoading}) {
+    Event event = Event();
+    event.name = devotional.title;
+    event.attendees = devotional.devotees;
+    event.attendeesCount = devotional.devoteesCount;
+    return EventAppBarWidget(event: event, isLoading: isLoading);
+  }
+
   @override
   Widget build(BuildContext context) {
     return CurvedCornerWidget(
@@ -623,7 +630,10 @@ class EventAppBarWidget extends StatelessWidget {
                     : Row(
                         children: [
                           ImageAvatarWidget(
-                              imageURL: event.user.avatar, size: 24),
+                            imageURL:
+                                event.user?.avatar ?? 'images/avatar1.jpg',
+                            size: 24,
+                          ),
                           SizedBox(width: 10),
                           Text(
                             '...Be the first to join?',

@@ -16,9 +16,9 @@
   "liked": 0,
   "views_count": 0,
   "viewed": 0,
-  "comments": [],
+  "comments": "$[]Comment",
   "leader": "$User",
   "user": "$User",
   "addresses": [],
-  "profile_media": "$ProfileMedia"
+  "images": "$[]ResizedImage"
 }

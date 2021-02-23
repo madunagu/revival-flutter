@@ -87,7 +87,6 @@ class _VideosListState extends State<VideosList> {
           );
         } else if (state is ListInitial) {
           return Center(
-
             child: CircularProgressIndicator(),
           );
         } else {
@@ -136,7 +135,7 @@ class VideoItem extends StatelessWidget {
                       width: size.width - 24,
                       child: video.images != null && video.images.isNotEmpty
                           ? Image.network(
-                              video.images[0].mediumUrl,
+                              video.images[0].medium ?? 'images/video.jpg',
                               fit: BoxFit.cover,
                             )
                           : Container(),

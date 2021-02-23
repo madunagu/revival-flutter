@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'Comment.dart';
 import 'User.dart';
 import 'Church.dart';
 import 'ResizedImage.dart';
@@ -21,7 +22,7 @@ class Post {
   int liked;
   @JsonKey(name: 'views_count') int viewsCount;
   int viewed;
-  List<dynamic> comments;
+  List<Comment> comments;
   User user;
   List<Church> churches;
   List<ResizedImage> images;

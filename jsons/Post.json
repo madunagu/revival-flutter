@@ -10,7 +10,7 @@
   "liked": 0,
   "views_count": 0,
   "viewed": 0,
-  "comments": [],
+  "comments": "$[]Comment",
   "user": "$User",
   "churches": "$[]Church",
   "images": "$[]ResizedImage",

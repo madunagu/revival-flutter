@@ -1,7 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'Comment.dart';
 import 'User.dart';
 import 'User.dart';
-import 'ProfileMedia.dart';
+import 'ResizedImage.dart';
 
 part 'Church.g.dart';
 
@@ -26,11 +27,11 @@ class Church {
   int liked;
   @JsonKey(name: 'views_count') int viewsCount;
   int viewed;
-  List<dynamic> comments;
+  List<Comment> comments;
   User leader;
   User user;
   List<dynamic> addresses;
-  @JsonKey(name: 'profile_media') ProfileMedia profileMedia;
+  List<ResizedImage> images;
 
   factory Church.fromJson(Map<String,dynamic> json) => _$ChurchFromJson(json);
   Map<String, dynamic> toJson() => _$ChurchToJson(this);

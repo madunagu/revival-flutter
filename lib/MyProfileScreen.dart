@@ -1,7 +1,7 @@
 import 'package:devotion/MessagesScreen.dart';
 import 'package:devotion/NotificationScreen.dart';
+import 'package:devotion/sheets/ImageSheet.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
-import 'package:devotion/sheets/ProfileMediaSheet.dart';
 import 'package:devotion/util/NetworkingClass.dart';
 import 'package:devotion/models/User.dart';
 import 'package:flutter/cupertino.dart';
@@ -111,7 +111,7 @@ class MyProfileScreen extends StatelessWidget {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                ProfileMediaSheet(),
+                                                ImageSheet(),
                                           ),
                                         ),
                                         child: Container(

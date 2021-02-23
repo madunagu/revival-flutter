@@ -144,7 +144,7 @@ class DevotionalItemWidget extends StatelessWidget {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: devotional.images != null
-                ? NetworkImage(devotional.images[0].mediumUrl)
+                ? NetworkImage(devotional.images[0].medium)
                 : AssetImage('images/devotional.jpg'),
             fit: BoxFit.cover,
           ),

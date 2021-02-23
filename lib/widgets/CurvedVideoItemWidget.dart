@@ -44,7 +44,7 @@ class CurvedVideoItemWidget extends StatelessWidget {
         decoration: BoxDecoration(
           image: DecorationImage(
               image: video.images != null
-                  ? NetworkImage(video.images[0].mediumUrl)
+                  ? NetworkImage(video.images[0].medium)
                   : AssetImage('images/photo.png'),
               fit: BoxFit.cover),
           borderRadius: BorderRadius.only(

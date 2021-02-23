@@ -9,14 +9,12 @@ class SelectImageWidget extends StatelessWidget {
   final String title;
   final String input;
   final File file;
-  final FormSheetState state;
   final VoidCallback onTap;
   SelectImageWidget({
     @required this.title,
     this.input,
     this.onTap,
     this.file,
-    @required this.state,
   });
 
   Future<File> _imgFromGallery() async {

@@ -16,6 +16,9 @@ Devotional _$DevotionalFromJson(Map<String, dynamic> json) {
     ..memoryVerse = json['memory_verse'] as String
     ..body = json['body'] as String
     ..posterType = json['poster_type'] as String
+    ..poster = json['poster'] == null
+        ? null
+        : Poster.fromJson(json['poster'] as Map<String, dynamic>)
     ..day = json['day'] == null ? null : DateTime.parse(json['day'] as String)
     ..devoted = json['devoted'] as int
     ..devoteesCount = json['devotees_count'] as int
@@ -23,9 +26,6 @@ Devotional _$DevotionalFromJson(Map<String, dynamic> json) {
         ?.map(
             (e) => e == null ? null : User.fromJson(e as Map<String, dynamic>))
         ?.toList()
-    ..user = json['user'] == null
-        ? null
-        : User.fromJson(json['user'] as Map<String, dynamic>)
     ..images = (json['images'] as List)
         ?.map((e) =>
             e == null ? null : ResizedImage.fromJson(e as Map<String, dynamic>))
@@ -48,11 +48,11 @@ Map<String, dynamic> _$DevotionalToJson(Devotional instance) =>
       'memory_verse': instance.memoryVerse,
       'body': instance.body,
       'poster_type': instance.posterType,
+      'poster': instance.poster,
       'day': instance.day?.toIso8601String(),
       'devoted': instance.devoted,
       'devotees_count': instance.devoteesCount,
       'devotees': instance.devotees,
-      'user': instance.user,
       'images': instance.images,
       'created_at': instance.createdAt?.toIso8601String(),
       'updated_at': instance.updatedAt?.toIso8601String(),

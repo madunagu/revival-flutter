@@ -575,7 +575,7 @@ class AudioWidget extends StatelessWidget {
       width: size.width,
       height: height + 30,
       child: audio.images != null
-          ? Image.network(audio.images[0].mediumUrl, fit: BoxFit.cover)
+          ? Image.network(audio.images[0].medium, fit: BoxFit.cover)
           : Container(
               color: trendingColors[0],
               child: Image.asset('images/music_thumb.png', fit: BoxFit.cover),

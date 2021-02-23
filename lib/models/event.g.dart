@@ -34,6 +34,9 @@ Event _$EventFromJson(Map<String, dynamic> json) {
         ? null
         : User.fromJson(json['user'] as Map<String, dynamic>)
     ..posterType = json['poster_type'] as String
+    ..poster = json['poster'] == null
+        ? null
+        : Poster.fromJson(json['poster'] as Map<String, dynamic>)
     ..comments = (json['comments'] as List)
         ?.map((e) =>
             e == null ? null : Comment.fromJson(e as Map<String, dynamic>))
@@ -50,9 +53,9 @@ Event _$EventFromJson(Map<String, dynamic> json) {
         ?.map(
             (e) => e == null ? null : User.fromJson(e as Map<String, dynamic>))
         ?.toList()
-    ..profileMedia = (json['profile_media'] as List)
+    ..images = (json['images'] as List)
         ?.map((e) =>
-            e == null ? null : ProfileMedia.fromJson(e as Map<String, dynamic>))
+            e == null ? null : ResizedImage.fromJson(e as Map<String, dynamic>))
         ?.toList();
 }
 
@@ -73,9 +76,10 @@ Map<String, dynamic> _$EventToJson(Event instance) => <String, dynamic>{
       'address_id': instance.addressId,
       'user': instance.user,
       'poster_type': instance.posterType,
+      'poster': instance.poster,
       'comments': instance.comments,
       'churches': instance.churches,
       'addresses': instance.addresses,
       'attendees': instance.attendees,
-      'profile_media': instance.profileMedia,
+      'images': instance.images,
     };

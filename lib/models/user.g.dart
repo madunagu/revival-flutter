@@ -22,9 +22,10 @@ User _$UserFromJson(Map<String, dynamic> json) {
     ..gender = json['gender'] as String
     ..followerCount = json['follower_count'] as int
     ..isFollowing = json['is_following'] as int
-    ..profileMedia = json['profile_media'] == null
-        ? null
-        : ProfileMedia.fromJson(json['profile_media'] as Map<String, dynamic>)
+    ..images = (json['images'] as List)
+        ?.map((e) =>
+            e == null ? null : ResizedImage.fromJson(e as Map<String, dynamic>))
+        ?.toList()
     ..createdAt = json['created_at'] == null
         ? null
         : DateTime.parse(json['created_at'] as String)
@@ -44,7 +45,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'gender': instance.gender,
       'follower_count': instance.followerCount,
       'is_following': instance.isFollowing,
-      'profile_media': instance.profileMedia,
+      'images': instance.images,
       'created_at': instance.createdAt?.toIso8601String(),
       'updated_at': instance.updatedAt?.toIso8601String(),
     };

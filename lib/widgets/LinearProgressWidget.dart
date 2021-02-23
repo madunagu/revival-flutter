@@ -5,7 +5,8 @@ class LinearProgressWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LinearProgressIndicator(
-      backgroundColor: trendingColors[0],
+      backgroundColor: trendingColors[1],
+
     );
   }
 }

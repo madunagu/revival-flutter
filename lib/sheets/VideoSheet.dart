@@ -22,10 +22,6 @@ class _VideoSheetState extends State<VideoSheet> {
   final VideoPost myVideo = VideoPost();
   final NetworkingClass myNetwork = NetworkingClass();
   final _formKey = GlobalKey<FormState>();
-  String countryValue;
-  String stateValue;
-  List<String> countries = ['Nigeria', 'Ghana', 'Kenya', 'Uganda'];
-  List<String> states = ['Imo', 'Enugu', 'Anambara', 'Lagos'];
   TextEditingController nameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController transcriptController = TextEditingController();
@@ -127,7 +123,7 @@ class _VideoSheetState extends State<VideoSheet> {
                       ),
                     ),
                     SizedBox(height: 21),
-                    SelectImageWidget(title: 'Select Video', state: state),
+                    SelectImageWidget(title: 'Select Video'),
                     SizedBox(height: 21),
                     GestureDetector(
                       onTap:

@@ -11,7 +11,7 @@ export 'LoginData.dart';
 export 'Pagination.dart';
 export 'Playable.dart';
 export 'Post.dart';
-export 'ProfileMedia.dart';
+export 'Poster.dart';
 export 'ResizedImage.dart';
 export 'ServerResponse.dart';
 export 'Society.dart';

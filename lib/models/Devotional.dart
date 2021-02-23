@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'User.dart';
+import 'Poster.dart';
 import 'User.dart';
 import 'ResizedImage.dart';
 
@@ -17,12 +17,11 @@ class Devotional {
   @JsonKey(name: 'memory_verse') String memoryVerse;
   String body;
   @JsonKey(name: 'poster_type') String posterType;
+  Poster poster;
   DateTime day;
-  @JsonKey(ignore: true) dynamic poster;
   int devoted;
   @JsonKey(name: 'devotees_count') int devoteesCount;
   List<User> devotees;
-  User user;
   List<ResizedImage> images;
   @JsonKey(name: 'created_at') DateTime createdAt;
   @JsonKey(name: 'updated_at') DateTime updatedAt;

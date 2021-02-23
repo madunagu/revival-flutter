@@ -23,7 +23,10 @@ Post _$PostFromJson(Map<String, dynamic> json) {
     ..liked = json['liked'] as int
     ..viewsCount = json['views_count'] as int
     ..viewed = json['viewed'] as int
-    ..comments = json['comments'] as List
+    ..comments = (json['comments'] as List)
+        ?.map((e) =>
+            e == null ? null : Comment.fromJson(e as Map<String, dynamic>))
+        ?.toList()
     ..user = json['user'] == null
         ? null
         : User.fromJson(json['user'] as Map<String, dynamic>)
