@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:devotion/SingleEventScreen.dart';
 import 'package:devotion/misc/StyleConstants.dart';
 import 'package:devotion/models/Devotional.dart';
 import 'package:devotion/util/NetworkingClass.dart';
@@ -52,8 +53,9 @@ class _DevotionalScreenState extends State<DevotionalScreen> {
   @override
   Widget build(BuildContext context) {
     return AppScaffoldWidget(
-      appBar: AppBarWidget(
-        title: devotional.title,
+      appBar: EventAppBarWidget.fromDevotional(
+        devotional: devotional,
+        isLoading: false,
       ),
       paddingTop: 55,
       body: DevotionalWidget(devotional: devotional),
@@ -90,11 +92,9 @@ class DevotionalWidget extends StatelessWidget {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(50),
                           child: Image.network(
-                            devotional.posterType != 'user'
-                                ? devotional.poster.profileMedia != null
-                                    ? devotional.poster.profileMedia.logoUrl
-                                    : 'defaultlogo'
-                                : devotional.user.avatar,
+                            devotional.poster.images != null
+                                ? devotional.poster.images[0].medium
+                                : 'images/avatar1.jpg',
                             height: 35,
                             width: 35,
                           ),
@@ -114,23 +114,15 @@ class DevotionalWidget extends StatelessWidget {
                                   letterSpacing: -0.14,
                                 ),
                               ),
-                              devotional.posterType != 'user'
-                                  ? Text(
-                                      devotional.poster.addresses != null
-                                          ? devotional
-                                                  .poster.addresses[0].city +
-                                              devotional
-                                                  .poster.addresses[0].state +
-                                              ' '
-                                          : '' + devotional.posterType,
-                                      style: TextStyle(
-                                        color: Color(0x7A403249),
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500,
-                                        letterSpacing: -0.19,
-                                      ),
-                                    )
-                                  : Container(),
+                              Text(
+                                devotional.posterType.toUpperCase(),
+                                style: TextStyle(
+                                  color: Color(0x7A403249),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: -0.19,
+                                ),
+                              )
                             ],
                           ),
                         ),

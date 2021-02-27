@@ -120,6 +120,7 @@ class SingleEvent extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 35, vertical: 22),
               child: Column(
                 children: <Widget>[
+                  ImageSliderWidget(size: size),
                   ClipRRect(
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(60),
@@ -195,6 +196,7 @@ class SingleEvent extends StatelessWidget {
             padding: EdgeInsets.only(left: 23, top: 20, right: 40),
             color: trendingColors[2],
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -348,6 +350,78 @@ class SingleEvent extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class ImageSliderWidget extends StatefulWidget {
+  const ImageSliderWidget({
+    Key key,
+    @required this.size,
+  }) : super(key: key);
+
+  final Size size;
+
+  @override
+  _ImageSliderWidgetState createState() => _ImageSliderWidgetState();
+}
+
+class _ImageSliderWidgetState extends State<ImageSliderWidget> with SingleTickerProviderStateMixin {
+   TabController _tabController;
+  int activeSlide = 0;
+  int sliderCount = 2;
+  @override
+  void initState() {
+    _tabController = TabController(vsync: this, length: 2);
+    _tabController.addListener(() {
+      int i = _tabController.index;
+      setState(() {
+        activeSlide = i;
+      });
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(100)),
+          child: Container(
+            height: 320,
+            width: widget.size.width,
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                Image.asset(
+                  'images/avatar2.jpg',
+                  fit: BoxFit.cover,
+                ),
+                Image.asset(
+                  'images/avatar1.jpg',
+                  fit: BoxFit.cover,
+                ),
+              ],
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: 20,
+          child: DottedTabBarWidget(
+            count: sliderCount,
+            active: activeSlide,
+            activeColor: Color(0xffECF1F7),
+            color: Color(0x33BBD1EB),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -564,6 +638,7 @@ class EventAppBarWidget extends StatelessWidget {
       color: trendingColors[0],
       padding: EdgeInsets.symmetric(vertical: 32, horizontal: 16),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           isLoading ? LinearProgressWidget() : Container(),
           Row(
@@ -594,6 +669,7 @@ class EventAppBarWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 8.0, left: 56, right: 4),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   (event.name != null) ? event.name : '',

@@ -62,7 +62,7 @@ class _MusicPlayerScreenState extends State<MusicPlayerScreen>
   }
 
   playMusic(AudioPost audio) async {
-    var duration = await audioPlayer.setUrl(rootURL + audio.srcUrl);
+    var duration = await audioPlayer.setUrl(ROOT_URL + audio.srcUrl);
 //    var item = MediaItem(
 //      id: widget.playable.srcUrl,
 //      album: 'Devotion Albums',

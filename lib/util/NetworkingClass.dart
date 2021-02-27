@@ -8,21 +8,6 @@ import 'dart:developer' as developer;
 
 import 'Exceptions.dart';
 
-enum ResponseType {
-  data,
-  invalidated,
-  error,
-  unauthorized,
-  notFound,
-  unrecognized
-}
-//
-//enum ResponseKey {
-//  type,
-//  data,
-//  error,
-//}
-
 class NetworkingClass {
   String _rootURL = 'https://devotion.wakabout.com.ng/api';
   // String _rootURL = 'http://10.0.2.2:8000/api';
