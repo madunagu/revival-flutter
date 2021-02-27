@@ -7,12 +7,14 @@ class SmallItemWidget extends StatelessWidget {
   final String subTitle;
   final String amount;
   final bool isActive;
+  final double textWidth;
 
   SmallItemWidget({
     this.amount,
     this.image,
     this.subTitle,
     this.title,
+    this.textWidth,
     this.isActive = false,
   });
 
@@ -20,10 +22,11 @@ class SmallItemWidget extends StatelessWidget {
     return SmallItemWidget(
       title: song.name,
       amount: song.length.toString(),
-      subTitle: song.author != null ? song.author.name : '',
-      image: song.images != null ? song.images[0] : 'images/avatar1.jpg',
+      subTitle: song.author != null ? song.author.name : 'Unknown',
+      image: song.images != null ? song.images[0].medium : 'images/avatar1.jpg',
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -44,37 +47,33 @@ class SmallItemWidget extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 16),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      height: 19 / 16,
-                      color: isActive ? Colors.white : Colors.black,
+              Container(
+                width: MediaQuery.of(context).size.width - 140,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        height: 19 / 16,
+                        color: isActive ? Colors.white : Colors.black,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 4),
-                  Text(
-                    subTitle,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: isActive ? Color(0xb3ffffff) : Color(0xff998FA2),
-                      height: 15 / 12,
+                    SizedBox(height: 4),
+                    Text(
+                      subTitle,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: isActive ? Color(0xb3ffffff) : Color(0xff998FA2),
+                        height: 15 / 12,
+                      ),
                     ),
-                  ),
-                  // SizedBox(height: 4),
-                  // Text(
-                  //   'States Airlines',
-                  //   style: TextStyle(
-                  //     fontSize: 12,
-                  //     color: Color(0xff998FA2),
-                  //     height: 15 / 12,
-                  //   ),
-                  // ),
-                ],
+                  ],
+                ),
               ),
               Spacer(),
               Text(

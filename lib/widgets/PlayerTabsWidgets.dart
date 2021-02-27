@@ -4,6 +4,7 @@ import 'package:devotion/bloc/blocs/list.bloc.dart';
 import 'package:devotion/bloc/events/PlayerEvent.dart';
 import 'package:devotion/bloc/events/ListEvent.dart';
 import 'package:devotion/bloc/states/ListState.dart';
+import 'package:devotion/models/AudioPost.dart';
 import 'package:devotion/util/Constants.dart';
 import 'package:devotion/util/NetworkingClass.dart';
 import 'package:devotion/widgets/CommentItemWidget.dart';
@@ -129,7 +130,7 @@ class _VideoDetailsWidgetState extends State<VideoDetailsWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  " ${widget.playable.createdAt.day.toString()} ${months[widget.playable.createdAt.month - 1]},  ${widget.playable.createdAt.year}",
+                  " ${widget.playable.createdAt.day.toString()} ${MONTHS[widget.playable.createdAt.month - 1]},  ${widget.playable.createdAt.year}",
                   style: TextStyle(
                     color: Color(0xff817889),
                     fontWeight: FontWeight.bold,
@@ -375,32 +376,36 @@ class _MusicListWidgetState extends State<MusicListWidget> {
     }
   }
 
-  createComment() {}
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ListBloc, ListState>(
         builder: (BuildContext context, ListState state) {
       if (state is ListSuccess) {
-        return Column(
-          children:
-              state.models.map((e) => SmallItemWidget.fromSong(e)).toList(),
+        return SingleChildScrollView(
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              children:
+                  state.models.map((e) => SmallItemWidget.fromSong(e)).toList(),
+            ),
+          ),
         );
       } else if (state is ListInitial) {
         return Center(child: CircularProgressIndicator());
       } else {
-        return Container(child: Text('unknown error'));
+        return Center(child: Text('unknown error'));
       }
     });
   }
 }
 
 TextStyle normalStyle = TextStyle(
-    fontSize: 24,
-    color: Color(0xff817889),
-    fontWeight: FontWeight.bold,
-    height: 1.2,
-    wordSpacing: 2);
+  fontSize: 24,
+  color: Color(0xff817889),
+  fontWeight: FontWeight.bold,
+  height: 1.2,
+  wordSpacing: 2,
+);
 TextStyle highlightedStyle =
     normalStyle.copyWith(color: Color(0xffd47fa6), fontSize: 26);
 

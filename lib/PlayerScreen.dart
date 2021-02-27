@@ -58,7 +58,7 @@ class _PlayerScreenState extends State<PlayerScreen>
   void initState() {
     videoScreenRatio = widget.ratios[0];
     _videoController =
-        VideoPlayerController.network(rootURL + widget.playable.srcUrl);
+        VideoPlayerController.network(ROOT_URL + widget.playable.srcUrl);
     _initializeVideoPlayerFuture = _videoController.initialize().then((_) {
       log('VIDEO LOADED FROM NET');
       _videoController.play();
@@ -158,7 +158,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                           ),
                           BlocProvider(
                             create: (BuildContext context) => ListBloc(
-                                feedType: 'audio', resource: '/comments')
+                                feedType: 'audio', resource: '/audio-posts')
                               ..add(ListFetched()),
                             child: MusicListWidget(),
                           ),

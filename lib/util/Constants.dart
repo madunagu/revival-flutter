@@ -1,4 +1,8 @@
-List<String> months = [
+const String ROOT_URL = 'https://devotion.wakabout.com.ng';
+
+const String STORAGE_URL = 'https://devotion.wakabout.com.ng/storage/';
+
+const List<String> MONTHS = [
   'January',
   'February',
   'March',
@@ -12,5 +16,13 @@ List<String> months = [
   'November',
   'December'
 ];
-String rootURL = 'https://devotion.wakabout.com.ng';
 
+const List<String> WEEKDAYS = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday'
+];
