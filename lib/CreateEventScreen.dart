@@ -7,6 +7,7 @@ import 'package:devotion/models/Event.dart';
 import 'package:devotion/models/index.dart';
 import 'package:devotion/sheets/AdressSheet.dart';
 import 'package:devotion/sheets/ImageSheet.dart';
+import 'package:devotion/util/Constants.dart';
 import 'package:devotion/util/NetworkingClass.dart';
 import 'package:devotion/util/TimeHandler.dart';
 import 'package:devotion/widgets/AppButtonWidget.dart';
@@ -28,7 +29,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   Address myAddress = Address();
   bool isLoading = false;
   bool eventCreated = false;
-  DateTime selectedDate = DateTime.now();
+  DateTime selectedDate;
+  TimeOfDay selectedTime;
   TextEditingController nameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
@@ -86,16 +88,20 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     isLoading = true;
     myEvent.name = nameController.value.text;
     myEvent.description = descriptionController.value.text;
-    myEvent.addressId = myAddress.id;
-
+    myEvent.startingAt = selectedDate;
     Map<String, dynamic> dataVal = myEvent.toJson();
-    Map<String, dynamic> res = await NetworkingClass().post('/events', dataVal);
-    log(res.toString());
-    if (res['data'] == true) {
-      setState(() {
-        eventCreated = true;
-      });
+    dataVal['address_ids'] = [myAddress.id];
+    log(dataVal.toString());
+    try {
+      Map<String, dynamic> res =
+          await NetworkingClass().post('/events', dataVal);
+      log(res.toString());
+      myEvent = Event.fromJson(res['data']);
+      eventCreated = true;
+    } catch (e) {
+      log(e.toString());
     }
+    setState(() {});
     isLoading = false;
   }
 
@@ -106,21 +112,15 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
       firstDate: DateTime.now().subtract(Duration(days: 365)),
       lastDate: DateTime.now().add(Duration(days: 365)),
     );
-    if (selectedDate != null && selectedDate != selectedDate)
-      setState(() {
-        myEvent.startingAt = selectedDate;
-      });
+    setState(() {});
   }
 
   selectStartingTime(BuildContext context) async {
-    TimeOfDay time = await showTimePicker(
+    selectedTime = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
     );
-//    if (time != null && time != selectedDate)
-//      setState(() {
-//        myEvent.startingAt = selectedDate.add(time.);
-//      });
+    setState(() {});
   }
 
   @override
@@ -198,15 +198,23 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
             ),
             CreateModelRowWidget(
               icon: Icons.calendar_today,
-              title: 'Starting Date',
-              description: 'What Date does the event start',
+              title: selectedDate != null
+                  ? "${MONTHS[selectedDate.month]} ${selectedDate.day}"
+                  : 'Starting Date',
+              description: selectedDate != null
+                  ? "${MONTHS[selectedDate.month]} ${selectedDate.day} ${selectedDate.year}"
+                  : 'What Date does the event start',
               tapped: selectStartingDate,
             ),
             SizedBox(height: 40),
             CreateModelRowWidget(
               icon: Icons.timer,
-              title: 'Starting At',
-              description: 'When does the event start',
+              title: selectedTime != null
+                  ? "${selectedTime.hour}:${selectedTime.minute}"
+                  : 'Starting At',
+              description: selectedTime != null
+                  ? "${selectedTime.hour}:${selectedTime.minute}"
+                  : 'When does the event start',
               tapped: selectStartingTime,
             ),
             SizedBox(height: 40),
@@ -225,9 +233,25 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
             ),
             CreateModelRowWidget(
               icon: Icons.favorite_border,
-              title: 'Images',
-              description: 'Select A few Pics',
+              title: myEvent.images != null
+                  ? "${myEvent.images.length} Images"
+                  : 'Images',
+              description: myEvent.images != null
+                  ? 'Edit Event Images'
+                  : 'Select A few Pics',
               tapped: _getProfileMedia,
+              body: Container(
+                height: myEvent.images != null ? 100 : 0,
+                padding: EdgeInsets.only(top: 20),
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: myEvent.images
+                          ?.map((ResizedImage e) =>
+                              Image.network(STORAGE_URL + e.small))
+                          ?.toList() ??
+                      [],
+                ),
+              ),
             ),
             SizedBox(
               height: 32,
@@ -301,7 +325,10 @@ class EventCreatedWidget extends StatelessWidget {
                     Row(
                       children: [
                         ImageAvatarWidget(
-                          imageURL: myEvent,
+                          imageURL: myEvent.images != null &&
+                                  myEvent.images.isNotEmpty
+                              ? myEvent.images[0].small
+                              : 'defaultImage',
                           size: 68,
                           borderColor: Colors.white,
                         ),

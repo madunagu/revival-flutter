@@ -39,9 +39,10 @@ class _ImageSheetState extends State<ImageSheet> {
     return BlocBuilder<FormBloc, FormSheetState>(
       builder: (BuildContext context, FormSheetState state) {
         return Stack(
+          alignment: Alignment.center,
           children: [
             Container(
-              height: size.height - 200,
+              height: size.height,
               width: size.width,
               color: trendingColors[2],
               padding: EdgeInsets.symmetric(horizontal: 40),
@@ -50,48 +51,56 @@ class _ImageSheetState extends State<ImageSheet> {
                   print(state);
                   if (state is FormSuccess) {
                     log(state.toString());
-                    Navigator.of(context).pop(state.object['data']);
+                    var response = <ResizedImage>[];
+                    for (var resizedData in state.object['data']) {
+                      response.add(ResizedImage.fromJson(resizedData));
+                    }
+                    Navigator.of(context).pop(response);
                   }
                 },
                 child: Form(
                   key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: 44,
-                      ),
-                      Text(
-                        'Upload Image',
-                        style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 44,
                         ),
-                      ),
-                      SizedBox(
-                        height: 21,
-                      ),
-                      for (var imageFile in images)
-                        SelectedImageWidget(
-                          imageFile,
-                          onTap: () {
-                            images.remove(imageFile);
-                          },
+                        Text(
+                          'Upload Image',
+                          style: TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                          ),
                         ),
-                      SizedBox(height: 20),
-                    ],
+                        SizedBox(
+                          height: 21,
+                        ),
+                        for (var imageFile in images)
+                          SelectedImageWidget(
+                            imageFile,
+                            onTap: () {
+                              images.remove(imageFile);
+                              setState(() {});
+                            },
+                          ),
+                        SizedBox(height: 60),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
             Positioned(
               bottom: 0,
+//                  left: 0,
               child: GestureDetector(
                 onTap: state is FormInProgress ? null : submitButtonPressed,
                 child: Container(
                   height: 52,
-                  width: double.infinity,
+                  width: size.width - 80,
                   padding: EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(82),
@@ -160,16 +169,20 @@ class SelectedImageWidget extends StatelessWidget {
   final VoidCallback onTap;
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
+    return InkWell(
+      onDoubleTap: onTap,
+      child: ClipRRect(
         borderRadius: BorderRadius.only(
           topRight: Radius.circular(60),
           bottomLeft: Radius.circular(60),
         ),
-        child: Column(
-          children: [
-            InkWell(onTap: onTap, child: Icon(Icons.remove_circle_outline)),
-            Image.file(file, fit: BoxFit.cover),
-          ],
-        ));
+        child: Image.file(
+          file,
+          fit: BoxFit.cover,
+          height: 240,
+          width: double.infinity,
+        ),
+      ),
+    );
   }
 }

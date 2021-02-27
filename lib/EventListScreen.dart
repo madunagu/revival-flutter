@@ -88,7 +88,7 @@ class _EventListState extends State<EventList> {
     return SingleChildScrollView(
       controller: _scrollController,
       child: Container(
-        height: 190.0 * items.length + 200,
+        height: 195.0 * items.length + 200,
         child: Stack(
           children: output,
         ),

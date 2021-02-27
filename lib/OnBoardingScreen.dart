@@ -18,13 +18,12 @@ class OnboardingContents extends StatefulWidget {
 }
 
 class _OnboardingContentsState extends State<OnboardingContents>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   TabController _tabController;
   int activeSlide = 0;
   int sliderCount = 2;
   @override
   void initState() {
-    // TODO: implement initState
     _tabController = TabController(vsync: this, length: 2);
     _tabController.addListener(() {
       int i = _tabController.index;
@@ -37,7 +36,6 @@ class _OnboardingContentsState extends State<OnboardingContents>
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _tabController.dispose();
     super.dispose();
   }

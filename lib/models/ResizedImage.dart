@@ -12,9 +12,7 @@ class ResizedImage {
   String medium;
   String small;
   String full;
-  @JsonKey(name: 'user_id') String userId;
-  @JsonKey(name: 'imageable_id') int imageableId;
-  @JsonKey(name: 'imageable_type') String imageableType;
+  @JsonKey(name: 'user_id') int userId;
   @JsonKey(name: 'created_at') String createdAt;
   @JsonKey(name: 'updated_at') String updatedAt;
 
