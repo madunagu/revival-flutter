@@ -8,6 +8,7 @@ import 'package:devotion/util/TimeHandler.dart';
 import 'package:devotion/widgets/AppBarWidget.dart';
 import 'package:devotion/widgets/AppScaffoldWidget.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
+import 'package:devotion/widgets/EventAppBarWidget.dart';
 import 'package:devotion/widgets/ImageAvatarListWidget.dart';
 import 'package:flutter/material.dart';
 

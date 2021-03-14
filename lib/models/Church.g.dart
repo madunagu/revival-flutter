@@ -36,6 +36,10 @@ Church _$ChurchFromJson(Map<String, dynamic> json) {
     ..leader = json['leader'] == null
         ? null
         : User.fromJson(json['leader'] as Map<String, dynamic>)
+    ..likes = (json['likes'] as List)
+        ?.map(
+            (e) => e == null ? null : User.fromJson(e as Map<String, dynamic>))
+        ?.toList()
     ..user = json['user'] == null
         ? null
         : User.fromJson(json['user'] as Map<String, dynamic>)
@@ -66,6 +70,7 @@ Map<String, dynamic> _$ChurchToJson(Church instance) => <String, dynamic>{
       'viewed': instance.viewed,
       'comments': instance.comments,
       'leader': instance.leader,
+      'likes': instance.likes,
       'user': instance.user,
       'addresses': instance.addresses,
       'images': instance.images,

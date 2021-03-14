@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'Comment.dart';
 import 'User.dart';
 import 'User.dart';
+import 'User.dart';
 import 'ResizedImage.dart';
 
 part 'Church.g.dart';
@@ -29,6 +30,7 @@ class Church {
   int viewed;
   List<Comment> comments;
   User leader;
+  List<User> likes;
   User user;
   List<dynamic> addresses;
   List<ResizedImage> images;

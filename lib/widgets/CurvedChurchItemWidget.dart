@@ -1,30 +1,38 @@
+import 'package:devotion/ChurchListScreen.dart';
 import 'package:devotion/misc/StyleConstants.dart';
+import 'package:devotion/models/Church.dart';
 import 'package:devotion/models/Event.dart';
+import 'package:devotion/models/User.dart';
 import 'package:devotion/widgets/ImageAvatarListWidget.dart';
 import 'package:devotion/widgets/ImageAvatarWidget.dart';
 import 'package:flutter/material.dart';
 
+final TextStyle italicStyle = const TextStyle(
+  color: Color(0x70ffffff),
+  letterSpacing: -0.24,
+  fontSize: 12,
+  fontWeight: FontWeight.w500,
+  fontStyle: FontStyle.italic,
+);
+
 class CurvedChurchItemWidget extends StatelessWidget {
-  final String title;
-  final String time;
-  final String people;
-  final IconData icon;
-  final Function onTap;
+  final Church church;
+  final Color color;
+  CurvedChurchItemWidget({this.church, this.color});
 
-  CurvedChurchItemWidget({this.title, this.time, this.icon, this.people, this.onTap});
-
-  factory CurvedChurchItemWidget.fromEvent(Event serverEvent) {
+  factory CurvedChurchItemWidget.fromChurch(Church church, Color color) {
     return CurvedChurchItemWidget(
-      title: serverEvent.name,
-      time: serverEvent.startingAt.toString(),
+      church: church,
+      color: color,
     );
   }
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {},
       child: Container(
         height: 200,
+        color: color,
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.only(
           left: 32,
@@ -38,20 +46,20 @@ class CurvedChurchItemWidget extends StatelessWidget {
                   SizedBox(
                     height: 32,
                   ),
-                  Text(
-                    time,
-                    style: TextStyle(
-                      color: Color(0x70ffffff),
-                      fontSize: 11,
-                      letterSpacing: -0.22,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                  // Text(
+                  //   time,
+                  //   style: TextStyle(
+                  //     color: Color(0x70ffffff),
+                  //     fontSize: 11,
+                  //     letterSpacing: -0.22,
+                  //     fontWeight: FontWeight.w600,
+                  //   ),
+                  // ),
                   RichText(
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
                     text: TextSpan(
-                      text: title,
+                      text: church.name,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 24,
@@ -63,31 +71,41 @@ class CurvedChurchItemWidget extends StatelessWidget {
                     ),
                   ),
                   Spacer(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      ImageAvatarListWidget(
-                        images: [
-                          'images/avatar1.jpg',
-                          'images/avatar1.jpg',
-                        ],
-                        size: 24,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        'Join Marie, John and 10 others',
-                        style: TextStyle(
-                          color: Color(0x70ffffff),
-                          letterSpacing: -0.24,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          fontStyle: FontStyle.italic,
+                  church.likesCount > 0
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            ImageAvatarListWidget(
+                              images: church.likes != null
+                                  ? church.likes
+                                      .take(7)
+                                      .map((User e) => e.avatar)
+                                      .toList()
+                                  : [],
+                              size: 24,
+                            ),
+                            SizedBox(width: 10),
+                            Flexible(
+                              child: Text(
+                                church.likes != null
+                                    ? 'Join ${church.likes.take(2).map((e) => e.name).join(", ")} and ${church.likesCount} others'
+                                    : '..Be the first to join',
+                                style: italicStyle,
+                              ),
+                            ),
+                          ],
+                        )
+                      : Row(
+                          children: [
+                            ImageAvatarWidget(
+                                imageURL: church.user.avatar, size: 24),
+                            SizedBox(width: 10),
+                            Text(
+                              '...Be the first to join?',
+                              style: italicStyle,
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
                   SizedBox(
                     height: 40,
                   ),
@@ -96,7 +114,7 @@ class CurvedChurchItemWidget extends StatelessWidget {
               right: 40,
               bottom: 50,
               child: Icon(
-                icon,
+                Icons.house,
                 size: 70,
                 color: Color.fromARGB(50, 255, 255, 255),
               ),
@@ -107,4 +125,3 @@ class CurvedChurchItemWidget extends StatelessWidget {
     );
   }
 }
-

@@ -18,6 +18,7 @@
   "viewed": 0,
   "comments": "$[]Comment",
   "leader": "$User",
+  "likes": "$[]User",
   "user": "$User",
   "addresses": [],
   "images": "$[]ResizedImage"
