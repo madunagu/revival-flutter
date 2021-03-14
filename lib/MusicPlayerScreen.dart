@@ -15,7 +15,9 @@ import 'package:devotion/widgets/PlayerTabsWidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:audio_service/audio_service.dart';
-import 'package:just_audio/just_audio.dart';
+//import 'package:just_audio/just_audio.dart';
+
+import 'package:devotion/util/AudioPlayerTask.dart';
 
 class MusicPlayerScreen extends StatefulWidget {
   final AudioPost playable;
@@ -33,7 +35,6 @@ class _MusicPlayerScreenState extends State<MusicPlayerScreen>
   int activeSlide = 0;
 
   TabController _tabController;
-  AudioPlayer audioPlayer = AudioPlayer();
 
   toggleSheet(DragEndDetails e) {
     log(e.velocity.pixelsPerSecond.dy.toString());
@@ -62,15 +63,15 @@ class _MusicPlayerScreenState extends State<MusicPlayerScreen>
   }
 
   playMusic(AudioPost audio) async {
-    var duration = await audioPlayer.setUrl(ROOT_URL + audio.srcUrl);
-//    var item = MediaItem(
-//      id: widget.playable.srcUrl,
-//      album: 'Devotion Albums',
-//      artist: widget.playable.author.name,
-//      title: widget.playable.name,
-//    );
-//    AudioService.playMediaItem(item);
-    audioPlayer.play();
+    log('trying to play music');
+    var item = MediaItem(
+      id: ROOT_URL + audio.srcUrl,
+      album: 'Devotion Albums',
+//      artist: audio.author.name,
+      title: audio.name,
+    );
+    await AudioService.addQueueItem(item);
+    await AudioService.play();
   }
 
   @override
@@ -97,19 +98,16 @@ class _MusicPlayerScreenState extends State<MusicPlayerScreen>
                   )
                 : AudioWidget(
                     audio: widget.playable,
-                    player: audioPlayer,
                     size: size,
                     height: sheetPositionTop,
                   ),
             AudioControls(
               size: size,
-              player: audioPlayer,
             ),
             Positioned(
               top: sheetPositionTop - 35,
               child: AudioSlider(
                 size: size,
-                player: audioPlayer,
               ),
             ),
             Positioned(
@@ -148,11 +146,17 @@ class _MusicPlayerScreenState extends State<MusicPlayerScreen>
                           ),
                           BlocProvider(
                             create: (BuildContext context) => ListBloc(
-                                feedType: 'comment', resource: '/comments')
-                              ..add(ListFetched()),
+                              feedType: 'comment',
+                              resource: '/comments',
+                            )..add(ListFetched()),
                             child: CommentsSectionWidget(),
                           ),
-                          SingleChildScrollView(
+                          BlocProvider(
+                            create: (BuildContext context) => ListBloc(
+                              feedType: 'audio',
+                              resource: "/audio-posts/${widget.playable.id}",
+                              method: Method.PUT,
+                            )..add(ListFetched()),
                             child: MusicListWidget(),
                           ),
                         ],
@@ -239,10 +243,8 @@ class _SheetHeaderWidgetState extends State<SheetHeaderWidget> {
 class AudioControls extends StatefulWidget {
   AudioControls({
     this.size,
-    this.player,
   });
   final Size size;
-  final AudioPlayer player;
   @override
   _AudioControlsState createState() => _AudioControlsState();
 }
@@ -272,6 +274,7 @@ class _AudioControlsState extends State<AudioControls> {
         isPlaying = true;
       else {
         isPlaying = false;
+        log(state.processingState.toString());
         switch (state.processingState) {
           case AudioProcessingState.none:
           case AudioProcessingState.connecting:
@@ -366,9 +369,9 @@ class _AudioControlsState extends State<AudioControls> {
                                       onTap: () {
                                         setState(() {
                                           if (isPlaying) {
-                                            widget.player.pause();
+                                            AudioService.pause();
                                           } else {
-                                            widget.player.play();
+                                            AudioService.play();
                                           }
                                         });
                                       },
@@ -413,8 +416,17 @@ class _AudioControlsState extends State<AudioControls> {
                                     height: height - 86,
                                     width: widget.size.width,
                                     alignment: Alignment.center,
-                                    child: Icon(Icons.refresh,
-                                        color: trendingColors[0], size: 45),
+                                    child: Container(
+                                      height: 50,
+                                      width: 50,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(50),
+                                        color: Color(0xffffffff),
+                                      ),
+                                      child: Icon(Icons.refresh,
+                                          color: trendingColors[0], size: 45),
+                                    ),
                                   ),
                       ],
                     ),
@@ -434,11 +446,9 @@ class AudioSlider extends StatefulWidget {
   const AudioSlider({
     Key key,
     @required this.size,
-    @required this.player,
   }) : super(key: key);
 
   final Size size;
-  final AudioPlayer player;
 
   @override
   _AudioSliderState createState() => _AudioSliderState();
@@ -456,12 +466,12 @@ class _AudioSliderState extends State<AudioSlider> {
 
   @override
   void initState() {
-    AudioService.positionStream.listen((Duration position) {
-      sliderPos = position.inSeconds.toDouble();
-    });
-    AudioService.currentMediaItemStream.listen((MediaItem item) {
-      duration = item.duration.inSeconds.toDouble();
-    });
+//    AudioService.positionStream.listen((Duration position) {
+//      sliderPos = position.inSeconds.toDouble();
+//    });
+//    AudioService.currentMediaItemStream.listen((MediaItem item) {
+//      duration = item.duration.inSeconds.toDouble();
+//    });
     super.initState();
   }
 
@@ -566,8 +576,7 @@ class AudioWidget extends StatelessWidget {
   final Size size;
   final double height;
   final AudioPost audio;
-  final AudioPlayer player;
-  const AudioWidget({this.size, this.height, this.audio, this.player});
+  const AudioWidget({this.size, this.height, this.audio});
   @override
   Widget build(BuildContext context) {
     return Container(

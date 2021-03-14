@@ -1,4 +1,6 @@
 import 'package:devotion/models/AudioPost.dart';
+import 'package:devotion/util/Constants.dart';
+import 'package:devotion/util/TimeHandler.dart';
 import 'package:flutter/material.dart';
 
 class SmallItemWidget extends StatelessWidget {
@@ -21,9 +23,9 @@ class SmallItemWidget extends StatelessWidget {
   factory SmallItemWidget.fromSong(AudioPost song) {
     return SmallItemWidget(
       title: song.name,
-      amount: song.length.toString(),
+      amount: getAsMinutes(song.length),
       subTitle: song.author != null ? song.author.name : 'Unknown',
-      image: song.images != null ? song.images[0].medium : 'images/avatar1.jpg',
+      image: song.images != null ? song.images[0].medium : AVATAR_URL,
     );
   }
 
@@ -40,7 +42,7 @@ class SmallItemWidget extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: Image.asset(
+                child: Image.network(
                   image,
                   width: 40,
                   height: 40,

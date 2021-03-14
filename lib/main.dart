@@ -50,7 +50,7 @@ void main() {
         BlocProvider<PostBloc>(create: (BuildContext context) => PostBloc()),
         BlocProvider<PlayerBloc>(create: (context) => PlayerBloc())
       ],
-      child: MyApp(),
+      child: AudioServiceWidget(child: MyApp()),
     ),
   );
 }
@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
             return SplashScreen();
           }
           if (state is AuthenticationSuccess) {
-            return AudioServiceWidget(child: MainScreen());
+            return MainScreen();
           }
           if (state is AuthenticationFailure) {
             return LoginScreen();
