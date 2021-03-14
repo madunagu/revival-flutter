@@ -2,6 +2,8 @@ const String ROOT_URL = 'https://devotion.wakabout.com.ng';
 
 const String STORAGE_URL = 'https://devotion.wakabout.com.ng/storage/';
 
+const String AVATAR_URL = 'https://devotion.wakabout.com.ng/storage/avatar.jpg';
+
 const List<String> MONTHS = [
   'January',
   'February',

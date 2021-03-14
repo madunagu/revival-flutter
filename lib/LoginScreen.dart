@@ -4,6 +4,7 @@ import 'package:devotion/bloc/events/LoginEvent.dart';
 import 'package:devotion/bloc/states/LoginState.dart';
 import 'package:devotion/repositories/UserRepository.dart';
 import 'package:devotion/widgets/AppButtonWidget.dart';
+import 'package:devotion/widgets/ErrorNotification.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -30,9 +31,7 @@ final TextStyle hintStyle = const TextStyle(
 );
 
 class LoginScreen extends StatefulWidget {
-
-  LoginScreen({Key key}):
-        super(key: key);
+  LoginScreen({Key key}) : super(key: key);
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -159,8 +158,7 @@ class _LoginTabsState extends State<LoginTabs> {
         GestureDetector(
           onTap: () {
             setState(() {
-              widget._tabController
-                  .animateTo(0);
+              widget._tabController.animateTo(0);
             });
           },
           child: Padding(
@@ -181,8 +179,7 @@ class _LoginTabsState extends State<LoginTabs> {
         GestureDetector(
           onTap: () {
             setState(() {
-              widget._tabController
-                  .animateTo(1);
+              widget._tabController.animateTo(1);
             });
           },
           child: Padding(
@@ -224,85 +221,82 @@ class _LoginFormState extends State<LoginForm> {
       );
     }
 
-    return BlocListener<LoginBloc, LoginState>(
-      listener: (context, state) {
-        if (state is LoginFailure) {
-          Scaffold.of(context).showSnackBar(
-            SnackBar(
-              content: Text('${state.error}'),
-              backgroundColor: Colors.red,
+    return BlocBuilder<LoginBloc, LoginState>(
+      builder: (context, state) {
+        return Stack(
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.all(32),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40),
+                      color: Colors.white,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        TextField(
+                          controller: _usernameController,
+                          style: hintStyle.copyWith(color: Color(0xff352641)),
+                          decoration: InputDecoration(
+                            contentPadding: inputPadding,
+                            enabledBorder: inputBorder,
+                            focusedBorder: focusBorder,
+                            hintText: 'Email',
+                            hintStyle: hintStyle,
+                          ),
+                        ),
+                        SizedBox(height: 42),
+                        TextField(
+                          controller: _passwordController,
+                          obscureText: true,
+                          style: hintStyle.copyWith(
+                              color: Color(0xff352641), letterSpacing: 4),
+                          decoration: InputDecoration(
+                            contentPadding: inputPadding,
+                            enabledBorder: inputBorder,
+                            focusedBorder: focusBorder,
+                            hintText: 'Password',
+                            hintStyle: hintStyle,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 22,
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 32,
+                  ),
+                  AppButtonWidget(
+                    onTap: state is! LoginInProgress
+                        ? _onLoginButtonPressed
+                        : null,
+                    text: 'CONTINUE',
+                    color: purpleColor,
+                    height: 52,
+                  ),
+                ],
+              ),
             ),
-          );
-        }
+            state is LoginInProgress
+                ? Container(
+                    color: Colors.white10,
+                    child: CircularProgressIndicator(),
+                  )
+                : null,
+            state is LoginFailure
+                ? ErrorNotification(titleText: state.error)
+                : null,
+          ],
+        );
       },
-      child: BlocBuilder<LoginBloc, LoginState>(
-        builder: (context, state) {
-          return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.all(32),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(40),
-                    color: Colors.white,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      TextField(
-                        controller: _usernameController,
-                        style: hintStyle.copyWith(color: Color(0xff352641)),
-                        decoration: InputDecoration(
-                          contentPadding: inputPadding,
-                          enabledBorder: inputBorder,
-                          focusedBorder: focusBorder,
-                          hintText: 'Email',
-                          hintStyle: hintStyle,
-                        ),
-                      ),
-                      SizedBox(height: 42),
-                      TextField(
-                        controller: _passwordController,
-                        obscureText: true,
-                        style: hintStyle.copyWith(
-                            color: Color(0xff352641), letterSpacing: 4),
-                        decoration: InputDecoration(
-                          contentPadding: inputPadding,
-                          enabledBorder: inputBorder,
-                          focusedBorder: focusBorder,
-                          hintText: 'Password',
-                          hintStyle: hintStyle,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 22,
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 32,
-                ),
-                AppButtonWidget(
-                  onTap:
-                      state is! LoginInProgress ? _onLoginButtonPressed : null,
-                  text: 'CONTINUE',
-                  color: purpleColor,
-                  height: 52,
-                ),
-                Container(
-                  child: state is LoginInProgress
-                      ? CircularProgressIndicator()
-                      : null,
-                )
-              ],
-            ),
-          );
-        },
-      ),
     );
   }
 }
@@ -333,93 +327,89 @@ class _RegisterFormState extends State<RegisterForm> {
       );
     }
 
-    return BlocListener<LoginBloc, LoginState>(
-      listener: (context, state) {
-        if (state is LoginFailure) {
-          Scaffold.of(context).showSnackBar(
-            SnackBar(
-              content: Text('${state.error}'),
-              backgroundColor: Colors.red,
+    return BlocBuilder<LoginBloc, LoginState>(
+      builder: (context, state) {
+        return Stack(
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.all(32),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40),
+                      color: Colors.white,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        TextField(
+                          controller: _nameController,
+                          decoration: InputDecoration(
+                            contentPadding: inputPadding,
+                            enabledBorder: inputBorder,
+                            focusedBorder: focusBorder,
+                            hintText: 'Name',
+                            hintStyle: hintStyle,
+                          ),
+                        ),
+                        SizedBox(height: 42),
+                        TextField(
+                          controller: _phoneController,
+                          decoration: InputDecoration(
+                            contentPadding: inputPadding,
+                            enabledBorder: inputBorder,
+                            focusedBorder: focusBorder,
+                            hintStyle: hintStyle,
+                            hintText: 'Phone',
+                          ),
+                        ),
+                        SizedBox(height: 42),
+                        TextField(
+                          controller: _emailController,
+                          style: hintStyle.copyWith(color: Color(0xff352641)),
+                          decoration: InputDecoration(
+                            contentPadding: inputPadding,
+                            enabledBorder: inputBorder,
+                            focusedBorder: focusBorder,
+                            hintStyle: hintStyle,
+                            hintText: 'Email',
+                          ),
+                        ),
+                        SizedBox(height: 22),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 32,
+                  ),
+                  AppButtonWidget(
+                    onTap: state is! LoginInProgress
+                        ? _onRegisterButtonPressed
+                        : null,
+                    text: 'CONTINUE',
+                    color: purpleColor,
+                    height: 52,
+                  ),
+                  SizedBox(height: 50),
+                ],
+              ),
             ),
-          );
-        }
+            state is LoginInProgress
+                ? Container(
+                    color: Colors.white10,
+                    child: CircularProgressIndicator(),
+                  )
+                : null,
+            state is LoginFailure
+                ? ErrorNotification(titleText: state.error)
+                : null,
+          ],
+        );
       },
-      child: BlocBuilder<LoginBloc, LoginState>(
-        builder: (context, state) {
-          return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.all(32),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(40),
-                    color: Colors.white,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      TextField(
-                        controller: _nameController,
-                        decoration: InputDecoration(
-                          contentPadding: inputPadding,
-                          enabledBorder: inputBorder,
-                          focusedBorder: focusBorder,
-                          hintText: 'Name',
-                          hintStyle: hintStyle,
-                        ),
-                      ),
-                      SizedBox(height: 42),
-                      TextField(
-                        controller: _phoneController,
-                        decoration: InputDecoration(
-                          contentPadding: inputPadding,
-                          enabledBorder: inputBorder,
-                          focusedBorder: focusBorder,
-                          hintStyle: hintStyle,
-                          hintText: 'Phone',
-                        ),
-                      ),
-                      SizedBox(height: 42),
-                      TextField(
-                        controller: _emailController,
-                        style: hintStyle.copyWith(color: Color(0xff352641)),
-                        decoration: InputDecoration(
-                          contentPadding: inputPadding,
-                          enabledBorder: inputBorder,
-                          focusedBorder: focusBorder,
-                          hintStyle: hintStyle,
-                          hintText: 'Email',
-                        ),
-                      ),
-                      SizedBox(height: 22),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 32,
-                ),
-                AppButtonWidget(
-                  onTap: state is! LoginInProgress
-                      ? _onRegisterButtonPressed
-                      : null,
-                  text: 'CONTINUE',
-                  color: purpleColor,
-                  height: 52,
-                ),
-                SizedBox(height:50),
-                Container(
-                  child: state is LoginInProgress
-                      ? CircularProgressIndicator()
-                      : null,
-                )
-              ],
-            ),
-          );
-        },
-      ),
     );
   }
 }

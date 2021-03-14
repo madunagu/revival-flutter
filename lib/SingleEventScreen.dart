@@ -2,11 +2,12 @@ import 'dart:developer';
 
 import 'package:devotion/misc/StyleConstants.dart';
 import 'package:devotion/models/Devotional.dart';
+import 'package:devotion/util/Constants.dart';
 import 'package:devotion/util/NetworkingClass.dart';
 import 'package:devotion/util/TimeHandler.dart';
 import 'package:devotion/widgets/ChurchWidget.dart';
 import 'package:devotion/widgets/DottedTabBarWidget.dart';
-import 'package:devotion/widgets/ErrorNotification.dart';
+import 'package:devotion/widgets/EventAppBarWidget.dart';
 import 'package:devotion/widgets/ImageAvatarListWidget.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/widgets/AppScaffoldWidget.dart';
@@ -121,20 +122,6 @@ class SingleEvent extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   ImageSliderWidget(size: size),
-                  ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(60),
-                      topRight: Radius.circular(60),
-                    ),
-                    child: Container(
-                      height: 240,
-                      width: size.width,
-                      child: Image.asset(
-                        'images/avatar1.jpg',
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
                   SizedBox(height: 21),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,7 +133,7 @@ class SingleEvent extends StatelessWidget {
                           event.poster?.images != null &&
                                   event.poster.images.isNotEmpty
                               ? event.poster.images[0].medium
-                              : 'images/avatar1.jpg',
+                              : AVATAR_URL,
                           height: 35,
                           width: 35,
                         ),
@@ -252,12 +239,14 @@ class SingleEvent extends StatelessWidget {
                     SizedBox(
                       width: 20,
                     ),
-                    Flexible(
-                      child: Text(
-                        'Hosted By ${event.user.name}',
-                        style: largeWhiteTextStyle,
-                      ),
-                    )
+                    event.user != null
+                        ? Flexible(
+                            child: Text(
+                              'Hosted By ${event.user.name}',
+                              style: largeWhiteTextStyle,
+                            ),
+                          )
+                        : Container(),
                   ],
                 ),
                 SizedBox(
@@ -304,7 +293,6 @@ class SingleEvent extends StatelessWidget {
                                     Expanded(
                                       child: Container(
                                         height: 30,
-//                                    width: 200,
                                         child: ImageAvatarListWidget(
                                           images: event.attendees
                                               .take(7)
@@ -336,7 +324,8 @@ class SingleEvent extends StatelessWidget {
                                   ],
                                 )
                               : Container(
-                                  child: Text('be the first to attend')),
+                                  child: Text('be the first to attend'),
+                                ),
                         ],
                       ),
                     ),
@@ -366,8 +355,9 @@ class ImageSliderWidget extends StatefulWidget {
   _ImageSliderWidgetState createState() => _ImageSliderWidgetState();
 }
 
-class _ImageSliderWidgetState extends State<ImageSliderWidget> with SingleTickerProviderStateMixin {
-   TabController _tabController;
+class _ImageSliderWidgetState extends State<ImageSliderWidget>
+    with SingleTickerProviderStateMixin {
+  TabController _tabController;
   int activeSlide = 0;
   int sliderCount = 2;
   @override
@@ -466,7 +456,7 @@ class AddressWidget extends StatelessWidget {
                 height: 18,
               ),
               MapWidget(
-                address: address != null ? address : null,
+                address: address,
               ),
               SizedBox(height: 29),
             ],
@@ -612,116 +602,4 @@ class _AreYouGoingState extends State<AreYouGoing> {
   }
 }
 
-class EventAppBarWidget extends StatelessWidget {
-  const EventAppBarWidget({
-    Key key,
-    @required this.event,
-    @required this.isLoading,
-  }) : super(key: key);
 
-  final Event event;
-  final bool isLoading;
-
-  factory EventAppBarWidget.fromDevotional(
-      {Devotional devotional, bool isLoading}) {
-    Event event = Event();
-    event.name = devotional.title;
-    event.attendees = devotional.devotees;
-    event.attendeesCount = devotional.devoteesCount;
-    return EventAppBarWidget(event: event, isLoading: isLoading);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return CurvedCornerWidget(
-      height: 248,
-      color: trendingColors[0],
-      padding: EdgeInsets.symmetric(vertical: 32, horizontal: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          isLoading ? LinearProgressWidget() : Container(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              InkWell(
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-                child: Icon(
-                  Icons.arrow_back,
-                  color: Colors.white,
-                ),
-              ),
-              InkWell(
-                onTap: () {},
-                child: Icon(
-                  Icons.file_upload,
-                  color: Colors.white,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0, left: 56, right: 4),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  (event.name != null) ? event.name : '',
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: -0.39,
-                  ),
-                ),
-                SizedBox(height: 21),
-                event.attendees != null
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          ImageAvatarListWidget(
-                            images: event.attendees
-                                .take(7)
-                                .map((User e) => e.avatar)
-                                .toList(),
-                            size: 24,
-                          ),
-                          SizedBox(width: 10),
-                          Flexible(
-                            child: Text(
-                              'Join ${event.attendees.take(2).map((e) => e.name).join(", ")} and ${event.attendeesCount} others',
-                              style: italicStyle,
-                            ),
-                          ),
-                        ],
-                      )
-                    : Row(
-                        children: [
-                          ImageAvatarWidget(
-                            imageURL:
-                                event.user?.avatar ?? 'images/avatar1.jpg',
-                            size: 24,
-                          ),
-                          SizedBox(width: 10),
-                          Text(
-                            '...Be the first to join?',
-                            style: italicStyle,
-                          ),
-                        ],
-                      ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}

@@ -1,4 +1,5 @@
 import 'package:audio_service/audio_service.dart';
+import 'package:devotion/models/AudioPost.dart';
 import 'package:devotion/util/Constants.dart';
 import 'package:just_audio/just_audio.dart';
 
@@ -19,13 +20,13 @@ class AudioPlayerTask extends BackgroundAudioTask {
   }
 
   onStart(Map<String, dynamic> params) async {
-//    final mediaItem = MediaItem(
-//      id: rootURL + '/storage/touch_of_heaven.mp3',
-//      album: "Foo",
-//      title: "Bar",
-//    );
+    // final mediaItem = MediaItem(
+    //   id: ROOT_URL + '/storage/audio/Hillsong-Touch-Of-Heaven.mp3',
+    //   album: "Foo",
+    //   title: "Touch Of Heaven",
+    // );
     // Tell the UI and media notification what we're playing.
-//    AudioServiceBackground.setMediaItem(mediaItem);
+    // AudioServiceBackground.setMediaItem(mediaItem);
     // Listen to state changes on the player...
     _player.playerStateStream.listen((playerState) {
       // ... and forward them to all audio_service clients.
@@ -48,8 +49,28 @@ class AudioPlayerTask extends BackgroundAudioTask {
       );
     });
     // Play when ready.
-//    _player.play();
+    // await _player.setUrl(mediaItem.id);
+    // _player.play();
     // Start loading something (will play when ready).
-//    await _player.setUrl(mediaItem.id);
+  }
+
+  onCustomAction(String name, dynamic arguments) async {
+    switch (name) {
+      case 'setVolume':
+        _player.setVolume(arguments);
+        break;
+      case 'saveBookmark':
+        // app-specific code
+        break;
+      case 'playAudio':
+        final mediaItem = MediaItem(
+          id: ROOT_URL + '/storage/audio/Hillsong-Touch-Of-Heaven.mp3',
+          album: "Foo",
+          title: "Touch Of Heaven",
+        );
+        await _player.setUrl(mediaItem.id);
+        await _player.play();
+        break;
+    }
   }
 }
