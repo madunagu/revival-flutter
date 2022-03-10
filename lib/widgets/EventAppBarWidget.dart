@@ -101,12 +101,17 @@ class EventAppBarWidget extends StatelessWidget {
                           ),
                           SizedBox(width: 10),
                           Flexible(
-                            child: Text(
-                              event.attendeesCount > 1
-                                  ? 'Join ${event.attendees.take(2).map((e) => e.name).join(", ")} and ${event.attendeesCount - 1} others'
-                                  : 'Join ${event.attendees.take(2).map((e) => e.name).join(", ")}',
-                              style: italicStyle,
-                            ),
+                            child: event.attending == 1
+                                ? Text(
+                                    'You Are Going',
+                                    style: italicStyle,
+                                  )
+                                : Text(
+                                    event.attendeesCount > 1
+                                        ? 'Join ${event.attendees.take(2).map((e) => e.name).join(", ")} and ${event.attendeesCount - 1} others'
+                                        : 'Join ${event.attendees.take(2).map((e) => e.name).join(", ")}',
+                                    style: italicStyle,
+                                  ),
                           ),
                         ],
                       )

@@ -14,12 +14,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
-class ImageSheet extends StatefulWidget {
+class UserSheet extends StatefulWidget {
   @override
-  _ImageSheetState createState() => _ImageSheetState();
+  _UserSheetState createState() => _UserSheetState();
 }
 
-class _ImageSheetState extends State<ImageSheet> {
+class _UserSheetState extends State<UserSheet> {
   final ResizedImage myImage = ResizedImage();
   final NetworkingClass myNetwork = NetworkingClass();
   List<File> images = <File>[];

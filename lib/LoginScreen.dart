@@ -290,10 +290,10 @@ class _LoginFormState extends State<LoginForm> {
                     color: Colors.white10,
                     child: CircularProgressIndicator(),
                   )
-                : null,
+                : Container(),
             state is LoginFailure
                 ? ErrorNotification(titleText: state.error)
-                : null,
+                : Container(),
           ],
         );
       },

@@ -109,7 +109,13 @@ class _FeedScreenState extends State<FeedScreen> {
         }
         if (state is PostFailure) {
           return Center(
-            child: Text('failed to fetch posts'),
+            child: GestureDetector(
+              onTap: () {
+                _postBloc.add(PostFetched());
+                setState(() {});
+              },
+              child: Icon(Icons.refresh),
+            ),
           );
         }
         if (state is PostSuccess) {

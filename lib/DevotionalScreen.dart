@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:devotion/SingleEventScreen.dart';
 import 'package:devotion/misc/StyleConstants.dart';
 import 'package:devotion/models/Devotional.dart';
+import 'package:devotion/util/Constants.dart';
 import 'package:devotion/util/NetworkingClass.dart';
 import 'package:devotion/util/TimeHandler.dart';
 import 'package:devotion/widgets/AppBarWidget.dart';
@@ -95,7 +96,7 @@ class DevotionalWidget extends StatelessWidget {
                           child: Image.network(
                             devotional.poster.images != null
                                 ? devotional.poster.images[0].medium
-                                : 'images/avatar1.jpg',
+                                : AVATAR_URL,
                             height: 35,
                             width: 35,
                           ),
@@ -133,8 +134,9 @@ class DevotionalWidget extends StatelessWidget {
                       height: 25,
                     ),
                     AreYouGoing(
-                        isDevoted: devotional.devoted == 1,
-                        devotional: devotional),
+                      isDevoted: devotional.devoted == 1,
+                      devotional: devotional,
+                    ),
                   ],
                 ),
               ),

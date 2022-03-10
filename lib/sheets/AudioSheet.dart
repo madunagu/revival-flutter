@@ -11,23 +11,23 @@ import 'package:devotion/widgets/MapWidget.dart';
 import 'package:devotion/widgets/SelectImageWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class VideoSheet extends StatefulWidget {
-  VideoSheet({Key key}) : super(key: key);
+class AudioSheet extends StatefulWidget {
+  AudioSheet({Key key}) : super(key: key);
   @override
-  _VideoSheetState createState() => _VideoSheetState();
+  _AudioSheetState createState() => _AudioSheetState();
 }
 
-class _VideoSheetState extends State<VideoSheet> {
+class _AudioSheetState extends State<AudioSheet> {
   final VideoPost myVideo = VideoPost();
   final NetworkingClass myNetwork = NetworkingClass();
   final _formKey = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController transcriptController = TextEditingController();
-  File video;
+  File audio;
   final TextStyle inputStyle = const TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.w500,
@@ -59,12 +59,6 @@ class _VideoSheetState extends State<VideoSheet> {
     hintText: 'Address line 1',
   );
 
-  Future<File> _vidFromGallery() async {
-    PickedFile image =
-        await ImagePicker().getVideo(source: ImageSource.gallery);
-    return File(image.path);
-  }
-
   String validationMessage(FormSheetState state, String inputName) {
     if (state is FormInvalidated) {
       if (state.errors.containsKey(inputName)) {
@@ -87,18 +81,31 @@ class _VideoSheetState extends State<VideoSheet> {
     transcriptController.dispose();
   }
 
+  Future<File> _vidFromGallery() async {
+    PickedFile image = await
+    ImagePicker().getVideo(source: ImageSource.gallery);
+
+    return File(image.path);
+  }
+
   void submitButtonPressed() {
     this.myVideo.name = nameController.value.text;
     this.myVideo.description = descriptionController.value.text;
     this.myVideo.fullText = transcriptController.value.text;
-    Map<String, dynamic> obj = myVideo.toJson();
-    obj['video'] = base64Encode(video.readAsBytesSync());
+    // this.myAddress.country = countryValue;
+    // this.myVideo.state = countryValue;
     BlocProvider.of<FormBloc>(context).add(
       CreateButtonPressed(
-        object: obj,
+        object: myVideo.toJson(),
         url: '/video-posts',
       ),
     );
+  }
+
+  void editVideo(String value, String property) {
+    setState(() {
+      // this.myVideo.property
+    });
   }
 
   @override
@@ -171,7 +178,7 @@ class _VideoSheetState extends State<VideoSheet> {
                     SelectImageWidget(
                       title: 'Select Video',
                       onTap: () async {
-                        video = await _vidFromGallery();
+                        audio = await _vidFromGallery();
                         setState(() {});
                       },
                     ),

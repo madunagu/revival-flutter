@@ -18,7 +18,7 @@ class FormBloc extends Bloc<FormEvent, FormSheetState> {
     if (event is CreateButtonPressed) {
       yield FormInProgress();
       log('posting data object to $event.url');
-      log(event.object.toString());
+      // log(event.object.toString());
       try {
         final Map<String, dynamic> response = await myNetwork.post(
           event.url,

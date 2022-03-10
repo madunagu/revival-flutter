@@ -5,7 +5,9 @@ import 'package:devotion/bloc/blocs/list.bloc.dart';
 import 'package:devotion/bloc/events/ListEvent.dart';
 import 'package:devotion/bloc/states/ListState.dart';
 import 'package:devotion/models/VideoPost.dart';
+import 'package:devotion/sheets/VideoSheet.dart';
 import 'package:devotion/widgets/AppBarWidget.dart';
+import 'package:devotion/widgets/BottomSheetWidget.dart';
 import 'package:devotion/widgets/ImageAvatarWidget.dart';
 import 'package:devotion/widgets/AppScaffoldWidget.dart';
 import 'package:devotion/misc/StyleConstants.dart';
@@ -23,6 +25,17 @@ class VideosScreen extends StatelessWidget {
         title: 'Videos',
         rightIcon: Icons.filter,
       ),
+      floatingButtonIcon: Icons.add,
+      floatingButtonTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BottomSheetWidget(
+              child: VideoSheet(),
+            ),
+          ),
+        );
+      },
       body: BlocProvider(
         create: (BuildContext context) => ListBloc(
           feedType: 'video',
@@ -108,132 +121,132 @@ class VideoItem extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Container(
-            height: 72,
-            padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-            width: size.width,
-            child: UserInfoWidget(user: video.user),
-          ),
-          Container(
-            width: size.width,
-            height: 210,
-            child: Stack(
-              children: <Widget>[
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(60),
-                      bottomRight: Radius.circular(60),
-                    ),
-                    child: Container(
-                      height: 210,
-                      width: size.width - 24,
-                      child: video.images != null && video.images.isNotEmpty
-                          ? Image.network(
-                              video.images[0].medium ?? 'images/video.jpg',
-                              fit: BoxFit.cover,
-                            )
-                          : Container(),
+    return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PlayerScreen(playable: this.video),
+        ),
+      ),
+      child: Container(
+        child: Column(
+          children: <Widget>[
+            Container(
+              height: 72,
+              padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+              width: size.width,
+              child: UserInfoWidget(user: video.user),
+            ),
+            Container(
+              width: size.width,
+              height: 210,
+              child: Stack(
+                children: <Widget>[
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(60),
+                        bottomRight: Radius.circular(60),
+                      ),
+                      child: Container(
+                        height: 210,
+                        width: size.width - 24,
+                        child: video.images != null && video.images.isNotEmpty
+                            ? Image.network(
+                                video.images[0].medium ?? 'images/video.jpg',
+                                fit: BoxFit.cover,
+                              )
+                            : Container(),
+                      ),
                     ),
                   ),
-                ),
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  width: size.width - 24,
-                  height: 105,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(60),
-                    ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.transparent,
-                            Colors.black.withOpacity(0.5),
-                          ],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    width: size.width - 24,
+                    height: 105,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        bottomRight: Radius.circular(60),
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.transparent,
+                              Colors.black.withOpacity(0.5),
+                            ],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                Positioned(
-                  bottom: 15,
-                  left: 0,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 32,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        InteractionButtonWidget(
-                          icon: Icons.favorite,
-                          count: video.likesCount,
-                        ),
-                        SizedBox(
-                          width: 22,
-                        ),
-                        InteractionButtonWidget(
-                          icon: Icons.comment,
-                          count: video.commentsCount,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Positioned(
-                  bottom: 210 / 2, //- 50 / 2,
-                  left: (size.width / 2) - 12 - 50 / 2,
-                  width: 50,
-                  height: 50,
-                  child: InkWell(
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            PlayerScreen(playable: this.video),
+                  Positioned(
+                    bottom: 15,
+                    left: 0,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 32,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          InteractionButtonWidget(
+                            icon: Icons.favorite,
+                            count: video.likesCount,
+                            active: video.liked == 1,
+                          ),
+                          SizedBox(
+                            width: 22,
+                          ),
+                          InteractionButtonWidget(
+                            icon: Icons.comment,
+                            count: video.commentsCount,
+                          ),
+                        ],
                       ),
                     ),
+                  ),
+                  Positioned(
+                    bottom: 210 / 2, //- 50 / 2,
+                    left: (size.width / 2) - 12 - 50 / 2,
+                    width: 50,
+                    height: 50,
                     child: Icon(
                       Icons.play_circle_filled,
                       size: 50,
                       color: Colors.white,
                     ),
                   ),
-                ),
-                Positioned(
-                  left: 0,
-                  bottom: 50,
-                  child: Container(
-                    padding: EdgeInsets.only(left: 32, right: 56),
-                    child: RichText(
-                      maxLines: 2,
-                      text: TextSpan(
-                        text: video.name,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.w600,
+                  Positioned(
+                    left: 0,
+                    bottom: 50,
+                    child: Container(
+                      padding: EdgeInsets.only(left: 32, right: 56),
+                      child: RichText(
+                        maxLines: 2,
+                        text: TextSpan(
+                          text: video.name,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

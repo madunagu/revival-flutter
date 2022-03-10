@@ -8,6 +8,8 @@
   "phone": "+2348065708630",
   "gender": "String",
   "follower_count": 0,
+  "messages_count": 0,
+  "notifications_count": 0,
   "is_following": 1,
   "images": "$[]ResizedImage",
   "created_at": "@datetime",

@@ -13,13 +13,24 @@ import 'package:devotion/util/NetworkingClass.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
+enum Method {
+  GET,
+  POST,
+  PUT,
+  DELETE,
+}
+
 class ListBloc extends Bloc<ListEvent, ListState> {
   ListBloc({
     @required this.feedType,
     @required this.resource,
+    this.method = Method.GET,
+    this.params,
   }) : assert(resource != null);
   final String feedType;
   final String resource;
+  final Method method;
+  final dynamic params;
   @override
   ListState get initialState => ListInitial();
   //TODO: work on navigation in infinite list
@@ -38,7 +49,8 @@ class ListBloc extends Bloc<ListEvent, ListState> {
           return;
         }
         if (currentState is ListSuccess) {
-          final ServerResponse serverResponse = await _fetchList(currentState.currentPage + 1, 20);
+          final ServerResponse serverResponse =
+              await _fetchList(currentState.currentPage + 1, 20);
           yield ListSuccess(
             models: currentState.models + serverResponse.data,
             totalPages: serverResponse.totalPages,
@@ -64,12 +76,17 @@ class ListBloc extends Bloc<ListEvent, ListState> {
   }
 
   bool _hasReachedMax(ListState state) =>
-      state is ListSuccess &&
-      state.currentPage >= state.totalPages;
+      state is ListSuccess && state.currentPage >= state.totalPages;
 
   Future<ServerResponse> _fetchList(int page, int limit) async {
-    final Map<String, dynamic> res =
-        await NetworkingClass().get(resource + "?page=$page&perPage=$limit");
+    Map<String, dynamic> res;
+    if (method == Method.PUT) {
+      res = await NetworkingClass()
+          .put(resource + "?page=$page&perPage=$limit", []);
+    } else {
+      res =
+          await NetworkingClass().get(resource + "?page=$page&perPage=$limit");
+    }
     ServerResponse response = ServerResponse.fromJson(res);
     final List<dynamic> items = [];
     for (var i = 0; i < response.data.length; i++) {

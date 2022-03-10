@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
             return SplashScreen();
           }
           if (state is AuthenticationSuccess) {
-            return MainScreen();
+            return MainScreen(authState: state);
           }
           if (state is AuthenticationFailure) {
             return LoginScreen();
@@ -112,6 +112,8 @@ class SimpleBlocDelegate extends BlocDelegate {
 }
 
 class MainScreen extends StatefulWidget {
+  MainScreen({@required this.authState});
+  final AuthenticationSuccess authState;
   @override
   _MainScreenState createState() => _MainScreenState();
 }
@@ -154,7 +156,9 @@ class _MainScreenState extends State<MainScreen>
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: TabBarView(controller: _tabController, children: [
-          SingleChildScrollView(child: MyProfileScreen()),
+          SingleChildScrollView(
+            child: MyProfileScreen(user: widget.authState.user),
+          ),
           FeedScreen(colors: trendingColors),
           FeedScreen(colors: healthColors),
           FeedScreen(colors: trendingColors),

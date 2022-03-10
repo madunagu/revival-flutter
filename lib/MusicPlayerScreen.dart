@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:devotion/bloc/blocs/list.bloc.dart';
@@ -15,9 +16,9 @@ import 'package:devotion/widgets/PlayerTabsWidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:audio_service/audio_service.dart';
-//import 'package:just_audio/just_audio.dart';
 
-import 'package:devotion/util/AudioPlayerTask.dart';
+//import 'package:just_audio/just_audio.dart';
+//import 'package:devotion/util/AudioPlayerTask.dart';
 
 class MusicPlayerScreen extends StatefulWidget {
   final AudioPost playable;
@@ -58,20 +59,26 @@ class _MusicPlayerScreenState extends State<MusicPlayerScreen>
     BlocProvider.of<PlayerBloc>(context)
         .add(PlayerFetched(id: 1, playedType: PlayedType.video));
 
-    playMusic(widget.playable);
+    playMusic();
     super.initState();
   }
 
-  playMusic(AudioPost audio) async {
+  void playMusic() async {
     log('trying to play music');
     var item = MediaItem(
-      id: ROOT_URL + audio.srcUrl,
+      id: ROOT_URL + widget.playable.srcUrl,
       album: 'Devotion Albums',
 //      artist: audio.author.name,
-      title: audio.name,
+      title: widget.playable.name,
     );
+    // await AudioService.start(backgroundTaskEntrypoint: audioEntryPoint);
+    await AudioService.customAction('playAudio', [
+      widget.playable.name,
+      widget.playable.author?.name,
+      widget.playable.srcUrl,
+    ]);
     await AudioService.addQueueItem(item);
-    await AudioService.play();
+    // await AudioService.play();
   }
 
   @override
@@ -108,6 +115,7 @@ class _MusicPlayerScreenState extends State<MusicPlayerScreen>
               top: sheetPositionTop - 35,
               child: AudioSlider(
                 size: size,
+                audio: widget.playable,
               ),
             ),
             Positioned(
@@ -253,8 +261,10 @@ class _AudioControlsState extends State<AudioControls> {
   bool isControlsVisible = true;
   double height = 280;
   bool isPlaying = false;
-  bool isLoaded = false;
+  bool isLoaded = true;
   bool isError = false;
+  StreamSubscription<PlaybackState> audioStateSub;
+
   showControls() {
     setState(() {
       isControlsVisible = true;
@@ -269,42 +279,58 @@ class _AudioControlsState extends State<AudioControls> {
 
   @override
   void initState() {
-    AudioService.playbackStateStream.listen((PlaybackState state) {
-      if (state.playing)
-        isPlaying = true;
-      else {
-        isPlaying = false;
-        log(state.processingState.toString());
-        switch (state.processingState) {
-          case AudioProcessingState.none:
-          case AudioProcessingState.connecting:
-            isLoaded = false;
-            break;
-          case AudioProcessingState.error:
-            isError = true;
-            isLoaded = false;
-            break;
-          case AudioProcessingState.buffering:
-            isLoaded = false;
-            break;
-          case AudioProcessingState.ready:
-            isLoaded = true;
-            break;
-          case AudioProcessingState.fastForwarding:
-          case AudioProcessingState.rewinding:
-          case AudioProcessingState.skippingToPrevious:
-          case AudioProcessingState.skippingToNext:
-          case AudioProcessingState.skippingToQueueItem:
-          case AudioProcessingState.completed:
-            isLoaded = true;
-            break;
-          case AudioProcessingState.stopped:
-            isLoaded = true;
-            break;
-        }
-      }
-    });
+    initAudio();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    audioStateSub.cancel();
+    super.dispose();
+  }
+
+  void initAudio() {
+    audioStateSub =
+        AudioService.playbackStateStream.listen((PlaybackState state) {
+      log(state.processingState.toString());
+      setState(() {
+        if (state.playing) {
+          isPlaying = true;
+          isLoaded = true;
+          log('AudioProcessingState.playing');
+        } else {
+          isPlaying = false;
+          switch (state.processingState) {
+            case AudioProcessingState.none:
+            case AudioProcessingState.connecting:
+              isLoaded = false;
+              break;
+            case AudioProcessingState.error:
+              isError = true;
+              isLoaded = false;
+              break;
+            case AudioProcessingState.buffering:
+              isLoaded = false;
+              break;
+            case AudioProcessingState.ready:
+              isLoaded = true;
+
+              break;
+            case AudioProcessingState.fastForwarding:
+            case AudioProcessingState.rewinding:
+            case AudioProcessingState.skippingToPrevious:
+            case AudioProcessingState.skippingToNext:
+            case AudioProcessingState.skippingToQueueItem:
+            case AudioProcessingState.completed:
+              isLoaded = true;
+              break;
+            case AudioProcessingState.stopped:
+              isLoaded = true;
+              break;
+          }
+        }
+      });
+    });
   }
 
   @override
@@ -350,12 +376,13 @@ class _AudioControlsState extends State<AudioControls> {
                             ],
                           ),
                         ),
-                        isPlaying
+                        isLoaded
                             ? Container(
                                 width: widget.size.width,
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: 50,
-                                    vertical: 30 / 540 * height),
+                                  horizontal: 50,
+                                  vertical: 30 / 540 * height,
+                                ),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -367,13 +394,13 @@ class _AudioControlsState extends State<AudioControls> {
                                     ),
                                     InkWell(
                                       onTap: () {
-                                        setState(() {
-                                          if (isPlaying) {
-                                            AudioService.pause();
-                                          } else {
-                                            AudioService.play();
-                                          }
-                                        });
+                                        if (isPlaying) {
+                                          AudioService.pause();
+                                          isPlaying = false;
+                                        } else {
+                                          AudioService.play();
+                                          isPlaying = true;
+                                        }
                                       },
                                       child: Container(
                                         height: 50,
@@ -410,12 +437,6 @@ class _AudioControlsState extends State<AudioControls> {
                                     height: height - 86,
                                     width: widget.size.width,
                                     alignment: Alignment.center,
-                                    child: CircularProgressIndicator(),
-                                  )
-                                : Container(
-                                    height: height - 86,
-                                    width: widget.size.width,
-                                    alignment: Alignment.center,
                                     child: Container(
                                       height: 50,
                                       width: 50,
@@ -427,6 +448,12 @@ class _AudioControlsState extends State<AudioControls> {
                                       child: Icon(Icons.refresh,
                                           color: trendingColors[0], size: 45),
                                     ),
+                                  )
+                                : Container(
+                                    height: height - 86,
+                                    width: widget.size.width,
+                                    alignment: Alignment.center,
+                                    child: CircularProgressIndicator(),
                                   ),
                       ],
                     ),
@@ -445,10 +472,12 @@ class _AudioControlsState extends State<AudioControls> {
 class AudioSlider extends StatefulWidget {
   const AudioSlider({
     Key key,
+    @required this.audio,
     @required this.size,
   }) : super(key: key);
 
   final Size size;
+  final AudioPost audio;
 
   @override
   _AudioSliderState createState() => _AudioSliderState();
@@ -457,26 +486,34 @@ class AudioSlider extends StatefulWidget {
 class _AudioSliderState extends State<AudioSlider> {
   double sliderPos = 0;
   double duration = 0;
-  void sliderChanged(val) {
+  StreamSubscription<double> positionSub;
+  void sliderChanged(val) async {
     setState(() {
       sliderPos = val;
     });
-    AudioService.seekTo(Duration(seconds: val.round()));
+
+    await AudioService.seekTo(Duration(seconds: val.round()));
   }
 
   @override
   void initState() {
-//    AudioService.positionStream.listen((Duration position) {
-//      sliderPos = position.inSeconds.toDouble();
-//    });
-//    AudioService.currentMediaItemStream.listen((MediaItem item) {
-//      duration = item.duration.inSeconds.toDouble();
-//    });
+    positionSub = AudioService.positionStream
+        .map((d) => d.inSeconds.toDouble())
+        .distinct()
+        .listen((double position) {
+      setState(() {
+        sliderPos = position;
+      });
+      log("position $position");
+    });
+    duration = widget.audio.length.toDouble();
+    log(duration.toString());
     super.initState();
   }
 
   @override
   void dispose() {
+    positionSub.cancel();
     super.dispose();
   }
 
@@ -498,10 +535,12 @@ class _AudioSliderState extends State<AudioSlider> {
 class DockedCurrentlyPlaying extends StatelessWidget {
   final Size size;
   final AudioPost audio;
+
   const DockedCurrentlyPlaying({
     @required this.size,
     @required this.audio,
   });
+
   @override
   Widget build(BuildContext context) {
     return Container(

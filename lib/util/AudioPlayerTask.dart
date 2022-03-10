@@ -20,13 +20,6 @@ class AudioPlayerTask extends BackgroundAudioTask {
   }
 
   onStart(Map<String, dynamic> params) async {
-    // final mediaItem = MediaItem(
-    //   id: ROOT_URL + '/storage/audio/Hillsong-Touch-Of-Heaven.mp3',
-    //   album: "Foo",
-    //   title: "Touch Of Heaven",
-    // );
-    // Tell the UI and media notification what we're playing.
-    // AudioServiceBackground.setMediaItem(mediaItem);
     // Listen to state changes on the player...
     _player.playerStateStream.listen((playerState) {
       // ... and forward them to all audio_service clients.
@@ -48,10 +41,6 @@ class AudioPlayerTask extends BackgroundAudioTask {
         ],
       );
     });
-    // Play when ready.
-    // await _player.setUrl(mediaItem.id);
-    // _player.play();
-    // Start loading something (will play when ready).
   }
 
   onCustomAction(String name, dynamic arguments) async {
@@ -68,6 +57,13 @@ class AudioPlayerTask extends BackgroundAudioTask {
           album: "Foo",
           title: "Touch Of Heaven",
         );
+        // AudioPost audio = arguments;
+        // final mediaItem = MediaItem(
+        //   id: ROOT_URL + audio.srcUrl,
+        //   album: audio.author.name,
+        //   title: audio.name,
+        // );
+        AudioServiceBackground.setMediaItem(mediaItem);
         await _player.setUrl(mediaItem.id);
         await _player.play();
         break;
