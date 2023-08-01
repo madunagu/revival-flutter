@@ -4,10 +4,10 @@ class InteractionButtonWidget extends StatelessWidget {
   final IconData icon;
   final int count;
   final bool active;
-  final Function onTap;
-  final Color color;
+  final Function()? onTap;
+  final Color? color;
   InteractionButtonWidget(
-      {this.icon, this.count, this.onTap,this.color =Colors.white, this.active = false});
+      {required this.icon, required this.count, this.onTap,this.color =Colors.white, this.active = false});
   @override
   Widget build(BuildContext context) {
     return Container(

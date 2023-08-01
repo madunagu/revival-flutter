@@ -13,7 +13,7 @@ class PlayerFetched extends PlayerEvent {
   final int id;
   final PlayedType playedType;
 
-  const PlayerFetched({@required this.id, @required this.playedType});
+  const PlayerFetched({required this.id, required this.playedType});
 
   @override
   List<Object> get props => [id, playedType];
@@ -40,7 +40,7 @@ class PlayerLiked extends PlayerEvent {
   final int id;
   final PlayedType playedType;
 
-  const PlayerLiked({@required this.id, @required this.playedType});
+  const PlayerLiked({required this.id, required this.playedType});
 
   @override
   List<Object> get props => [id, playedType];

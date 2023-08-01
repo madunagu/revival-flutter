@@ -1,8 +1,8 @@
 import 'package:devotion/ChurchListScreen.dart';
 import 'package:devotion/misc/StyleConstants.dart';
-import 'package:devotion/models/Church.dart';
-import 'package:devotion/models/Event.dart';
-import 'package:devotion/models/User.dart';
+import 'package:devotion/models/user.dart';
+import 'package:devotion/models/church.dart';
+import 'package:devotion/models/event.dart';
 import 'package:devotion/widgets/ImageAvatarListWidget.dart';
 import 'package:devotion/widgets/ImageAvatarWidget.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +17,8 @@ final TextStyle italicStyle = const TextStyle(
 
 class CurvedChurchItemWidget extends StatelessWidget {
   final Church church;
-  final Color color;
-  CurvedChurchItemWidget({this.church, this.color});
+  final Color? color;
+  CurvedChurchItemWidget({required this.church, this.color = Colors.red});
 
   factory CurvedChurchItemWidget.fromChurch(Church church, Color color) {
     return CurvedChurchItemWidget(
@@ -38,7 +38,7 @@ class CurvedChurchItemWidget extends StatelessWidget {
           left: 32,
         ),
         child: Stack(
-          overflow: Overflow.clip,
+          // overflow: Overflow.clip,
           children: [
             Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

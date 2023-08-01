@@ -17,7 +17,7 @@
     "liked": 0,
     "views_count": 0,
     "viewed": 0,
-    "comments": [],
+    "comments": "$[]Comment",
     "author": "$User",
     "user": "$User",
     "churches": "$[]Church",

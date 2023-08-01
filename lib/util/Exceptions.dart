@@ -14,7 +14,7 @@ class AuthenticationException extends ApiException {}
 
 class ValidationErrorException extends ApiException {
   final Map<String, dynamic> errors;
-  ValidationErrorException({@required this.errors});
+  ValidationErrorException({required this.errors});
 }
 
 class UnknownException extends ApiException {}

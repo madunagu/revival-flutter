@@ -110,9 +110,9 @@ class SearchDetail extends StatelessWidget {
   final IconData icon;
   final String text;
   const SearchDetail({
-    Key key,
-    this.icon,
-    this.text,
+    Key? key,
+    required this.icon,
+    required this.text,
   }) : super(key: key);
 
   @override
@@ -147,10 +147,10 @@ class FlightDetail extends StatelessWidget {
   final String amount;
 
   FlightDetail({
-    this.amount,
-    this.image,
-    this.subTitle,
-    this.title,
+    required this.amount,
+    required this.image,
+    required this.subTitle,
+    required this.title,
   });
 
   @override

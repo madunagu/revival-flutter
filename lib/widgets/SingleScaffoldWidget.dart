@@ -9,7 +9,7 @@ class SingleScaffoldWidget extends StatelessWidget {
   final AppBarWidget title;
 
   SingleScaffoldWidget(
-      {Key key, this.body, this.titleColor, this.bodyColor, this.title})
+      {Key? key, required this.body, this.titleColor= Colors.white, this.bodyColor= Colors.white,required this.title})
       : super(key: key);
 
   @override

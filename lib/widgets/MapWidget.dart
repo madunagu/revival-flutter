@@ -1,9 +1,9 @@
-import 'package:devotion/models/Address.dart';
+import 'package:devotion/models/address.dart';
 import 'package:flutter/material.dart';
 
 class MapWidget extends StatelessWidget {
-  final Address address;
-  MapWidget({@required this.address});
+  final String address;
+  MapWidget({required this.address});
   @override
   Widget build(BuildContext context) {
     return Container(

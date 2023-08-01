@@ -7,7 +7,6 @@ import 'package:devotion/bloc/events/ListEvent.dart';
 import 'package:devotion/bloc/events/index.dart';
 import 'package:devotion/bloc/states/ListState.dart';
 import 'package:devotion/misc/StyleConstants.dart';
-import 'package:devotion/models/Feed.dart';
 import 'package:devotion/models/index.dart';
 import 'package:devotion/widgets/AppBarWidget.dart';
 import 'package:devotion/widgets/AppScaffoldWidget.dart';
@@ -25,7 +24,7 @@ import 'bloc/states/index.dart';
 class EventListScreen extends StatelessWidget {
   final List<Color> colors;
   final tag;
-  EventListScreen({Key key, this.colors, this.tag = 0}) : super(key: key);
+  EventListScreen({Key? key, required this.colors, this.tag = 0}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +55,7 @@ class EventListScreen extends StatelessWidget {
 class EventList extends StatefulWidget {
   final List<Color> colors;
   final tag;
-  EventList({Key key, this.colors, this.tag = 0}) : super(key: key);
+  EventList({Key? key, required this.colors, this.tag = 0}) : super(key: key);
 
   @override
   _EventListState createState() => _EventListState();
@@ -67,7 +66,7 @@ class _EventListState extends State<EventList> {
 
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
-  ListBloc _listBloc;
+  late final ListBloc _listBloc;
 
   Widget organiseStack(List<dynamic> items, BuildContext context) {
     List<Widget> output = [];

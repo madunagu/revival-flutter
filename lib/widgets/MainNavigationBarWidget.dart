@@ -9,14 +9,14 @@ import 'package:flutter/rendering.dart';
 class MainNavigationBarWidget extends StatefulWidget {
   final TabController tabController;
   final navItemSize = 48;
-  MainNavigationBarWidget({@required this.tabController});
+  MainNavigationBarWidget({required this.tabController});
   @override
   _MainNavigationBarWidgetState createState() =>
       _MainNavigationBarWidgetState();
 }
 
 class _MainNavigationBarWidgetState extends State<MainNavigationBarWidget> {
-  ScrollController _scrollController;
+  late ScrollController _scrollController;
   @override
   void initState() {
     widget.tabController.addListener(() {
@@ -106,17 +106,17 @@ class SingleNavigationItem extends StatelessWidget {
   final IconData icon;
   final String title;
   final double size;
-  final int index;
+  final int? index;
   final TabController tabController;
   final bool isSelected;
 
   SingleNavigationItem({
-    this.title,
-    this.icon,
+    required this.title,
+    required this.icon,
     this.index,
     this.size = 48,
-    this.tabController,
-    this.isSelected,
+    required this.tabController,
+    this.isSelected = false,
   });
 
   @override
@@ -138,7 +138,8 @@ class SingleNavigationItem extends StatelessWidget {
               height: this.size,
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: isSelected ? borderColors[index%4] : Color(0xffE0E0E0),
+                  color:
+                      isSelected ? borderColors[index % 4] : Color(0xffE0E0E0),
                   width: isSelected ? 2 : 1,
                 ),
                 borderRadius: BorderRadius.all(
@@ -171,7 +172,7 @@ class SingleNavigationItem extends StatelessWidget {
 
 class ProfileNavigationItem extends StatelessWidget {
   final double size;
-  final int index;
+  final int? index;
   final TabController tabController;
   final bool isSelected;
   final int notifications;
@@ -180,8 +181,8 @@ class ProfileNavigationItem extends StatelessWidget {
   ProfileNavigationItem({
     this.index,
     this.size = 48,
-    this.tabController,
-    this.isSelected,
+    required this.tabController,
+    this.isSelected = false,
     this.image = 'images/avatar1.jpg',
     this.notifications = 12,
   });
@@ -207,8 +208,10 @@ class ProfileNavigationItem extends StatelessWidget {
                     child: Container(
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: isSelected ? Color(0xff9599b3) : Color(0x009599b3),
-                          width:  2,
+                          color: isSelected
+                              ? Color(0xff9599b3)
+                              : Color(0x009599b3),
+                          width: 2,
                         ),
                         borderRadius: BorderRadius.circular(50),
                       ),

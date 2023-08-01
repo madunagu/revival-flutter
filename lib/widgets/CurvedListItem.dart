@@ -1,5 +1,5 @@
 import 'package:devotion/misc/StyleConstants.dart';
-import 'package:devotion/models/Event.dart';
+import 'package:devotion/models/event.dart';
 import 'package:devotion/widgets/ImageAvatarListWidget.dart';
 import 'package:devotion/widgets/ImageAvatarWidget.dart';
 import 'package:flutter/material.dart';
@@ -7,11 +7,11 @@ import 'package:flutter/material.dart';
 class CurvedListItem extends StatelessWidget {
   final String title;
   final String time;
-  final String people;
-  final IconData icon;
-  final Function onTap;
+  final String? people;
+  final IconData? icon;
+  final Function()? onTap;
 
-  CurvedListItem({this.title, this.time, this.icon, this.people, this.onTap});
+  CurvedListItem({required this.title,required this.time, this.icon, this.people, this.onTap});
 
   factory CurvedListItem.fromEvent(Event serverEvent) {
     return CurvedListItem(
@@ -30,7 +30,7 @@ class CurvedListItem extends StatelessWidget {
           left: 32,
         ),
         child: Stack(
-          overflow: Overflow.clip,
+          // overflow: Overflow.clip,
           children: [
             Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'dart:developer';
 
+import 'package:devotion/util/Exceptions.dart';
 import 'package:http/http.dart' as http;
-import 'package:wetrek/network/exceptions.dart';
 
 class API {
   static String host = 'https://wetrek.zirite.tech/api';

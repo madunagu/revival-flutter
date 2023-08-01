@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:devotion/SingleEventScreen.dart';
 import 'package:devotion/misc/StyleConstants.dart';
-import 'package:devotion/models/Devotional.dart';
 import 'package:devotion/util/Constants.dart';
 import 'package:devotion/util/NetworkingClass.dart';
 import 'package:devotion/util/TimeHandler.dart';
@@ -12,6 +11,8 @@ import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/widgets/EventAppBarWidget.dart';
 import 'package:devotion/widgets/ImageAvatarListWidget.dart';
 import 'package:flutter/material.dart';
+
+import 'models/devotional.dart';
 
 var smallTextSyle = TextStyle(color: Colors.grey, fontSize: 12);
 var largeWhiteTextStyle = TextStyle(
@@ -27,13 +28,13 @@ var smallWhiteTextStyle = TextStyle(
 
 class DevotionalScreen extends StatefulWidget {
   final Devotional devotional;
-  const DevotionalScreen({this.devotional});
+  const DevotionalScreen({required this.devotional});
   @override
   _DevotionalScreenState createState() => _DevotionalScreenState();
 }
 
 class _DevotionalScreenState extends State<DevotionalScreen> {
-  Devotional devotional;
+  late Devotional devotional;
 
   @override
   void initState() {
@@ -68,7 +69,7 @@ class _DevotionalScreenState extends State<DevotionalScreen> {
 class DevotionalWidget extends StatelessWidget {
   final Devotional devotional;
   DevotionalWidget({
-    this.devotional,
+    required this.devotional,
   });
 
   @override
@@ -341,7 +342,8 @@ class DevotionalWidget extends StatelessWidget {
                                         child: ImageAvatarListWidget(
                                           images: devotional.devotees
                                               .getRange(0, 7)
-                                              .map((e) => e.avatar),
+                                              .map((e) => e.avatar)
+                                              .toList(),
                                           size: 30,
                                         ),
                                       ),
@@ -388,7 +390,7 @@ class DevotionalWidget extends StatelessWidget {
 class AreYouGoing extends StatefulWidget {
   final bool isDevoted;
   final Devotional devotional;
-  const AreYouGoing({Key key, this.isDevoted, @required this.devotional})
+  const AreYouGoing({Key? key, required this.isDevoted, required this.devotional})
       : super(key: key);
 
   @override
@@ -396,7 +398,7 @@ class AreYouGoing extends StatefulWidget {
 }
 
 class _AreYouGoingState extends State<AreYouGoing> {
-  bool isDevoted;
+  late bool isDevoted;
   devote() async {
     setState(() {
       this.isDevoted = true;

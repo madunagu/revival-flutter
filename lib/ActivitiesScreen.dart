@@ -80,7 +80,7 @@ class HorizontalList extends StatelessWidget {
         width: this.width * 169 / 219 * this.cards.length + 70,
         height: 188,
         child: Stack(
-          overflow: Overflow.clip,
+          // overflow: Overflow.clip,
           children: imageAvatars,
         ),
       ),
@@ -92,7 +92,7 @@ class HorizontalListItem extends StatelessWidget {
   final String image;
   const HorizontalListItem({
     this.image = 'images/avatar1.jpg',
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

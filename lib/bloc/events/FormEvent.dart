@@ -10,8 +10,8 @@ class CreateButtonPressed extends FormEvent {
   final String url;
 
   const CreateButtonPressed({
-    @required this.object,
-    @required this.url,
+    required this.object,
+    required this.url,
   });
 
   @override

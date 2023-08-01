@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 abstract class SingleEventBlocState extends Equatable {
 
-  final List propss;
+  final List<Object>? propss;
   SingleEventBlocState([this.propss]);
 
   @override

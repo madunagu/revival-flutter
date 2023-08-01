@@ -20,21 +20,21 @@ class PlayerScreen extends StatefulWidget {
   final VideoPost playable;
 
   final List<double> ratios = [1.77, 3.5];
-  PlayerScreen({this.playable});
+  PlayerScreen({required this.playable});
   @override
   _PlayerScreenState createState() => _PlayerScreenState();
 }
 
 class _PlayerScreenState extends State<PlayerScreen>
     with TickerProviderStateMixin {
-  double videoScreenRatio;
+  late final double videoScreenRatio;
 
-  Size size;
+  late final Size size;
 
-  TabController _tabController;
-  VideoPlayerController _videoController;
+  late TabController _tabController;
+  late VideoPlayerController _videoController;
 
-  Future<void> _initializeVideoPlayerFuture;
+  late Future<void> _initializeVideoPlayerFuture;
 
   toggleSheet(DragEndDetails e) {
     log(e.velocity.pixelsPerSecond.dy.toString());
@@ -178,10 +178,10 @@ class _PlayerScreenState extends State<PlayerScreen>
 
 class SheetHeaderWidget extends StatefulWidget {
   const SheetHeaderWidget({
-    Key key,
-    @required this.size,
-    @required this.tabController,
-    @required this.titles,
+    Key? key,
+    required this.size,
+    required this.tabController,
+    required this.titles,
   }) : super(key: key);
 
   final TabController tabController;
@@ -246,9 +246,9 @@ class _SheetHeaderWidgetState extends State<SheetHeaderWidget> {
 
 class VideoControls extends StatefulWidget {
   VideoControls({
-    this.size,
-    this.height,
-    this.controller,
+    required this.size,
+    required this.height,
+    required this.controller,
   });
 
   final VideoPlayerController controller;
@@ -318,7 +318,7 @@ class _VideoControlsState extends State<VideoControls> {
                             ],
                           ),
                         ),
-                        widget.controller.value.initialized
+                        widget.controller.value.isInitialized
                             ? Container(
                                 width: widget.size.width,
                                 height: widget.height - 80,
@@ -393,9 +393,9 @@ class _VideoControlsState extends State<VideoControls> {
 
 class VideoSlider extends StatefulWidget {
   const VideoSlider({
-    Key key,
-    @required this.controller,
-    @required this.size,
+    Key? key,
+    required this.controller,
+    required this.size,
   }) : super(key: key);
 
   final VideoPlayerController controller;
@@ -456,7 +456,7 @@ class _VideoSliderState extends State<VideoSlider> {
 class DockedCurrentlyPlaying extends StatelessWidget {
   final Size size;
   DockedCurrentlyPlaying({
-    this.size,
+    required this.size,
   });
   @override
   Widget build(BuildContext context) {
@@ -531,9 +531,9 @@ class VideoWidget extends StatelessWidget {
   final Future<void> initFunction;
   final Size size;
   VideoWidget({
-    @required this.controller,
-    @required this.initFunction,
-    this.size,
+    required this.controller,
+    required this.initFunction,
+    required this.size,
   });
   @override
   Widget build(BuildContext context) {

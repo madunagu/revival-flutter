@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:devotion/models/LoginData.dart';
+import 'package:devotion/models/login_data.dart';
 import 'package:devotion/util/NetworkingClass.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -9,8 +9,8 @@ class EventRepository {
   final FlutterSecureStorage storage = FlutterSecureStorage();
 
   Future<String> authenticate({
-    @required String username,
-    @required String password,
+    required String username,
+    required String password,
   }) async {
     NetworkingClass server = NetworkingClass();
     final Map<String, dynamic> res =

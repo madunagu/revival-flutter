@@ -6,7 +6,6 @@ import 'package:devotion/bloc/blocs/player.bloc.dart';
 import 'package:devotion/bloc/events/ListEvent.dart';
 import 'package:devotion/bloc/events/index.dart';
 import 'package:devotion/misc/StyleConstants.dart';
-import 'package:devotion/models/index.dart';
 import 'package:devotion/util/Constants.dart';
 import 'package:devotion/util/TimeHandler.dart';
 import 'package:devotion/widgets/AppScaffoldWidget.dart';
@@ -17,12 +16,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:audio_service/audio_service.dart';
 
+import 'models/audio_post.dart';
+
 //import 'package:just_audio/just_audio.dart';
 //import 'package:devotion/util/AudioPlayerTask.dart';
 
 class MusicPlayerScreen extends StatefulWidget {
   final AudioPost playable;
-  MusicPlayerScreen({this.playable});
+  MusicPlayerScreen({required this.playable});
   @override
   _MusicPlayerScreenState createState() => _MusicPlayerScreenState();
 }
@@ -35,7 +36,7 @@ class _MusicPlayerScreenState extends State<MusicPlayerScreen>
   bool isDocked = false;
   int activeSlide = 0;
 
-  TabController _tabController;
+  late TabController _tabController;
 
   toggleSheet(DragEndDetails e) {
     log(e.velocity.pixelsPerSecond.dy.toString());
@@ -183,10 +184,10 @@ class _MusicPlayerScreenState extends State<MusicPlayerScreen>
 
 class SheetHeaderWidget extends StatefulWidget {
   const SheetHeaderWidget({
-    Key key,
-    @required this.size,
-    @required this.tabController,
-    @required this.titles,
+    Key? key,
+    required this.size,
+    required this.tabController,
+    required this.titles,
   }) : super(key: key);
 
   final TabController tabController;
@@ -250,7 +251,7 @@ class _SheetHeaderWidgetState extends State<SheetHeaderWidget> {
 
 class AudioControls extends StatefulWidget {
   AudioControls({
-    this.size,
+    required this.size,
   });
   final Size size;
   @override
@@ -263,7 +264,7 @@ class _AudioControlsState extends State<AudioControls> {
   bool isPlaying = false;
   bool isLoaded = true;
   bool isError = false;
-  StreamSubscription<PlaybackState> audioStateSub;
+  late final StreamSubscription<PlaybackState> audioStateSub;
 
   showControls() {
     setState(() {
@@ -471,9 +472,9 @@ class _AudioControlsState extends State<AudioControls> {
 
 class AudioSlider extends StatefulWidget {
   const AudioSlider({
-    Key key,
-    @required this.audio,
-    @required this.size,
+    Key? key,
+    required this.audio,
+    required this.size,
   }) : super(key: key);
 
   final Size size;
@@ -486,7 +487,7 @@ class AudioSlider extends StatefulWidget {
 class _AudioSliderState extends State<AudioSlider> {
   double sliderPos = 0;
   double duration = 0;
-  StreamSubscription<double> positionSub;
+  late final StreamSubscription<double> positionSub;
   void sliderChanged(val) async {
     setState(() {
       sliderPos = val;
@@ -537,8 +538,8 @@ class DockedCurrentlyPlaying extends StatelessWidget {
   final AudioPost audio;
 
   const DockedCurrentlyPlaying({
-    @required this.size,
-    @required this.audio,
+    required this.size,
+    required this.audio,
   });
 
   @override
@@ -615,7 +616,7 @@ class AudioWidget extends StatelessWidget {
   final Size size;
   final double height;
   final AudioPost audio;
-  const AudioWidget({this.size, this.height, this.audio});
+  const AudioWidget({required this.size, required this.height, required this.audio});
   @override
   Widget build(BuildContext context) {
     return Container(

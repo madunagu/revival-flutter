@@ -5,14 +5,14 @@ class ErrorNotification extends StatelessWidget {
   final String okText;
   final String bodyText;
   final String titleText;
-  final Function okTap;
-  final Function backTap;
+  final Function()? okTap;
+  final Function()? backTap;
   final String backText;
   const ErrorNotification({
-    Key key,
+    Key? key,
     this.okText = 'Ok',
-    this.bodyText='',
-    this.titleText,
+    this.bodyText = '',
+    required this.titleText,
     this.okTap,
     this.backTap,
     this.backText = 'Back',

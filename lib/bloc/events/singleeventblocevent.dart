@@ -13,7 +13,7 @@ abstract class SingleEventBlocEvent {
 
 class UnSingleEventBlocEvent extends SingleEventBlocEvent {
   @override
-  Stream<SingleEventBlocState> applyAsync({SingleEventBlocState currentState, SingleEventBloc bloc}) async* {
+  Stream<SingleEventBlocState> applyAsync({SingleEventBlocState? currentState, SingleEventBloc? bloc}) async* {
     yield UnSingleEventBlocState();
   }
 }
@@ -22,14 +22,14 @@ class LoadSingleEventBlocEvent extends SingleEventBlocEvent {
    
   @override
   Stream<SingleEventBlocState> applyAsync(
-      {SingleEventBlocState currentState, SingleEventBloc bloc}) async* {
+      {SingleEventBlocState? currentState, SingleEventBloc? bloc}) async* {
     try {
       yield UnSingleEventBlocState();
       await Future.delayed(Duration(seconds: 1));
       yield InSingleEventBlocState('Hello world');
     } catch (_, stackTrace) {
       developer.log('$_', name: 'LoadSingleEventBlocEvent', error: _, stackTrace: stackTrace);
-      yield ErrorSingleEventBlocState( _?.toString());
+      yield ErrorSingleEventBlocState( _.toString());
     }
   }
 }

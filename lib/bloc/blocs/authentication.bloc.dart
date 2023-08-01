@@ -3,10 +3,11 @@ import 'dart:convert';
 
 import 'package:devotion/bloc/events/index.dart';
 import 'package:devotion/bloc/states/index.dart';
-import 'package:devotion/models/User.dart';
-import 'package:devotion/repositories/UserRepository.dart';
+import 'package:devotion/models/user.dart';
 import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
+
+import 'package:devotion/repositories/UserRepository.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {

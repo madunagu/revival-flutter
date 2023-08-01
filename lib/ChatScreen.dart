@@ -72,12 +72,12 @@ class ChatScreen extends StatelessWidget {
 class ChatItemWidget extends StatelessWidget {
   final String message;
   final String name;
-  final String image;
+  final String? image;
   final bool isSender;
 
   ChatItemWidget({
-    this.message,
-    this.name,
+    required this.message,
+    required this.name,
     this.image,
     this.isSender = false,
   });

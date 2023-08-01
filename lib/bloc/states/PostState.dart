@@ -1,6 +1,6 @@
-import 'package:devotion/models/Event.dart';
-import 'package:devotion/models/Feed.dart';
-import 'package:devotion/models/Pagination.dart';
+import 'package:devotion/models/event.dart';
+import 'package:devotion/models/feed.dart';
+import 'package:devotion/models/pagination.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class PostState extends Equatable {
@@ -20,15 +20,15 @@ class PostSuccess extends PostState {
   final int totalPages;
 
   const PostSuccess({
-    this.posts,
-    this.currentPage,
-    this.totalPages,
+    required this.posts,
+    required this.currentPage,
+    required this.totalPages,
   });
 
   PostSuccess copyWith({
-    List<dynamic> posts,
-    int totalPages,
-    int currentPage,
+    List<Feed>? posts,
+    int? totalPages,
+    int? currentPage,
   }) {
     return PostSuccess(
       posts: posts ?? this.posts,

@@ -7,7 +7,7 @@ enum EventEvent {
 
 }
 
-class EventBloc extends Bloc<EventEvent, dynamic> {
+class EventBloc extends Bloc<EventEvent, int> {
   @override
   int get initialState => 0;
 

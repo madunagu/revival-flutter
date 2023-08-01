@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:devotion/bloc/blocs/form.bloc.dart';
 import 'package:devotion/bloc/events/FormEvent.dart';
 import 'package:devotion/bloc/states/FormSheetState.dart';
-import 'package:devotion/models/VideoPost.dart';
+import 'package:devotion/models/video_post.dart';
 import 'package:devotion/util/NetworkingClass.dart';
 import 'package:devotion/widgets/MapWidget.dart';
 import 'package:devotion/widgets/SelectImageWidget.dart';

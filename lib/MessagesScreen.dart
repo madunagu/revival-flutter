@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MessagesScreen extends StatelessWidget {
-  Widget organiseStack({List<MessageItem> children, double height}) {
+  Widget organiseStack({required List<MessageItem> children, required double height}) {
     List<Widget> output = [];
     for (var i = 0; i < children.length; i++) {
       output.insert(

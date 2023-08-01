@@ -1,11 +1,11 @@
 import 'package:devotion/ProfileScreen.dart';
-import 'package:devotion/models/User.dart';
+import 'package:devotion/models/user.dart';
 import 'package:devotion/widgets/ImageAvatarWidget.dart';
 import 'package:flutter/material.dart';
 
 class UserInfoWidget extends StatelessWidget {
   final User user;
-  UserInfoWidget({this.user});
+  UserInfoWidget({required this.user});
   @override
   Widget build(BuildContext context) {
     return InkWell(

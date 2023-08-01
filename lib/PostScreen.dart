@@ -1,15 +1,16 @@
 import 'dart:developer';
 
-import 'package:devotion/models/Post.dart';
-import 'package:devotion/models/ResizedImage.dart';
 import 'package:devotion/util/NetworkingClass.dart';
 import 'package:devotion/widgets/DottedTabBarWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
+import 'models/post.dart';
+import 'models/resized_image.dart';
+
 class PostScreen extends StatefulWidget {
-  PostScreen({this.post});
+  PostScreen({required this.post});
   final Post post;
 
   @override
@@ -18,10 +19,10 @@ class PostScreen extends StatefulWidget {
 
 class _PostScreenState extends State<PostScreen>
     with SingleTickerProviderStateMixin {
-  TabController _tabController;
+  late TabController _tabController;
   int activeSlide = 0;
   // int sliderCount = 2;
-  Post post;
+  late Post post;
   bool isLoading = true;
   @override
   void initState() {

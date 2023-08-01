@@ -2,11 +2,12 @@ import 'package:devotion/DevotionalScreen.dart';
 import 'package:devotion/bloc/blocs/list.bloc.dart';
 import 'package:devotion/bloc/events/ListEvent.dart';
 import 'package:devotion/bloc/states/ListState.dart';
-import 'package:devotion/models/Devotional.dart';
 import 'package:devotion/widgets/AppBarWidget.dart';
 import 'package:devotion/widgets/AppScaffoldWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'models/devotional.dart';
 
 class DevotionalListScreen extends StatelessWidget {
   @override
@@ -32,7 +33,7 @@ class DevotionalListScreen extends StatelessWidget {
 }
 
 class DevotionalListWidget extends StatefulWidget {
-  DevotionalListWidget({Key key}) : super(key: key);
+  DevotionalListWidget({Key? key}) : super(key: key);
 
   @override
   _DevotionalListWidgetState createState() => _DevotionalListWidgetState();
@@ -43,7 +44,7 @@ class _DevotionalListWidgetState extends State<DevotionalListWidget> {
 
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
-  ListBloc _postBloc;
+  late final ListBloc _postBloc;
 
   Widget organiseStack(List<dynamic> items, BuildContext context) {
     List<Widget> output = [];
@@ -125,8 +126,8 @@ class DevotionalItemWidget extends StatelessWidget {
   final Size size;
 
   const DevotionalItemWidget({
-    this.devotional,
-    this.size,
+    required this.devotional,
+    required this.size,
   });
 
   @override

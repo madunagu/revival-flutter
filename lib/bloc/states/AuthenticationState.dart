@@ -1,4 +1,4 @@
-import 'package:devotion/models/User.dart';
+import 'package:devotion/models/user.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -13,7 +13,7 @@ class AuthenticationSuccess extends AuthenticationState {
   final String token;
   final User user;
 
-   AuthenticationSuccess({@required this.token, @required this.user});
+   AuthenticationSuccess({required this.token, required this.user});
 
   @override
   List<Object> get props => [token];

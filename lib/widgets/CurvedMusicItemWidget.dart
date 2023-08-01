@@ -3,19 +3,20 @@ import 'dart:convert';
 import 'package:devotion/MusicPlayerScreen.dart';
 import 'package:devotion/PlayerScreen.dart';
 import 'package:devotion/misc/StyleConstants.dart';
-import 'package:devotion/models/Event.dart';
-import 'package:devotion/models/index.dart';
+import 'package:devotion/models/event.dart';
 import 'package:devotion/util/TimeHandler.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/widgets/ImageAvatarListWidget.dart';
 import 'package:devotion/widgets/ImageAvatarWidget.dart';
 import 'package:flutter/material.dart';
 
+import '../models/audio_post.dart';
+
 class CurvedMusicItemWidget extends StatelessWidget {
   final AudioPost audio;
   final Color color;
 
-  CurvedMusicItemWidget({this.audio, this.color});
+  CurvedMusicItemWidget({required this.audio,required this.color});
   TextStyle italicStyle = const TextStyle(
     color: Color(0x70000000),
     letterSpacing: -0.24,

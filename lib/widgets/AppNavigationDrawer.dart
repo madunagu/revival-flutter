@@ -139,9 +139,9 @@ class _AppNavigationDrawerState extends State<AppNavigationDrawer> {
 class DrawerLink extends StatelessWidget {
   final String title;
   final bool active;
-  final Function onTap;
+  final Function()? onTap;
   DrawerLink({
-    this.title,
+    required this.title,
     this.active = false,
     this.onTap,
   });

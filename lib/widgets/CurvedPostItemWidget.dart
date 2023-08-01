@@ -1,8 +1,7 @@
 import 'dart:convert';
 
 import 'package:devotion/PlayerScreen.dart';
-import 'package:devotion/models/Event.dart';
-import 'package:devotion/models/VideoPost.dart';
+import 'package:devotion/models/event.dart';
 import 'package:devotion/models/index.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/widgets/ImageAvatarWidget.dart';
@@ -11,15 +10,15 @@ import 'package:flutter/material.dart';
 
 class CurvedPostItemWidget extends StatelessWidget {
   final String title;
-  final String time;
-  final String people;
-  final IconData icon;
-  final Function onTap;
-  final int videoId;
-  final VideoPost video;
+  final String? time;
+  final String? people;
+  final IconData? icon;
+  final Function()? onTap;
+  final int? videoId;
+  final VideoPost? video;
 
   CurvedPostItemWidget({
-    this.title,
+    required this.title,
     this.time,
     this.icon,
     this.people,
@@ -106,7 +105,7 @@ class CurvedPostItemWidget extends StatelessWidget {
                       icon: Icons.favorite,
                       active: false,
                       color: Color(0xff757575),
-                      count: 1 ,
+                      count: 1,
                     ),
                     SizedBox(
                       width: 22,

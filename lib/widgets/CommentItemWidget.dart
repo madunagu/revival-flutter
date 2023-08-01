@@ -1,4 +1,4 @@
-import 'package:devotion/models/Comment.dart';
+import 'package:devotion/models/comment.dart';
 import 'package:devotion/util/TimeHandler.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/widgets/ImageAvatarWidget.dart';
@@ -49,8 +49,8 @@ class CommentItemWidget extends StatelessWidget {
 //  final Size size;
 
   CommentItemWidget({
-    Key key,
-    this.comment,
+    Key? key,
+    required this.comment,
   }) : super(key: key);
 
   @override

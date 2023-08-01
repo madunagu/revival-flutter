@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class NotificationScreen extends StatelessWidget {
-  Widget organiseStack({List<NotificationItem> children, double height}) {
+  Widget organiseStack({required List<NotificationItem> children, required double height}) {
     List<Widget> output = [];
     for (var i = 0; i < children.length; i++) {
       output.insert(
@@ -69,9 +69,9 @@ class NotificationItem extends StatelessWidget {
   final bool isSeen;
 
   NotificationItem({
-    Key key,
-    this.title,
-    this.image,
+    Key? key,
+    required this.title,
+    required this.image,
     this.timeAgo,
     this.isSeen = true,
   }) : super(key: key);

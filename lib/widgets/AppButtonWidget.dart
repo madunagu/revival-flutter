@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class AppButtonWidget extends StatelessWidget {
   final String text;
-  final Function onTap;
+  final Function()? onTap;
   final Color color;
   final double height;
   AppButtonWidget({
-    this.text,
+    required this.text,
     this.onTap,
     this.height = 44,
     this.color = const Color(0xff9599B3),

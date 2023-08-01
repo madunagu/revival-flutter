@@ -5,7 +5,7 @@ import 'dart:developer';
 import 'package:devotion/bloc/events/PostEvent.dart';
 import 'package:devotion/bloc/states/PostState.dart';
 import 'package:devotion/models/index.dart';
-import 'package:devotion/models/Event.dart';
+import 'package:devotion/models/event.dart';
 import 'package:devotion/util/NetworkingClass.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
@@ -13,7 +13,7 @@ import 'package:rxdart/rxdart.dart';
 class PostBloc extends Bloc<PostEvent, PostState> {
   @override
   PostState get initialState => PostInitial();
-  Pagination pagination;
+  late Pagination pagination;
   @override
   Stream<PostState> mapEventToState(PostEvent event) async* {
     final currentState = state;

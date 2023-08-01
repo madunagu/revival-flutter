@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class PlayerScreen extends StatelessWidget {
   final int audioId;
 
-  const PlayerScreen(this.audioId, {Key key}) : super(key: key);
+  const PlayerScreen(this.audioId, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

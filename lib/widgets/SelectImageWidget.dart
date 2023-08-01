@@ -7,14 +7,14 @@ import 'package:image_picker/image_picker.dart';
 
 class SelectImageWidget extends StatelessWidget {
   final String title;
-  final String input;
+  final String? input;
   final File file;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   SelectImageWidget({
-    @required this.title,
+    required this.title,
     this.input,
     this.onTap,
-    this.file,
+    required this.file,
   });
 
   Future<File> _imgFromGallery() async {

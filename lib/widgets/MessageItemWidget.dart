@@ -5,18 +5,18 @@ import 'package:flutter/material.dart';
 
 class MessageItem extends StatelessWidget {
   final String message;
-  final Image image;
+  final Image? image;
   final timeAgo;
   final String name;
   final double radius = 60;
   final bool isSeen;
 
   MessageItem({
-    Key key,
-    this.message,
+    Key? key,
+    required this.message,
     this.image,
     this.timeAgo,
-    this.name,
+    required this.name,
     this.isSeen = true,
   }) : super(key: key);
 

@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:devotion/misc/StyleConstants.dart';
-import 'package:devotion/models/Devotional.dart';
 import 'package:devotion/util/Constants.dart';
 import 'package:devotion/util/NetworkingClass.dart';
 import 'package:devotion/util/TimeHandler.dart';
@@ -17,10 +16,9 @@ import 'package:devotion/widgets/MapWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:devotion/models/Event.dart';
-
-import 'models/Address.dart';
-import 'models/User.dart';
+import 'models/address.dart';
+import 'models/event.dart';
+import 'models/user.dart';
 
 var smallTextSyle = TextStyle(color: Colors.grey, fontSize: 12);
 var largeWhiteTextStyle = TextStyle(
@@ -44,7 +42,6 @@ TextStyle italicStyle = const TextStyle(
 );
 
 class SingleEventScreen extends StatefulWidget {
-  @required
   final Event event;
   SingleEventScreen(this.event);
   @override
@@ -52,7 +49,7 @@ class SingleEventScreen extends StatefulWidget {
 }
 
 class _SingleEventScreenState extends State<SingleEventScreen> {
-  Event event;
+  late Event event;
   bool isLoading = true;
   @override
   void initState() {
@@ -88,7 +85,7 @@ class _SingleEventScreenState extends State<SingleEventScreen> {
 class SingleEvent extends StatelessWidget {
   final Event event;
   SingleEvent({
-    this.event,
+    required this.event,
   });
 
   String getEventTimes() {
@@ -345,8 +342,8 @@ class SingleEvent extends StatelessWidget {
 
 class ImageSliderWidget extends StatefulWidget {
   const ImageSliderWidget({
-    Key key,
-    @required this.size,
+    Key? key,
+    required this.size,
   }) : super(key: key);
 
   final Size size;
@@ -357,7 +354,7 @@ class ImageSliderWidget extends StatefulWidget {
 
 class _ImageSliderWidgetState extends State<ImageSliderWidget>
     with SingleTickerProviderStateMixin {
-  TabController _tabController;
+  late TabController _tabController;
   int activeSlide = 0;
   int sliderCount = 2;
   @override
@@ -418,8 +415,8 @@ class _ImageSliderWidgetState extends State<ImageSliderWidget>
 
 class AddressWidget extends StatelessWidget {
   const AddressWidget({
-    Key key,
-    @required this.address,
+    Key? key,
+    required this.address,
   }) : super(key: key);
 
   final Address address;
@@ -456,7 +453,7 @@ class AddressWidget extends StatelessWidget {
                 height: 18,
               ),
               MapWidget(
-                address: address,
+                address: address.toString(),
               ),
               SizedBox(height: 29),
             ],
@@ -470,7 +467,7 @@ class AddressWidget extends StatelessWidget {
 class AreYouGoing extends StatefulWidget {
   final int isGoing;
   final Event event;
-  const AreYouGoing({Key key, this.isGoing, @required this.event})
+  const AreYouGoing({Key? key, required this.isGoing, required this.event})
       : super(key: key);
 
   @override
@@ -478,7 +475,7 @@ class AreYouGoing extends StatefulWidget {
 }
 
 class _AreYouGoingState extends State<AreYouGoing> {
-  bool isGoing;
+  bool isGoing = false;
   attendEvent() async {
     setState(() {
       this.isGoing = true;
@@ -601,5 +598,3 @@ class _AreYouGoingState extends State<AreYouGoing> {
     );
   }
 }
-
-

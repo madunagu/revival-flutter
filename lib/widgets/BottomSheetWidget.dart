@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BottomSheetWidget extends StatelessWidget {
   final Widget child;
-  BottomSheetWidget({this.child});
+  BottomSheetWidget({required this.child});
   @override
   Widget build(BuildContext context) {
     return Scaffold(

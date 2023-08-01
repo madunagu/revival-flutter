@@ -19,7 +19,7 @@ class OnboardingContents extends StatefulWidget {
 
 class _OnboardingContentsState extends State<OnboardingContents>
     with SingleTickerProviderStateMixin {
-  TabController _tabController;
+  late TabController _tabController;
   int activeSlide = 0;
   int sliderCount = 2;
   @override

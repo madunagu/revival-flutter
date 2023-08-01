@@ -4,7 +4,6 @@ import 'package:devotion/bloc/blocs/list.bloc.dart';
 import 'package:devotion/bloc/events/PlayerEvent.dart';
 import 'package:devotion/bloc/events/ListEvent.dart';
 import 'package:devotion/bloc/states/ListState.dart';
-import 'package:devotion/models/AudioPost.dart';
 import 'package:devotion/util/Constants.dart';
 import 'package:devotion/util/NetworkingClass.dart';
 import 'package:devotion/widgets/CommentItemWidget.dart';
@@ -21,7 +20,7 @@ class VideoDetailsWidget extends StatefulWidget {
   final dynamic playable;
   final PlayedType playedType;
   const VideoDetailsWidget(
-      {Key key, @required this.playable, @required this.playedType})
+      {Key? key, required this.playable, required this.playedType})
       : super(key: key);
 
   @override
@@ -160,7 +159,7 @@ class _CommentsSectionWidgetState extends State<CommentsSectionWidget> {
   List<CommentItemWidget> comments = [];
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
-  ListBloc _listBloc;
+  late ListBloc _listBloc;
   @override
   void initState() {
     super.initState();
@@ -224,10 +223,10 @@ class _CommentsSectionWidgetState extends State<CommentsSectionWidget> {
 
 class CreateCommentWidget extends StatelessWidget {
   CreateCommentWidget({
-    Key key,
+    Key? key,
     this.image,
   }) : super(key: key);
-  final Image image;
+  final Image? image;
   final double radius = 60;
 
   @override
@@ -306,9 +305,9 @@ class VideoInteraction extends StatelessWidget {
   final String counter;
   final IconData icon;
   final bool active;
-  final Function onTap;
+  final Function()? onTap;
   const VideoInteraction({
-    Key key,
+    Key? key,
     this.counter = '123k Likes',
     this.icon = Icons.favorite_border,
     this.active = false,
@@ -342,7 +341,7 @@ class VideoInteraction extends StatelessWidget {
 
 class MusicListWidget extends StatefulWidget {
   const MusicListWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -353,7 +352,7 @@ class _MusicListWidgetState extends State<MusicListWidget> {
   List<CommentItemWidget> comments = [];
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
-  ListBloc _listBloc;
+  late ListBloc _listBloc;
 
   @override
   void initState() {

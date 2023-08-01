@@ -31,7 +31,7 @@ final TextStyle hintStyle = const TextStyle(
 );
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({Key key}) : super(key: key);
+  LoginScreen({Key? key}) : super(key: key);
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -39,7 +39,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen>
     with SingleTickerProviderStateMixin {
-  TabController _tabController;
+  late final TabController _tabController;
 
   @override
   void initState() {
@@ -121,8 +121,8 @@ class _LoginScreenState extends State<LoginScreen>
 
 class LoginTabs extends StatefulWidget {
   const LoginTabs({
-    Key key,
-    @required TabController tabController,
+    Key? key,
+    required TabController tabController,
   })  : _tabController = tabController,
         super(key: key);
 
@@ -199,7 +199,7 @@ class _LoginTabsState extends State<LoginTabs> {
 
 class LoginForm extends StatefulWidget {
   const LoginForm({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -303,7 +303,7 @@ class _LoginFormState extends State<LoginForm> {
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -403,10 +403,10 @@ class _RegisterFormState extends State<RegisterForm> {
                     color: Colors.white10,
                     child: CircularProgressIndicator(),
                   )
-                : null,
+                : Container(),
             state is LoginFailure
                 ? ErrorNotification(titleText: state.error)
-                : null,
+                : Container(),
           ],
         );
       },

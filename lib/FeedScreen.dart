@@ -2,7 +2,7 @@ import 'package:devotion/SingleEventScreen.dart';
 import 'package:devotion/bloc/blocs/post.bloc.dart';
 import 'package:devotion/bloc/events/index.dart';
 import 'package:devotion/misc/StyleConstants.dart';
-import 'package:devotion/models/Feed.dart';
+import 'package:devotion/models/feed.dart';
 import 'package:devotion/models/index.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/widgets/CurvedEventItemWidget.dart';
@@ -18,7 +18,7 @@ import 'bloc/states/index.dart';
 class FeedScreen extends StatefulWidget {
   final List<Color> colors;
   final tag;
-  FeedScreen({Key key, this.colors, this.tag = 0}) : super(key: key);
+  FeedScreen({Key? key, required this.colors, this.tag = 0}) : super(key: key);
 
   @override
   _FeedScreenState createState() => _FeedScreenState();
@@ -29,7 +29,7 @@ class _FeedScreenState extends State<FeedScreen> {
 
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
-  PostBloc _postBloc;
+  late final PostBloc _postBloc;
 
   Widget organiseStack(List<dynamic> items, BuildContext context) {
     List<Widget> output = [];

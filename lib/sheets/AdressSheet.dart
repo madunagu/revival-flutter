@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:devotion/bloc/blocs/form.bloc.dart';
 import 'package:devotion/bloc/events/FormEvent.dart';
 import 'package:devotion/bloc/states/FormSheetState.dart';
-import 'package:devotion/models/Address.dart';
+import 'package:devotion/models/address.dart';
 import 'package:devotion/util/NetworkingClass.dart';
 import 'package:devotion/widgets/MapWidget.dart';
 import 'package:flutter/material.dart';
@@ -12,17 +12,17 @@ import 'package:flutter/semantics.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddressSheet extends StatefulWidget {
-  AddressSheet({Key key}) : super(key: key);
+  AddressSheet({Key? key}) : super(key: key);
   @override
   _AddressSheetState createState() => _AddressSheetState();
 }
 
 class _AddressSheetState extends State<AddressSheet> {
-  final Address myAddress = Address();
+  // final Address? myAddress = Address();
   final NetworkingClass myNetwork = NetworkingClass();
   final _formKey = GlobalKey<FormState>();
-  String countryValue;
-  String stateValue;
+  String countryValue = '';
+  String stateValue = '';
   List<String> countries = ['Nigeria', 'Ghana', 'Kenya', 'Uganda'];
   List<String> states = ['Imo', 'Enugu', 'Anambara', 'Lagos'];
   TextEditingController line1Controller = TextEditingController();
@@ -140,13 +140,13 @@ class _AddressSheetState extends State<AddressSheet> {
                         elevation: 16,
                         style: inputStyle.copyWith(color: Color(0xff241332)),
                         underline: Container(
-                          padding: EdgeInsets.only(top:8),
+                          padding: EdgeInsets.only(top: 8),
                           height: 1,
                           color: Color(0xffdddddd),
                         ),
-                        onChanged: (String newValue) {
+                        onChanged: (String? newValue) {
                           setState(() {
-                            countryValue = newValue;
+                            if (newValue != null) countryValue = newValue;
                           });
                         },
                         items: countries
@@ -172,9 +172,9 @@ class _AddressSheetState extends State<AddressSheet> {
                           height: 1,
                           color: Color(0xffdddddd),
                         ),
-                        onChanged: (String newValue) {
+                        onChanged: (String? newValue) {
                           setState(() {
-                            stateValue = newValue;
+                            if (newValue != null) stateValue = newValue;
                           });
                         },
                         items: states
@@ -189,7 +189,7 @@ class _AddressSheetState extends State<AddressSheet> {
                     SizedBox(
                       height: 21,
                     ),
-                    MapWidget(address:myAddress),
+                    MapWidget(address: 'default address'),
                     SizedBox(height: 20),
                     GestureDetector(
                       onTap:
@@ -231,7 +231,7 @@ class _AddressSheetState extends State<AddressSheet> {
         return state.errors[inputName][0];
       }
     }
-    return null;
+    return '';
   }
 
   @override
@@ -248,14 +248,16 @@ class _AddressSheetState extends State<AddressSheet> {
   }
 
   void submitButtonPressed() {
-    this.myAddress.address1 = line1Controller.value.text;
-    this.myAddress.address2 = line2Controller.value.text;
-    this.myAddress.city = cityController.value.text;
-    this.myAddress.country = countryValue;
-    this.myAddress.state = countryValue;
+    Address ad = Address(
+      address1: line1Controller.value.text,
+      address2: line2Controller.value.text,
+      city: cityController.value.text,
+      country: countryValue,
+      state: stateValue,
+    );
     BlocProvider.of<FormBloc>(context).add(
       CreateButtonPressed(
-        object: myAddress.toJson(),
+        object: ad.toJson(),
         url: '/addresses',
       ),
     );

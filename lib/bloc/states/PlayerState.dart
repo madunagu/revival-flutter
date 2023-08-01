@@ -1,5 +1,5 @@
-import 'package:devotion/models/Event.dart';
-import 'package:devotion/models/Feed.dart';
+import 'package:devotion/models/event.dart';
+import 'package:devotion/models/feed.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -35,7 +35,7 @@ class PlayerPaused extends PlayerLoaded {}
 class PlayerFailure extends PlayerState {
   final String error;
 
-  const PlayerFailure({@required this.error});
+  const PlayerFailure({required this.error});
 
   @override
   List<Object> get props => [error];

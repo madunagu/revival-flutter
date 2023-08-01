@@ -1,4 +1,5 @@
-import 'package:devotion/models/Pagination.dart';
+import 'package:devotion/models/model.dart';
+import 'package:devotion/models/pagination.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class ListState extends Equatable {
@@ -18,15 +19,15 @@ class ListSuccess extends ListState {
   final int totalPages;
 
   const ListSuccess({
-    this.models,
-    this.currentPage,
-    this.totalPages,
+    required this.models,
+    required this.currentPage,
+    required this.totalPages,
   });
 
   ListSuccess copyWith({
-    List<dynamic> models,
-    int totalPages,
-    int currentPage,
+    required List<Model> models,
+    required int totalPages,
+    required int currentPage,
   }) {
     return ListSuccess(
       models: models ?? this.models,

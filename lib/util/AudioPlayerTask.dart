@@ -1,5 +1,5 @@
 import 'package:audio_service/audio_service.dart';
-import 'package:devotion/models/AudioPost.dart';
+import 'package:devotion/models/audio_post.dart';
 import 'package:devotion/util/Constants.dart';
 import 'package:just_audio/just_audio.dart';
 

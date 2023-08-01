@@ -4,9 +4,9 @@ class SearchDetailWidget extends StatelessWidget {
   final IconData icon;
   final String text;
   const SearchDetailWidget({
-    Key key,
-    this.icon,
-    this.text,
+    Key? key,
+    required this.icon,
+    required this.text,
   }) : super(key: key);
 
   @override

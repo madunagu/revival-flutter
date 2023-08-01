@@ -1,4 +1,4 @@
-import 'package:devotion/models/Church.dart';
+import 'package:devotion/models/church.dart';
 import 'package:devotion/widgets/MapWidget.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +17,7 @@ var smallWhiteTextStyle = TextStyle(
 );
 
 class ChurchWidget extends StatelessWidget {
-  ChurchWidget({this.church});
+  ChurchWidget({required this.church});
   final Church church;
   @override
   Widget build(BuildContext context) {

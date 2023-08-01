@@ -7,7 +7,6 @@ import 'package:devotion/bloc/events/ListEvent.dart';
 import 'package:devotion/bloc/events/index.dart';
 import 'package:devotion/bloc/states/ListState.dart';
 import 'package:devotion/misc/StyleConstants.dart';
-import 'package:devotion/models/Feed.dart';
 import 'package:devotion/models/index.dart';
 import 'package:devotion/widgets/AppBarWidget.dart';
 import 'package:devotion/widgets/AppScaffoldWidget.dart';
@@ -26,7 +25,7 @@ import 'bloc/states/index.dart';
 class ChurchListScreen extends StatelessWidget {
   final List<Color> colors;
   final tag;
-  ChurchListScreen({Key key, this.colors, this.tag = 0}) : super(key: key);
+  ChurchListScreen({Key? key, required this.colors, this.tag = 0}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +56,7 @@ class ChurchListScreen extends StatelessWidget {
 class ChurchList extends StatefulWidget {
   final List<Color> colors;
   final tag;
-  ChurchList({Key key, this.colors, this.tag = 0}) : super(key: key);
+  ChurchList({Key? key, required this.colors, this.tag = 0}) : super(key: key);
 
   @override
   _ChurchListState createState() => _ChurchListState();
@@ -68,7 +67,7 @@ class _ChurchListState extends State<ChurchList> {
 
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
-  ListBloc _listBloc;
+  late ListBloc _listBloc;
 
   Widget organiseStack(List<dynamic> items, BuildContext context) {
     List<Widget> output = [];

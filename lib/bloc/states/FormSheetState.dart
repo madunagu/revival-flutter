@@ -21,7 +21,7 @@ class FormSuccess extends FormSheetState {
 class FormInvalidated extends FormSheetState {
   final Map<String,dynamic> errors;
 
-  const FormInvalidated({@required this.errors});
+  const FormInvalidated({required this.errors});
 
   @override
   List<Object> get props => [errors];
@@ -33,7 +33,7 @@ class FormInvalidated extends FormSheetState {
 class FormFailure extends FormSheetState {
   final String error;
 
-  const FormFailure({@required this.error});
+  const FormFailure({required this.error});
 
   @override
   List<Object> get props => [error];

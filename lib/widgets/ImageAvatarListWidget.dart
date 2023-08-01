@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class ImageAvatarListWidget extends StatelessWidget {
   final List<String> images;
   final double size;
-  ImageAvatarListWidget({this.images, this.size =24});
+  ImageAvatarListWidget({required this.images, this.size =24});
   @override
   Widget build(BuildContext context) {
     List<Widget> imageAvatars = [];
@@ -28,7 +28,7 @@ class ImageAvatarListWidget extends StatelessWidget {
       width: this.size * 3/4 * this.images.length + 10,
       height: this.size + 10,
       child: Stack(
-        overflow: Overflow.clip,
+        // overflow: Overflow.clip,
         children: imageAvatars,
       ),
     );

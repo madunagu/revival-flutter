@@ -2,20 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CurvedCornerWidget extends StatelessWidget {
-  final Widget child;
+  final Widget? child;
   final Color color;
   final double radius;
   final double height;
   final double width;
   final Color borderColor;
   final EdgeInsetsGeometry padding;
-  final DecorationImage decorationImage;
+  final DecorationImage? decorationImage;
 
   CurvedCornerWidget(
-      {Key key,
-      this.child,
-      this.height,
-      this.width,
+      {Key? key,
+       this.child,
+      this.height=100,
+      this.width=double.infinity,
       this.color = const Color(0x00fff),
       this.radius = 80,
       this.decorationImage,
@@ -52,7 +52,7 @@ class BorderPainter extends CustomPainter {
   final Color borderColor;
   final double radius;
   final double width;
-  BorderPainter({this.borderColor, this.radius, this.width});
+  BorderPainter({this.borderColor=Colors.transparent, this.radius=80, this.width=1});
   @override
   void paint(Canvas canvas, Size size) {
     var paint = Paint();

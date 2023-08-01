@@ -1,14 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:developer' as developer;
 import 'dart:developer';
 
-import 'package:devotion/bloc/blocs/authentication.bloc.dart';
-import 'package:devotion/bloc/events/AuthenticationEvent.dart';
 import 'package:devotion/bloc/events/ListEvent.dart';
 import 'package:devotion/bloc/states/ListState.dart';
 import 'package:devotion/models/index.dart';
-import 'package:meta/meta.dart';
 import 'package:devotion/util/NetworkingClass.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
@@ -22,8 +17,8 @@ enum Method {
 
 class ListBloc extends Bloc<ListEvent, ListState> {
   ListBloc({
-    @required this.feedType,
-    @required this.resource,
+    required this.feedType,
+    required this.resource,
     this.method = Method.GET,
     this.params,
   }) : assert(resource != null);
@@ -88,6 +83,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
           await NetworkingClass().get(resource + "?page=$page&perPage=$limit");
     }
     ServerResponse response = ServerResponse.fromJson(res);
+    // TODO: adjust model to perform this function
     final List<dynamic> items = [];
     for (var i = 0; i < response.data.length; i++) {
       items.add(getParentable(response.data[i]));

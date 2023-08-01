@@ -8,7 +8,7 @@
   "slogan": "Laboriosam harum laudantium laborum ea excepturi maiores.",
   "description": "Inventore ut ducimus quod sed nulla consequatur laborum. Autem ipsa id omnis. Dolor doloremque eveniet explicabo qui sint blanditiis aut. Odio quibusdam quisquam laboriosam in labore nobis.",
   "verified": 0,
-  "deleted_at": null,
+  "deleted_at": "@datetime",
   "created_at":"@datetime",
   "updated_at": "@datetime",
   "comments_count": 0,
@@ -20,6 +20,6 @@
   "leader": "$User",
   "likes": "$[]User",
   "user": "$User",
-  "addresses": [],
+  "addresses": "$[]Address",
   "images": "$[]ResizedImage"
 }

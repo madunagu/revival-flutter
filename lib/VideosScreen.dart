@@ -4,7 +4,6 @@ import 'package:devotion/PlayerScreen.dart';
 import 'package:devotion/bloc/blocs/list.bloc.dart';
 import 'package:devotion/bloc/events/ListEvent.dart';
 import 'package:devotion/bloc/states/ListState.dart';
-import 'package:devotion/models/VideoPost.dart';
 import 'package:devotion/sheets/VideoSheet.dart';
 import 'package:devotion/widgets/AppBarWidget.dart';
 import 'package:devotion/widgets/BottomSheetWidget.dart';
@@ -15,6 +14,8 @@ import 'package:devotion/widgets/InteractionButtonWidget.dart';
 import 'package:devotion/widgets/UserInfoWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'models/video_post.dart';
 
 class VideosScreen extends StatelessWidget {
   @override
@@ -59,7 +60,7 @@ class VideosList extends StatefulWidget {
 class _VideosListState extends State<VideosList> {
   final _scrollController = ScrollController();
   final _scrollThreshold = 700.0;
-  ListBloc _listBloc;
+  late ListBloc _listBloc;
   @override
   void initState() {
     super.initState();
@@ -116,8 +117,8 @@ class VideoItem extends StatelessWidget {
   final VideoPost video;
   final Size size;
   const VideoItem({
-    this.video,
-    this.size,
+    required this.video,
+    required this.size,
   });
   @override
   Widget build(BuildContext context) {

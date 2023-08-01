@@ -20,7 +20,7 @@ class CurvedVideoItemWidget extends StatelessWidget {
   final VideoPost video;
 
   CurvedVideoItemWidget({
-    this.video,
+    required this.video,
   });
 
   factory CurvedVideoItemWidget.fromVideo(VideoPost video) {
@@ -54,7 +54,7 @@ class CurvedVideoItemWidget extends StatelessWidget {
         height: 270,
         width: MediaQuery.of(context).size.width,
         child: Stack(
-          overflow: Overflow.clip,
+          // overflow: Overflow.clip,
           children: [
             Positioned(
               top: 110,

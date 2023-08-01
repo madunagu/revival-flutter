@@ -2,8 +2,6 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:devotion/misc/CustomIcons.dart';
-import 'package:devotion/models/Address.dart';
-import 'package:devotion/models/Event.dart';
 import 'package:devotion/models/index.dart';
 import 'package:devotion/sheets/AdressSheet.dart';
 import 'package:devotion/sheets/ImageSheet.dart';

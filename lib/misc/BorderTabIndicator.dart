@@ -6,17 +6,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class BorderTabIndicator extends Decoration {
-  BorderTabIndicator({this.tabController, this.colors, this.indicatorHeight})
+  BorderTabIndicator({required this.tabController, required this.colors, required this.indicatorHeight})
       : super();
 
   final TabController tabController;
   final double indicatorHeight;
   final List<Color> colors;
 
-  // @override
-  _BorderPainter createBoxPainter([VoidCallback onChanged]) {
+   @override
+  _BorderPainter createBoxPainter([VoidCallback? onChanged]) {
     return _BorderPainter(
-        this, tabController, colors, indicatorHeight, onChanged);
+        this, tabController, colors, indicatorHeight, onChanged!);
   }
 }
 
@@ -43,7 +43,7 @@ class _BorderPainter extends BoxPainter {
     assert(configuration.size != null);
     final horizontalInset = indicatorHeight;
     final rect = Offset(
-          offset.dx + (configuration.size.width / 2) - indicatorHeight / 2,
+          offset.dx + (configuration.size!.width / 2) - indicatorHeight / 2,
           18,
         ) &
         Size(horizontalInset, indicatorHeight);

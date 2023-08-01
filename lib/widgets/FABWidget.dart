@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 class FABWidget extends StatelessWidget {
   const FABWidget({
-    Key key,
-    @required this.icon,
-    @required this.onTap,
+    Key? key,
+    required this.icon,
+    required this.onTap,
   }) : super(key: key);
 
   final IconData icon;
-  final Function onTap;
+  final Function()? onTap;
 
   @override
   Widget build(BuildContext context) {

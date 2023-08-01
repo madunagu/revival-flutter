@@ -2,9 +2,6 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:devotion/misc/CustomIcons.dart';
-import 'package:devotion/models/Address.dart';
-import 'package:devotion/models/VideoPost.dart';
-import 'package:devotion/models/Event.dart';
 import 'package:devotion/sheets/AdressSheet.dart';
 import 'package:devotion/util/NetworkingClass.dart';
 import 'package:devotion/util/TimeHandler.dart';
@@ -17,14 +14,17 @@ import 'package:devotion/widgets/MapWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
+import 'models/address.dart';
+import 'models/video_post.dart';
+
 class CreateVideoScreen extends StatefulWidget {
   @override
   _CreateVideoScreenState createState() => _CreateVideoScreenState();
 }
 
 class _CreateVideoScreenState extends State<CreateVideoScreen> {
-  VideoPost myVideo = VideoPost();
-  Address myAddress = Address();
+  late VideoPost videoPost;
+  late Address address ;
   bool isLoading = false;
   bool eventCreated = false;
   DateTime selectedDate = DateTime.now();
@@ -44,7 +44,7 @@ class _CreateVideoScreenState extends State<CreateVideoScreen> {
     setState(() {
       if (eventAddress == null) return;
 
-      myAddress = eventAddress;
+      address = eventAddress;
     });
 //    showModalBottomSheet(
 //        context: context,
@@ -67,10 +67,13 @@ class _CreateVideoScreenState extends State<CreateVideoScreen> {
 
   postVideo() async {
     isLoading = true;
-    myVideo.name = nameController.value.text;
-    myVideo.description = descriptionController.value.text;
+    videoPost = VideoPost(
+      name:  nameController.value.text,
+      description: descriptionController.value.text,
+    );
+
 //    myVideo.addressId = myAddress.id;
-    Map<String, dynamic> dataVal = myVideo.toJson();
+    Map<String, dynamic> dataVal = videoPost.toJson();
     Map<String, dynamic> res =
         await NetworkingClass().post('/video-posts', dataVal);
     log(res.toString());
@@ -220,8 +223,8 @@ class _CreateVideoScreenState extends State<CreateVideoScreen> {
 
 class VideoCreatedWidget extends StatelessWidget {
   const VideoCreatedWidget({
-    Key key,
-    @required this.myVideo,
+    Key? key,
+    required this.myVideo,
   }) : super(key: key);
 
   final VideoPost myVideo;
@@ -308,13 +311,13 @@ class CreateModelRowWidget extends StatelessWidget {
   final IconData icon;
   final String title;
   final String description;
-  final Widget body;
-  final Function tapped;
+  final Widget? body;
+  final Function(BuildContext)? tapped;
   const CreateModelRowWidget(
-      {Key key,
-      this.icon,
-      this.title,
-      this.description,
+      {Key? key,
+      required this.icon,
+      required this.title,
+      required this.description,
       this.body,
       this.tapped})
       : super(key: key);
@@ -323,7 +326,9 @@ class CreateModelRowWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        tapped(context);
+        if (tapped != null) {
+          tapped!(context);
+        }
       },
       child: Row(
         mainAxisSize: MainAxisSize.max,
@@ -373,7 +378,7 @@ class CreateModelRowWidget extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                (this.body != null) ? this.body : Container(),
+                (this.body != null) ? this.body! : Container(),
               ],
             ),
           )

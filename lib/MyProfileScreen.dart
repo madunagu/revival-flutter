@@ -5,20 +5,21 @@ import 'package:devotion/sheets/ImageSheet.dart';
 import 'package:devotion/util/Constants.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/util/NetworkingClass.dart';
-import 'package:devotion/models/User.dart';
 import 'package:devotion/widgets/LinearProgressWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'models/user.dart';
+
 class MyProfileScreen extends StatefulWidget {
-  MyProfileScreen({this.user});
+  MyProfileScreen({required this.user});
   final User user;
   @override
   _MyProfileScreenState createState() => _MyProfileScreenState();
 }
 
 class _MyProfileScreenState extends State<MyProfileScreen> {
-  User user;
+  late User user;
   bool isLoading = false;
 
   void getUser() async {

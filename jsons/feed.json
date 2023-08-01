@@ -3,7 +3,7 @@
   "postable_type": "user",
   "postable_id": 8,
   "parentable_id": 8,
-  "created_at": null,
-  "updated_at": null,
-  "@JsonKey(ignore: true) dynamic": "parentable"
+  "created_at": "@datetime",
+  "updated_at": "@datetime",
+  "parentable": "$Model"
 }

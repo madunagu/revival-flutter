@@ -2,8 +2,6 @@ import 'dart:developer';
 
 import 'package:devotion/SingleEventScreen.dart';
 import 'package:devotion/misc/StyleConstants.dart';
-import 'package:devotion/models/Church.dart';
-import 'package:devotion/models/Devotional.dart';
 import 'package:devotion/util/Constants.dart';
 import 'package:devotion/util/NetworkingClass.dart';
 import 'package:devotion/util/TimeHandler.dart';
@@ -19,10 +17,11 @@ import 'package:devotion/widgets/MapWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:devotion/models/Event.dart';
+import 'models/address.dart';
+import 'models/church.dart';
+import 'models/user.dart';
 
-import 'models/Address.dart';
-import 'models/User.dart';
+
 
 var smallTextSyle = TextStyle(color: Colors.grey, fontSize: 12);
 var largeWhiteTextStyle = TextStyle(
@@ -54,7 +53,7 @@ class ChurchScreen extends StatefulWidget {
 }
 
 class _ChurchScreenState extends State<ChurchScreen> {
-  Church church;
+  late Church church;
   bool isLoading = true;
   @override
   void initState() {
@@ -91,7 +90,7 @@ class _ChurchScreenState extends State<ChurchScreen> {
 class ChurchWidget extends StatelessWidget {
   final Church church;
   ChurchWidget({
-    this.church,
+    required this.church,
   });
 
   @override
@@ -288,8 +287,8 @@ class ChurchWidget extends StatelessWidget {
 
 class ImageSliderWidget extends StatefulWidget {
   const ImageSliderWidget({
-    Key key,
-    @required this.size,
+    Key? key,
+    required this.size,
   }) : super(key: key);
 
   final Size size;
@@ -300,7 +299,7 @@ class ImageSliderWidget extends StatefulWidget {
 
 class _ImageSliderWidgetState extends State<ImageSliderWidget>
     with SingleTickerProviderStateMixin {
-  TabController _tabController;
+  late TabController _tabController;
   int activeSlide = 0;
   int sliderCount = 2;
   @override
@@ -361,8 +360,8 @@ class _ImageSliderWidgetState extends State<ImageSliderWidget>
 
 class AddressWidget extends StatelessWidget {
   const AddressWidget({
-    Key key,
-    @required this.address,
+    Key? key,
+    required this.address,
   }) : super(key: key);
 
   final Address address;
@@ -399,7 +398,7 @@ class AddressWidget extends StatelessWidget {
                 height: 18,
               ),
               MapWidget(
-                address: address,
+                address: address.toString(),
               ),
               SizedBox(height: 29),
             ],
@@ -413,7 +412,7 @@ class AddressWidget extends StatelessWidget {
 class AreYouGoing extends StatefulWidget {
   final int isGoing;
   final Church church;
-  const AreYouGoing({Key key, this.isGoing, @required this.church})
+  const AreYouGoing({Key? key,required this.isGoing, required this.church})
       : super(key: key);
 
   @override
@@ -421,7 +420,7 @@ class AreYouGoing extends StatefulWidget {
 }
 
 class _AreYouGoingState extends State<AreYouGoing> {
-  bool isGoing;
+  late bool isGoing;
   attendEvent() async {
     setState(() {
       this.isGoing = true;

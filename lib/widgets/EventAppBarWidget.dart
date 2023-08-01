@@ -1,6 +1,6 @@
 import 'package:devotion/ChurchScreen.dart';
 import 'package:devotion/misc/StyleConstants.dart';
-import 'package:devotion/models/index.dart';
+import 'package:devotion/models/user.dart';
 import 'package:devotion/util/Constants.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/widgets/ImageAvatarListWidget.dart';
@@ -8,31 +8,39 @@ import 'package:devotion/widgets/ImageAvatarWidget.dart';
 import 'package:devotion/widgets/LinearProgressWidget.dart';
 import 'package:flutter/material.dart';
 
+import '../models/church.dart';
+import '../models/devotional.dart';
+import '../models/event.dart';
+
 class EventAppBarWidget extends StatelessWidget {
   const EventAppBarWidget({
-    Key key,
-    @required this.event,
-    @required this.isLoading,
+    Key? key,
+    required this.event,
+    required this.isLoading,
   }) : super(key: key);
 
   final Event event;
   final bool isLoading;
 
   factory EventAppBarWidget.fromDevotional(
-      {Devotional devotional, bool isLoading}) {
-    Event event = Event();
-    event.name = devotional.title;
-    event.attendees = devotional.devotees;
-    event.attendeesCount = devotional.devoteesCount;
+      {required Devotional devotional, bool isLoading=true}) {
+    Event event = Event(
+      name: devotional.title,
+      attendees: devotional.devotees,
+      attendeesCount: devotional.devoteesCount,
+    );
     return EventAppBarWidget(event: event, isLoading: isLoading);
   }
 
-  factory EventAppBarWidget.fromChurch({Church church, bool isLoading}) {
-    Event event = Event();
-    event.name = church.name;
+  factory EventAppBarWidget.fromChurch({required Church church, bool isLoading=true}) {
+    Event event = Event(
+      name: church.name,
+      attendeesCount: church.likesCount,
+    );
     //TODO: add list of users who liked church to server and model
     // event.attendees = church.;
-    event.attendeesCount = church.likesCount;
+
+
     return EventAppBarWidget(event: event, isLoading: isLoading);
   }
 

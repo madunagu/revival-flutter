@@ -3,13 +3,14 @@ import 'dart:developer';
 import 'package:devotion/bloc/blocs/list.bloc.dart';
 import 'package:devotion/bloc/events/ListEvent.dart';
 import 'package:devotion/bloc/states/ListState.dart';
-import 'package:devotion/models/AudioPost.dart';
 import 'package:devotion/util/Constants.dart';
 import 'package:devotion/util/NetworkingClass.dart';
 import 'package:devotion/widgets/AppBarWidget.dart';
 import 'package:devotion/widgets/AppScaffoldWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'models/audio_post.dart';
 
 class MusicListScreen extends StatelessWidget {
   @override
@@ -54,7 +55,7 @@ class MusicListScreen extends StatelessWidget {
 }
 
 class HorizontalCardGroup extends StatefulWidget {
-  HorizontalCardGroup({@required this.title, @required this.res});
+  HorizontalCardGroup({required this.title, required this.res});
   final String title;
   final String res;
   @override
@@ -67,7 +68,7 @@ class _HorizontalCardGroupState extends State<HorizontalCardGroup> {
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
   double width = 219;
-  ListBloc _listBloc;
+  late final ListBloc _listBloc;
 
   @override
   void initState() {
@@ -100,7 +101,9 @@ class _HorizontalCardGroupState extends State<HorizontalCardGroup> {
           child: HorizontalListItem(
             title: items[i].name,
             subTitle: items[i].author.name,
-            image: items[i].images[0]?.medium,
+            image: items[i].images[0]?.medium != null
+                ? items[i].images[0].medium
+                : '',
           ),
           left: this.width * 169 / 219 * i,
         ),
@@ -114,8 +117,8 @@ class _HorizontalCardGroupState extends State<HorizontalCardGroup> {
         width: this.width * 169 / 219 * this.items.length + 70,
         height: 188,
         child: Stack(
-          overflow: Overflow.clip,
-          
+          // overflow: Overflow.clip,
+
           children: output,
         ),
       ),
@@ -169,9 +172,9 @@ class HorizontalListItem extends StatelessWidget {
   final String subTitle;
 
   const HorizontalListItem({
-    Key key,
-    @required this.title,
-    @required this.subTitle,
+    Key? key,
+    required this.title,
+    required this.subTitle,
     this.image = AVATAR_URL,
   }) : super(key: key);
 

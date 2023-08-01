@@ -1,8 +1,9 @@
 import 'package:devotion/MusicPlayerScreen.dart';
-import 'package:devotion/models/AudioPost.dart';
 import 'package:devotion/util/Constants.dart';
 import 'package:devotion/util/TimeHandler.dart';
 import 'package:flutter/material.dart';
+
+import '../models/audio_post.dart';
 
 class SmallItemWidget extends StatelessWidget {
   final String image;
@@ -10,14 +11,14 @@ class SmallItemWidget extends StatelessWidget {
   final String subTitle;
   final String amount;
   final bool isActive;
-  final double textWidth;
-  final Function onTap;
+  final double? textWidth;
+  final Function(dynamic)? onTap;
 
   SmallItemWidget({
-    this.amount,
-    this.image,
-    this.subTitle,
-    this.title,
+    required this.amount,
+    required this.image,
+    required this.subTitle,
+    required this.title,
     this.textWidth,
     this.onTap,
     this.isActive = false,
@@ -43,7 +44,9 @@ class SmallItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        onTap!(context);
+      },
       child: Container(
         color: isActive ? Color(0xff5F4591) : Colors.white,
         padding: EdgeInsets.only(left: 24, right: 24),

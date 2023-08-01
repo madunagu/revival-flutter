@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class ImageAvatarWidget extends StatelessWidget {
-  final imageURL;
+  final String imageURL;
   final double size;
   final Color borderColor;
   final double borderWidth;
   ImageAvatarWidget({
-    Key key,
-    this.imageURL,
+    Key? key,
+    required this.imageURL,
     this.size = 40,
     this.borderColor = Colors.white,
     this.borderWidth = 1,

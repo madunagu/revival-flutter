@@ -8,18 +8,18 @@ import 'package:flutter/material.dart';
 class AppScaffoldWidget extends StatelessWidget {
   final Widget body;
   final Color bodyColor;
-  final Widget appBar;
+  final Widget? appBar;
   final double paddingTop;
-  final IconData floatingButtonIcon;
-  final Function floatingButtonTap;
-  final Widget fixedWidget;
-  final Widget error;
+  final IconData? floatingButtonIcon;
+  final VoidCallback? floatingButtonTap;
+  final Widget? fixedWidget;
+  final Widget? error;
 
   final scaffoldKey;
 
   AppScaffoldWidget({
-    Key key,
-    this.body,
+    Key? key,
+    required this.body,
     this.bodyColor = Colors.white,
     this.appBar,
     this.scaffoldKey,
@@ -59,13 +59,15 @@ class AppScaffoldWidget extends StatelessWidget {
             top: 0,
             left: 0,
             width: size.width,
-            child: (appBar != null) ? appBar : Container(),
+            child: (appBar != null) ? appBar! : Container(),
           ),
-          FABWidget(
-            icon: floatingButtonIcon,
-            onTap: floatingButtonTap,
-          ),
-          (fixedWidget != null) ? fixedWidget : Container(),
+          (floatingButtonIcon != null)
+              ? FABWidget(
+                  icon: floatingButtonIcon!,
+                  onTap:floatingButtonTap,
+                )
+              : Container(),
+          (fixedWidget != null) ? fixedWidget! : Container(),
           Positioned(
             top: 0,
             width: size.width,

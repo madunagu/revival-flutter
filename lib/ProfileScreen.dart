@@ -3,11 +3,11 @@ import 'package:devotion/repositories/UserRepository.dart';
 import 'package:devotion/widgets/AppScaffoldWidget.dart';
 import 'package:flutter/material.dart';
 
-import 'models/User.dart';
+import 'models/user.dart';
 
 class ProfileScreen extends StatelessWidget {
   final User user;
-  ProfileScreen({@required this.user});
+  ProfileScreen({required this.user});
 
   Future<User> getUser() {
     return UserRepository().getUser();
@@ -353,8 +353,8 @@ class ProfileScreen extends StatelessWidget {
 class FollowButtonWidget extends StatefulWidget {
   final User user;
   const FollowButtonWidget({
-    Key key,
-    @required this.user,
+    Key? key,
+    required this.user,
   }) : super(key: key);
 
   @override

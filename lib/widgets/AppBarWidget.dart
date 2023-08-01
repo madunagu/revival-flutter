@@ -6,16 +6,16 @@ import 'package:devotion/widgets/CurvedCornerWidget.dart';
 class AppBarWidget extends StatefulWidget {
   final Color color;
   final String title;
-  final String subTitle;
-  final IconData rightIcon;
+  final String? subTitle;
+  final IconData? rightIcon;
   final Color borderColor;
   final Color titleColor;
-  final String imageURL;
+  final String? imageURL;
 
   AppBarWidget({
-    Key key,
+    Key? key,
     this.color = const Color(0xffffffff),
-    this.title,
+    required this.title,
     this.subTitle,
     this.rightIcon,
     this.imageURL,
@@ -29,7 +29,7 @@ class AppBarWidget extends StatefulWidget {
 
 class _AppBarWidgetState extends State<AppBarWidget>
     with SingleTickerProviderStateMixin {
-  TabController _tabController;
+  late TabController _tabController;
   @override
   void initState() {
     this._tabController = TabController(vsync: this, length: 3);
@@ -148,10 +148,14 @@ class _AppBarWidgetState extends State<AppBarWidget>
 
 class ButtonWidget extends StatelessWidget {
   final String text;
-  final Color color;
+  final Color? color;
   final Function onTap;
   final bool active;
-  ButtonWidget({this.text, this.color, this.onTap, this.active = false});
+  ButtonWidget(
+      {required this.text,
+      this.color,
+      required this.onTap,
+      this.active = false});
   @override
   Widget build(BuildContext context) {
     return Container(

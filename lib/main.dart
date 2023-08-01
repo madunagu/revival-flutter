@@ -15,7 +15,6 @@ import 'package:devotion/bloc/blocs/post.bloc.dart';
 import 'package:devotion/bloc/events/PostEvent.dart';
 import 'package:devotion/bloc/events/index.dart';
 import 'package:devotion/bloc/states/AuthenticationState.dart';
-import 'package:devotion/models/index.dart';
 import 'package:devotion/repositories/UserRepository.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
 import 'package:devotion/LoginScreen.dart';
@@ -56,7 +55,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +111,7 @@ class SimpleBlocDelegate extends BlocDelegate {
 }
 
 class MainScreen extends StatefulWidget {
-  MainScreen({@required this.authState});
+  MainScreen({required this.authState});
   final AuthenticationSuccess authState;
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -121,8 +120,8 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen>
     with SingleTickerProviderStateMixin {
-  TabController _tabController;
-  AuthenticationBloc _authenticationBloc;
+  late final TabController _tabController;
+  late final AuthenticationBloc _authenticationBloc;
   @override
   void initState() {
     this._tabController =

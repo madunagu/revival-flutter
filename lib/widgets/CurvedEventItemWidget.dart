@@ -3,8 +3,8 @@ import 'dart:math';
 
 import 'package:devotion/SingleEventScreen.dart';
 import 'package:devotion/misc/StyleConstants.dart';
-import 'package:devotion/models/Event.dart';
-import 'package:devotion/models/User.dart';
+import 'package:devotion/models/event.dart';
+import 'package:devotion/models/user.dart';
 import 'package:devotion/util/Constants.dart';
 import 'package:devotion/util/TimeHandler.dart';
 import 'package:devotion/widgets/CurvedCornerWidget.dart';
@@ -16,8 +16,8 @@ class CurvedEventItemWidget extends StatelessWidget {
   final Event event;
   final Color color;
   CurvedEventItemWidget({
-    this.event,
-    this.color,
+    required this.event,
+    required this.color,
   });
 
   factory CurvedEventItemWidget.fromEvent(Event event, Color color) {
